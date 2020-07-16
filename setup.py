@@ -50,7 +50,7 @@ class build_ext(build_ext_orig):
 
 
 setup(
-    name='flame',
+    name='flame-code',
     version='1.8.6',
     package_dir={'flame': 'python/flame'},
     packages=['flame'],
