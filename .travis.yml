@@ -1,45 +1,18 @@
-
-sudo: required
-dist: trusty
-addons:
-  apt:
-    packages:
-    - libhdf5-dev
-    - libboost-dev
-    - libboost-system-dev
-    - libboost-thread-dev
-    - libboost-filesystem-dev
-    - libboost-regex-dev
-    - libboost-program-options-dev
-    - libboost-test-dev
-    - python-decorator
-    - cmake
-    - bison
-    - flex
-    - libatlas-dev
-    - libatlas-base-dev
-    - liblapack-dev
-    - gfortran
-    - libgmp-dev
-    - libmpfr-dev
-    - cppcheck
-language: python
-cache: pip
-install:
- - pip install -r requirements-${PROF}.txt
- - mkdir build
- - (cd build && cmake -DCMAKE_BUILD_TYPE=$BTYPE -DPYTHON_EXECUTABLE=`which python` -DNEED_PYTHON=ON $XTRA ..)
- - make -C build -j2 VERBOSE=1
-script: cd build && ctest --output-on-failure
 matrix:
   include:
-  - python: "2.7"
-    env: PROF=deb9 BTYPE=RELEASE
-  - python: "2.7"
-    env: PROF=deb9 BTYPE=DEBUG
-  - python: "3.5"
-    env: PROF=deb9 BTYPE=RELEASE
-  - python: "3.5"
-    env: PROF=deb9 BTYPE=DEBUG
-  - python: "3.5"
-    env: PROF=deb9 BTYPE=RELEASE XTRA=-DCMAKE_CXX_FLAGS=-std=c++11
+    - sudo: required
+      services:
+        - docker
+      env: DOCKER_IMAGE=quay.io/pypa/manylinux2014_x86_64
+           PLAT=manylinux2014_x86_64
+
+install:
+    - docker pull $DOCKER_IMAGE
+
+script:
+    - docker run --rm -e PLAT=$PLAT -v `pwd`:/io $DOCKER_IMAGE /io/.ci/.bld-whl.sh
+    - ls wheelhouse
+
+after-success:
+    - cd ${TRAVIS_BUILD_DIR}
+    - bash .ci/.deploy.sh
