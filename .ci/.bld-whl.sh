@@ -36,11 +36,11 @@ pip${PY_MAJOR} install cmake wheel nose
 python_exe=`which python${PY_MAJOR}.${PY_MINOR}`
 cmake_exe=`which cmake`
 
-pip${PY_MAJOR} wheel /io/ --no-deps -w wheelhouse$PLAT$PY_MAJOR_$PY_MINOR
+pip${PY_MAJOR} wheel /io/ --no-deps -w wheelhouse
 
-unzip wheelhouse$PLAT$PY_MAJOR_$PY_MINOR/*.whl -d flame0
+unzip wheelhouse/*.whl -d flame0
 mv flame0/flame/*.so* /usr/lib
 
-for whl in wheelhouse$PLAT$PY_MAJOR_$PY_MINOR/*.whl; do
+for whl in wheelhouse/*$PY_MAJOR$PY_MINOR*.whl; do
     repair_wheel "$whl"
 done
