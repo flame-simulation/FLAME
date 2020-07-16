@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e -x
+set -ex
 
 function repair_wheel {
     wheel="$1"
@@ -10,17 +10,23 @@ function repair_wheel {
     fi
 }
 
-yum install -y rh-python38-python-devel \
-            rh-python38-python-pip \
-            boost-devel flex bison doxygen
-. /opt/rh/rh-python38/enable
-pip3.8 install cmake numpy nose wheel
-python_exe=`which python3.8`
+yum install -y boost-devel flex bison doxygen
+
+yum install -y rh-python${PY_MAJOR}${PY_MINOR}-python-devel \
+            rh-python${PY_MAJOR}${PY_MINOR}-python-pip \
+
+. /opt/rh/rh-python${PY_MAJOR}${PY_MINOR}/enable
+
+pip${PY_MAJOR}.${PY_MINOR} install cmake numpy nose wheel
+
+python_exe=`which python${PY_MAJOR}.${PY_MINOR}`
 cmake_exe=`which cmake`
-pip3.8 wheel /io/ --no-deps -w wheelhouse/
-unzip wheelhouse/*.whl -d flame0
+
+pip${PY_MAJOR}.${PY_MINOR} wheel /io/ --no-deps -w wheelhouse$PLAT$PY_MAJOR_$PY_MINOR
+
+unzip wheelhouse$PLAT$PY_MAJOR_$PY_MINOR/*.whl -d flame0
 mv flame0/flame/*.so* /usr/lib
 
-for whl in wheelhouse/*.whl; do
+for whl in wheelhouse$PLAT$PY_MAJOR_$PY_MINOR/*.whl; do
     repair_wheel "$whl"
 done

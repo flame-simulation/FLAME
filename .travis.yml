@@ -2,18 +2,32 @@ os: linux
 dist: xenial
 language: python
 
+notifications:
+    on_failure: always
+
 jobs:
   include:
-      services:
+    - services:
         - docker
       env: DOCKER_IMAGE=quay.io/pypa/manylinux2014_x86_64
            PLAT=manylinux2014_x86_64
+           PY_MAJOR=3 PY_MINOR=5
+    - services:
+        - docker
+      env: DOCKER_IMAGE=quay.io/pypa/manylinux2014_x86_64
+           PLAT=manylinux2014_x86_64
+           PY_MAJOR=3 PY_MINOR=6
+    - services:
+        - docker
+      env: DOCKER_IMAGE=quay.io/pypa/manylinux2014_x86_64
+           PLAT=manylinux2014_x86_64
+           PY_MAJOR=3 PY_MINOR=8
 
 install:
     - docker pull $DOCKER_IMAGE
 
 script:
-    - docker run --rm -e PLAT=$PLAT -v `pwd`:/io $DOCKER_IMAGE /io/.ci/.bld-whl.sh
+    - docker run --rm -e PLAT=$PLAT -e PY_MAJOR=$PY_MAJOR -e PY_MINOR=$PY_MINOR -v `pwd`:/io $DOCKER_IMAGE /io/.ci/.bld-whl.sh
     - ls wheelhouse
 
 after_success:

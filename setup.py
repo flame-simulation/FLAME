@@ -1,4 +1,6 @@
 import os
+import sys
+import shutil
 import pathlib
 
 from setuptools import setup, Extension
@@ -24,8 +26,8 @@ class build_ext(build_ext_orig):
         extdir.mkdir(parents=True, exist_ok=True)
         libpath = extdir.parent.joinpath("flame").absolute()
         config = 'Debug' if self.debug else 'Release'
-        pyexe = '/opt/rh/rh-python38/root/usr/bin/python3.8'
-        cmake = '/opt/rh/rh-python38/root/usr/local/bin/cmake'
+        pyexe = sys.executable
+        cmake = shutil.which('cmake')
         cmake_args = [
             '-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + str(libpath),
             '-DCMAKE_BUILD_TYPE=' + config,

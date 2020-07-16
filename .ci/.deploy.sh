@@ -5,7 +5,7 @@ setup_git() {
 }
 
 add_files() {
-    cp -arv wheelhouse/* . \
+    cp -arv wheelhouse*/* . \
         | awk -F'->' '{print $2}' \
         | sed "s/[\'\’\ \‘]//g" > /tmp/filelist
 
