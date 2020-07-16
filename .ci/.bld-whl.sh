@@ -17,6 +17,7 @@ yum install -y rh-python${PY_MAJOR}${PY_MINOR}-python-devel \
 
 . /opt/rh/rh-python${PY_MAJOR}${PY_MINOR}/enable
 
+pip${PY_MAJOR}.${PY_MINOR} install pip --upgrade
 pip${PY_MAJOR}.${PY_MINOR} install cmake numpy nose wheel
 
 python_exe=`which python${PY_MAJOR}.${PY_MINOR}`
