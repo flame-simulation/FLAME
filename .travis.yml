@@ -1,7 +1,9 @@
-matrix:
+os: linux
+dist: xenial
+language: python
+
+jobs:
   include:
-    - sudo: required
-      language: python
       services:
         - docker
       env: DOCKER_IMAGE=quay.io/pypa/manylinux2014_x86_64
@@ -14,6 +16,6 @@ script:
     - docker run --rm -e PLAT=$PLAT -v `pwd`:/io $DOCKER_IMAGE /io/.ci/.bld-whl.sh
     - ls wheelhouse
 
-after-success:
+after_success:
     - cd ${TRAVIS_BUILD_DIR}
     - bash .ci/.deploy.sh
