@@ -1,6 +1,7 @@
 matrix:
   include:
     - sudo: required
+      language: python
       services:
         - docker
       env: DOCKER_IMAGE=quay.io/pypa/manylinux2014_x86_64
