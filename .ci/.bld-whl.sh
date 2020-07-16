@@ -10,15 +10,28 @@ function repair_wheel {
     fi
 }
 
-yum install -y boost-devel flex bison doxygen
+function install {
+    major=$1
+    minor=$2
+    if [[ $major$minor == "35" || $major$minor == "36" ]]; then
+        yum install -y \
+            rh-python${PY_MAJOR}${PY_MINOR}-numpy
+    elif [[ $major$minor == "38" ]]; then
+        yum install -y \
+            rh-python${PY_MAJOR}${PY_MINOR}-python-numpy
+    fi
+}
 
 yum install -y rh-python${PY_MAJOR}${PY_MINOR}-python-devel \
-            rh-python${PY_MAJOR}${PY_MINOR}-python-pip \
+               rh-python${PY_MAJOR}${PY_MINOR}-python-pip \
+               boost-devel flex bison doxygen
+
+install ${PY_MAJOR} ${PY_MINOR}
 
 . /opt/rh/rh-python${PY_MAJOR}${PY_MINOR}/enable
 
 pip${PY_MAJOR}.${PY_MINOR} install pip --upgrade
-pip${PY_MAJOR} install cmake numpy nose wheel
+pip${PY_MAJOR} install cmake wheel nose
 
 python_exe=`which python${PY_MAJOR}.${PY_MINOR}`
 cmake_exe=`which cmake`
