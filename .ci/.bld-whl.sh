@@ -18,12 +18,12 @@ yum install -y rh-python${PY_MAJOR}${PY_MINOR}-python-devel \
 . /opt/rh/rh-python${PY_MAJOR}${PY_MINOR}/enable
 
 pip${PY_MAJOR}.${PY_MINOR} install pip --upgrade
-pip${PY_MAJOR}.${PY_MINOR} install cmake numpy nose wheel
+pip${PY_MAJOR} install cmake numpy nose wheel
 
 python_exe=`which python${PY_MAJOR}.${PY_MINOR}`
 cmake_exe=`which cmake`
 
-pip${PY_MAJOR}.${PY_MINOR} wheel /io/ --no-deps -w wheelhouse$PLAT$PY_MAJOR_$PY_MINOR
+pip${PY_MAJOR} wheel /io/ --no-deps -w wheelhouse$PLAT$PY_MAJOR_$PY_MINOR
 
 unzip wheelhouse$PLAT$PY_MAJOR_$PY_MINOR/*.whl -d flame0
 mv flame0/flame/*.so* /usr/lib
