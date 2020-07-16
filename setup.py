@@ -31,6 +31,9 @@ class build_ext(build_ext_orig):
             '-DCMAKE_BUILD_TYPE=' + config,
             '-DPYTHON_EXECUTABLE=' + pyexe,
             '-DNEED_PYTHON=ON',
+            '-DNEED_DEMOIOC=OFF',
+            '-DNEED_EPICS=OFF',
+            '-DUSE_HDF5=OFF',
             '-DDEF_PATH=/etc/flame/cavity_data',
         ]
         build_args = [
