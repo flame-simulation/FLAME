@@ -7,36 +7,53 @@ notifications:
 
 jobs:
   include:
-    - services:
-        - docker
+    - stage: build
       env: DOCKER_IMAGE=quay.io/pypa/manylinux2014_x86_64
            PLAT=manylinux2014_x86_64
            PY_MAJOR=3 PY_MINOR=5
-    - services:
-        - docker
-      env: DOCKER_IMAGE=quay.io/pypa/manylinux2014_x86_64
+      install: docker pull $DOCKER_IMAGE
+      script: docker run --rm -e PLAT=$PLAT -e PY_MAJOR=$PY_MAJOR -e PY_MINOR=$PY_MINOR -v `pwd`:/io $DOCKER_IMAGE /io/.ci/.bld-whl.sh
+      workspaces:
+        create:
+          name: py35
+          paths:
+             - wheelhouse/*.whl
+
+    - env: DOCKER_IMAGE=quay.io/pypa/manylinux2014_x86_64
            PLAT=manylinux2014_x86_64
            PY_MAJOR=3 PY_MINOR=6
-    - services:
-        - docker
-      env: DOCKER_IMAGE=quay.io/pypa/manylinux2014_x86_64
+      install: docker pull $DOCKER_IMAGE
+      script: docker run --rm -e PLAT=$PLAT -e PY_MAJOR=$PY_MAJOR -e PY_MINOR=$PY_MINOR -v `pwd`:/io $DOCKER_IMAGE /io/.ci/.bld-whl.sh
+      workspaces:
+        create:
+          name: py36
+          paths:
+             - wheelhouse/*.whl
+
+    - env: DOCKER_IMAGE=quay.io/pypa/manylinux2014_x86_64
            PLAT=manylinux2014_x86_64
            PY_MAJOR=3 PY_MINOR=8
+      install: docker pull $DOCKER_IMAGE
+      script: docker run --rm -e PLAT=$PLAT -e PY_MAJOR=$PY_MAJOR -e PY_MINOR=$PY_MINOR -v `pwd`:/io $DOCKER_IMAGE /io/.ci/.bld-whl.sh
+      workspaces:
+        create:
+          name: py38
+          paths:
+             - wheelhouse/*.whl
 
-env:
-    global:
-      - TWINE_USERNAME=__token__
-
-install:
-    - docker pull $DOCKER_IMAGE
-
-script:
-    - docker run --rm -e PLAT=$PLAT -e PY_MAJOR=$PY_MAJOR -e PY_MINOR=$PY_MINOR -v `pwd`:/io $DOCKER_IMAGE /io/.ci/.bld-whl.sh
-    - ls wheelhouse
-
-after_success:
-    - |
-      if [[ $TRAVIS_TAG ]]; then
-        python3 -m pip install twine
-        python3 -m twine upload --verbose wheelhouse/*.whl
-      fi
+    - stage: deploy
+      workspaces:
+        use:
+          - py35
+          - py36
+          - py38
+      env: TWINE_USERNAME=__token__
+      script:
+      - cd $TRAVIS_BUILD_DIR
+      - ls -lhtr wheelhouse
+      - bash .ci/.deploy.sh
+      - |
+        if [[ $TRAVIS_TAG ]]; then
+          python3 -m pip install twine
+          python3 -m twine upload --verbose wheelhouse/*.whl
+        fi
