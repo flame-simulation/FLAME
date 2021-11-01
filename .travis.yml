@@ -8,45 +8,74 @@ notifications:
 jobs:
   include:
     - stage: build
-      env: DOCKER_IMAGE=quay.io/pypa/manylinux2014_x86_64
-           PLAT=manylinux2014_x86_64
-           PY_MAJOR=3 PY_MINOR=5
-      install: docker pull $DOCKER_IMAGE
-      script: docker run --rm -e PLAT=$PLAT -e PY_MAJOR=$PY_MAJOR -e PY_MINOR=$PY_MINOR -v `pwd`:/io $DOCKER_IMAGE /io/.ci/.bld-whl.sh
-      workspaces:
-        create:
-          name: py35
-          paths:
-             - wheelhouse/*.whl
-
-    - env: DOCKER_IMAGE=quay.io/pypa/manylinux2014_x86_64
+      env: DOCKER_IMAGE=tonyzhang/manylinux2014_x86_64
            PLAT=manylinux2014_x86_64
            PY_MAJOR=3 PY_MINOR=6
+           PY_NAME=cp36-cp36m
       install: docker pull $DOCKER_IMAGE
-      script: docker run --rm -e PLAT=$PLAT -e PY_MAJOR=$PY_MAJOR -e PY_MINOR=$PY_MINOR -v `pwd`:/io $DOCKER_IMAGE /io/.ci/.bld-whl.sh
+      script: docker run --rm -e PY_NAME=$PY_NAME -e PLAT=$PLAT -e PY_MAJOR=$PY_MAJOR -e PY_MINOR=$PY_MINOR -v `pwd`:/io $DOCKER_IMAGE /io/.ci/.bld-whl.sh
       workspaces:
         create:
           name: py36
           paths:
              - wheelhouse/*.whl
 
-    - env: DOCKER_IMAGE=quay.io/pypa/manylinux2014_x86_64
+    - env: DOCKER_IMAGE=tonyzhang/manylinux2014_x86_64
+           PLAT=manylinux2014_x86_64
+           PY_MAJOR=3 PY_MINOR=7
+           PY_NAME=cp37-cp37m
+      install: docker pull $DOCKER_IMAGE
+      script: docker run --rm -e PY_NAME=$PY_NAME -e PLAT=$PLAT -e PY_MAJOR=$PY_MAJOR -e PY_MINOR=$PY_MINOR -v `pwd`:/io $DOCKER_IMAGE /io/.ci/.bld-whl.sh
+      workspaces:
+        create:
+          name: py37
+          paths:
+             - wheelhouse/*.whl
+
+    - env: DOCKER_IMAGE=tonyzhang/manylinux2014_x86_64
            PLAT=manylinux2014_x86_64
            PY_MAJOR=3 PY_MINOR=8
+           PY_NAME=cp38-cp38
       install: docker pull $DOCKER_IMAGE
-      script: docker run --rm -e PLAT=$PLAT -e PY_MAJOR=$PY_MAJOR -e PY_MINOR=$PY_MINOR -v `pwd`:/io $DOCKER_IMAGE /io/.ci/.bld-whl.sh
+      script: docker run --rm -e PY_NAME=$PY_NAME -e PLAT=$PLAT -e PY_MAJOR=$PY_MAJOR -e PY_MINOR=$PY_MINOR -v `pwd`:/io $DOCKER_IMAGE /io/.ci/.bld-whl.sh
       workspaces:
         create:
           name: py38
           paths:
              - wheelhouse/*.whl
 
+    - env: DOCKER_IMAGE=tonyzhang/manylinux2014_x86_64
+           PLAT=manylinux2014_x86_64
+           PY_MAJOR=3 PY_MINOR=9
+           PY_NAME=cp39-cp39
+      install: docker pull $DOCKER_IMAGE
+      script: docker run --rm -e PY_NAME=$PY_NAME -e PLAT=$PLAT -e PY_MAJOR=$PY_MAJOR -e PY_MINOR=$PY_MINOR -v `pwd`:/io $DOCKER_IMAGE /io/.ci/.bld-whl.sh
+      workspaces:
+        create:
+          name: py39
+          paths:
+             - wheelhouse/*.whl
+
+    - env: DOCKER_IMAGE=tonyzhang/manylinux2014_x86_64
+           PLAT=manylinux2014_x86_64
+           PY_MAJOR=3 PY_MINOR=10
+           PY_NAME=cp310-cp310
+      install: docker pull $DOCKER_IMAGE
+      script: docker run --rm -e PY_NAME=$PY_NAME -e PLAT=$PLAT -e PY_MAJOR=$PY_MAJOR -e PY_MINOR=$PY_MINOR -v `pwd`:/io $DOCKER_IMAGE /io/.ci/.bld-whl.sh
+      workspaces:
+        create:
+          name: py310
+          paths:
+             - wheelhouse/*.whl
+
     - stage: deploy
       workspaces:
         use:
-          - py35
           - py36
+          - py37
           - py38
+          - py39
+          - py310
       env: TWINE_USERNAME=__token__
       script:
       - cd $TRAVIS_BUILD_DIR
