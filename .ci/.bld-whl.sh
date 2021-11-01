@@ -14,7 +14,7 @@ PYBIN=/opt/python/${PY_NAME}/bin
 PIP=${PYBIN}/pip
 
 yum install -y boost-devel flex bison doxygen cppcheck
-${PIP} install -r /io/requirements.txt
+${PIP} install -r /io/requirements/${PY_NAME}.txt
 
 ${PIP} wheel /io/ --no-deps -w wheelhouse
 
