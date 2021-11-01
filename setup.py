@@ -51,7 +51,7 @@ class build_ext(build_ext_orig):
 
 setup(
     name='flame-code',
-    version='1.8.6',
+    version='1.8.6-1',
     package_dir={'flame': 'python/flame'},
     packages=['flame'],
     ext_modules=[CMakeExtension('flame_core')],
