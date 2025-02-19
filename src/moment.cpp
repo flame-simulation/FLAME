@@ -1018,13 +1018,14 @@ struct ElementSBend : public MomentElementBase
                K     = conf().get<double>("K", 0e0)/sqr(MtoMM);
 
         for(size_t i=0; i<last_real_in.size(); i++) {
-            double qmrel = (ST.real[i].IonZ-ST.ref.IonZ)/ST.ref.IonZ;
 
             transfer[i] = boost::numeric::ublas::identity_matrix<double>(state_t::maxsize);
 
             if (L != 0.0) {
                 if (!HdipoleFitMode) {
                     double dip_bg    = conf().get<double>("bg"),
+                           dip_IonZ  = conf().get<double>("ref_IonZ", ST.ref.IonZ),
+                           qmrel = (ST.real[i].IonZ-dip_IonZ)/dip_IonZ,
                            // Dipole reference energy.
                            dip_Ek    = (sqrt(sqr(dip_bg)+1e0)-1e0)*ST.ref.IonEs,
                            dip_gamma = (dip_Ek+ST.ref.IonEs)/ST.ref.IonEs,
@@ -1034,9 +1035,11 @@ struct ElementSBend : public MomentElementBase
 
                     GetSBendMatrix(L, phi, phi1, phi2, K, ST.ref.IonEs, ST.ref.gamma, qmrel,
                                    dip_beta, dip_gamma, d, dip_IonK, transfer[i]);
-                } else
+                } else {
+                    double qmrel = (ST.real[i].IonZ-ST.ref.IonZ)/ST.ref.IonZ;
                     GetSBendMatrix(L, phi, phi1, phi2, K, ST.ref.IonEs, ST.ref.gamma, qmrel,
                                    ST.ref.beta, ST.ref.gamma, - qmrel, ST.ref.SampleIonK, transfer[i]);
+                }
 
                 if (ver) {
                     // Rotate transport matrix by 90 degrees.
