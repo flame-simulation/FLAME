@@ -19,7 +19,8 @@ endif()
 
 if(CMAKE_COMPILER_IS_GNUCC)
   # Turn on extra GCC warnings
-  add_definitions(-Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers)
+  add_definitions(-Wall -Wextra)
+  add_definitions(-Wno-unused-parameter -Wno-missing-field-initializers -Wno-cast-function-type)
   if(USE_WERROR)
     add_definitions(-Werror)
   endif()

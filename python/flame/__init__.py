@@ -48,4 +48,4 @@ __all__ = ['Machine',
     'GLPSParser',
 ]
 
-__version__ = '1.8.7'
+__version__ = '1.9.0'
