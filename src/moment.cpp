@@ -1015,7 +1015,14 @@ struct ElementSBend : public MomentElementBase
                phi   = conf().get<double>("phi")*M_PI/180e0,
                phi1  = conf().get<double>("phi1")*M_PI/180e0,
                phi2  = conf().get<double>("phi2")*M_PI/180e0,
+               dphi1 = conf().get<double>("dphi1", 0e0)*M_PI/180e0,
+               dphi2 = conf().get<double>("dphi2", 0e0)*M_PI/180e0,
                K     = conf().get<double>("K", 0e0)/sqr(MtoMM);
+
+        unsigned EFcorrection = get_flag(conf(), "EFcorrection", 0);
+
+        if (EFcorrection != 0 && EFcorrection != 1)
+            throw std::runtime_error(SB()<< "Undefined EFcorrection: " << EFcorrection);
 
         for(size_t i=0; i<last_real_in.size(); i++) {
 
@@ -1034,11 +1041,12 @@ struct ElementSBend : public MomentElementBase
                            dip_IonK  = 2e0*M_PI/(dip_beta*ST.ref.SampleLambda);
 
                     GetSBendMatrix(L, phi, phi1, phi2, K, ST.ref.IonEs, ST.ref.gamma, qmrel,
-                                   dip_beta, dip_gamma, d, dip_IonK, transfer[i]);
+                                   dphi1, dphi2, EFcorrection, dip_beta, dip_gamma, d, dip_IonK, transfer[i]);
                 } else {
                     double qmrel = (ST.real[i].IonZ-ST.ref.IonZ)/ST.ref.IonZ;
                     GetSBendMatrix(L, phi, phi1, phi2, K, ST.ref.IonEs, ST.ref.gamma, qmrel,
-                                   ST.ref.beta, ST.ref.gamma, - qmrel, ST.ref.SampleIonK, transfer[i]);
+                                   dphi1, dphi2, EFcorrection, ST.ref.beta, ST.ref.gamma, - qmrel,
+                                   ST.ref.SampleIonK, transfer[i]);
                 }
 
                 if (ver) {

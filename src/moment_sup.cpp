@@ -189,14 +189,14 @@ void GetSextMatrix(const double L, const double K3, double Dx, double Dy,
     }
 }
 
-void GetEdgeMatrix(const double rho, const double phi, typename MomentElementBase::value_t &M)
+void GetEdgeMatrix(const double rho, const double phi, const double dphi, const double qmrel, typename MomentElementBase::value_t &M)
 {
     typedef typename MomentElementBase::state_t state_t;
 
     M = boost::numeric::ublas::identity_matrix<double>(state_t::maxsize);
 
-    M(state_t::PS_PX, state_t::PS_X) =  tan(phi)/rho;
-    M(state_t::PS_PY, state_t::PS_Y) = -tan(phi)/rho;
+    M(state_t::PS_PX, state_t::PS_X) =  (tan(phi+dphi)/rho)*(1+qmrel);
+    M(state_t::PS_PY, state_t::PS_Y) = -(tan(phi-dphi)/rho)*(1+qmrel);
 }
 
 
@@ -216,6 +216,7 @@ void GetEEdgeMatrix(const double fringe_x, const double fringe_y, const double k
 
 void GetSBendMatrix(const double L, const double phi, const double phi1, const double phi2, const double K,
                     const double IonEs, const double ref_gamma, const double qmrel,
+                    const double dphi1, const double dphi2, const unsigned EFcorrection,
                     const double dip_beta, const double dip_gamma, const double d, const double dip_IonK, typename MomentElementBase::value_t &M)
 {
     typedef typename MomentElementBase::state_t state_t;
@@ -261,8 +262,13 @@ void GetSBendMatrix(const double L, const double phi, const double phi1, const d
     M(state_t::PS_PX, 6) = sx*d;
 
     // Edge focusing.
-    GetEdgeMatrix(rho, phi1, edge1);
-    GetEdgeMatrix(rho, phi2, edge2);
+    if (EFcorrection) {
+        GetEdgeMatrix(rho, phi1, dphi1, qmrel, edge1);
+        GetEdgeMatrix(rho, phi2, dphi2, qmrel, edge2);
+    } else {
+        GetEdgeMatrix(rho, phi1, dphi1, 0e0, edge1);
+        GetEdgeMatrix(rho, phi2, dphi2, 0e0, edge2);
+    }
 
     M = prod(M, edge1);
     M = prod(edge2, M);
