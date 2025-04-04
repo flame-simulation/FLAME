@@ -1030,7 +1030,7 @@ struct ElementSBend : public MomentElementBase
 
             if (L != 0.0) {
                 if (!HdipoleFitMode) {
-                    double dip_bg    = conf().get<double>("bg"),
+                    double dip_bg    = conf().get<double>("bg", ST.ref.bg),
                            dip_IonZ  = conf().get<double>("ref_IonZ", ST.ref.IonZ),
                            qmrel = (ST.real[i].IonZ-dip_IonZ)/dip_IonZ,
                            // Dipole reference energy.
@@ -1171,6 +1171,7 @@ struct ElementSext : public MomentElementBase
 
         state_t&  ST = static_cast<state_t&>(s);
         using namespace boost::numeric::ublas;
+        value_t invmat = boost::numeric::ublas::identity_matrix<double>(state_t::maxsize);
 
         ST.recalc();
 
@@ -1178,8 +1179,8 @@ struct ElementSext : public MomentElementBase
         last_real_in = ST.real;
         resize_cache(ST);
 
-        if(ST.retreat) throw std::runtime_error(SB()<<
-            "Backward propagation error: Backward propagation does not support sextupole.");
+        //if(ST.retreat) throw std::runtime_error(SB()<<
+        //    "Backward propagation error: Backward propagation does not support sextupole.");
 
         const double dL = L/step;
 
@@ -1193,9 +1194,16 @@ struct ElementSext : public MomentElementBase
 
             get_misalign(ST, ST.real[k], misalign[k], misalign_inv[k]);
 
-            ST.moment0[k] = prod(misalign[k], ST.moment0[k]);
-            scratch = prod(misalign[k], ST.moment1[k]);
-            ST.moment1[k] = prod(scratch, trans(misalign[k]));
+            if(!ST.retreat){
+                ST.moment0[k] = prod(misalign[k], ST.moment0[k]);
+                noalias(scratch) = prod(misalign[k], ST.moment1[k]);
+                ST.moment1[k] = prod(scratch, trans(misalign[k]));
+            } else {
+                inverse(invmat, misalign_inv[k]);
+                ST.moment0[k] = prod(invmat, ST.moment0[k]);
+                noalias(scratch) = prod(invmat, ST.moment1[k]);
+                ST.moment1[k] = prod(scratch, trans(invmat));
+            }
 
             for(int i=0; i<step; i++){
                 double Dx = ST.moment0[k][state_t::PS_X],
@@ -1204,37 +1212,58 @@ struct ElementSext : public MomentElementBase
                        D2y = ST.moment1[k](state_t::PS_Y, state_t::PS_Y),
                        D2xy = ST.moment1[k](state_t::PS_X, state_t::PS_Y);
 
-
                 GetSextMatrix(dL, K, Dx, Dy, D2x, D2y, D2xy, thinlens, dstkick, transfer[k]);
 
                 transfer[k](state_t::PS_S, state_t::PS_PS) =
                         -2e0*M_PI/(ST.real[k].SampleLambda*ST.real[k].IonEs/MeVtoeV*cube(ST.real[k].bg))*dL;
 
-                ST.moment0[k] = prod(transfer[k], ST.moment0[k]);
-
-                scratch = prod(transfer[k], ST.moment1[k]);
-                ST.moment1[k] = prod(scratch, trans(transfer[k]));
-
-                ST.transmat[k] = prod(transfer[k], ST.transmat[k]);
+                if(!ST.retreat){
+                    ST.moment0[k] = prod(transfer[k], ST.moment0[k]);
+                    noalias(scratch) = prod(transfer[k], ST.moment1[k]);
+                    ST.moment1[k] = prod(scratch, trans(transfer[k]));
+                    ST.transmat[k] = prod(transfer[k], ST.transmat[k]);
+                } else {
+                    inverse(invmat, transfer[k]);
+                    ST.moment0[k] = prod(invmat, ST.moment0[k]);
+                    noalias(scratch)  = prod(invmat, ST.moment1[k]);
+                    ST.moment1[k] = prod(scratch, trans(invmat));
+                    ST.transmat[k] = prod(invmat, ST.transmat[k]);
+                }
             }
-            ST.moment0[k] = prod(misalign_inv[k], ST.moment0[k]);
-            scratch = prod(misalign_inv[k], ST.moment1[k]);
-            ST.moment1[k] = prod(scratch, trans(misalign_inv[k]));
 
-            scratch = prod(ST.transmat[k], misalign[k]);
-            ST.transmat[k] = prod(misalign_inv[k], scratch);
+            if(!ST.retreat){
+                ST.moment0[k] = prod(misalign_inv[k], ST.moment0[k]);
+                noalias(scratch) = prod(misalign_inv[k], ST.moment1[k]);
+                ST.moment1[k] = prod(scratch, trans(misalign_inv[k]));
+                noalias(scratch) = prod(ST.transmat[k], misalign[k]);
+                ST.transmat[k] = prod(misalign_inv[k], scratch);
+            } else {
+                inverse(invmat, misalign_inv[k]);
+                noalias(scratch) = prod(ST.transmat[k], invmat);
+                inverse(invmat, misalign[k]);
+                ST.transmat[k] = prod(invmat, scratch);
+                ST.moment0[k] = prod(invmat, ST.moment0[k]);
+                noalias(scratch) = prod(invmat, ST.moment1[k]);
+                ST.moment1[k] = prod(scratch, trans(invmat));
+            }
         }
 
         ST.recalc();
 
-        for(size_t k=0; k<last_real_in.size(); k++)
-            ST.real[k].phis  += ST.real[k].SampleIonK*length*MtoMM;
-        ST.ref.phis   += ST.ref.SampleIonK*length*MtoMM;
+        if(!ST.retreat){
+            for(size_t k=0; k<last_real_in.size(); k++)
+                ST.real[k].phis += ST.real[k].SampleIonK*length*MtoMM;
+            ST.ref.phis += ST.ref.SampleIonK*length*MtoMM;
+            ST.pos += length;
+        } else {
+            for(size_t k=0; k<last_real_in.size(); k++)
+                ST.real[k].phis -= ST.real[k].SampleIonK*length*MtoMM;
+            ST.ref.phis -= ST.ref.SampleIonK*length*MtoMM;
+            ST.pos -= length;
+        }
 
         last_ref_out = ST.ref;
         last_real_out = ST.real;
-
-        ST.pos += length;
 
         ST.calc_rms();
     }
