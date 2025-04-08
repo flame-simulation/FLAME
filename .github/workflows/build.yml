@@ -1,0 +1,49 @@
+name: Build and Release Wheels
+
+on:
+  release:
+    types:
+      - created
+  push:
+    branches:
+      - ci
+
+permissions:
+  contents: write
+
+
+jobs:
+  build_wheels:
+    runs-on: ubuntu-latest
+
+    env:
+      DOCKER_IMAGE: tonyzhang/manylinux2014_x86_64
+      PLAT: manylinux2014_x86_64
+      PY_MAJOR: 3
+      PY_MINOR: 10
+      PY_NAME: cp310-cp310
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+
+    - name: Pull Docker image
+      run: docker pull $DOCKER_IMAGE
+
+    - name: Build wheel within Docker
+      run: |
+          docker run --rm \
+            -e PY_NAME=$PY_NAME \
+            -e PLAT=$PLAT \
+            -e PY_MAJOR=$PY_MAJOR \
+            -e PY_MINOR=$PY_MINOR \
+            -v ${{ github.workspace }}:/io \
+            $DOCKER_IMAGE /io/.ci/.bld-whl.sh
+
+    - name: Upload built wheels as artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: py310-wheels
+        path: wheelhouse/*.whl
