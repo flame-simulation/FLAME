@@ -1010,21 +1010,29 @@ struct ElementSBend : public MomentElementBase
     virtual void recompute_matrix(state_t& ST)
     {
         // Re-initialize transport matrix.
-
+        bool   ver   = conf().get<double>("ver", 0e0) == 1.0;
         double L     = conf().get<double>("L")*MtoMM,
                phi   = conf().get<double>("phi")*M_PI/180e0,
                phi1  = conf().get<double>("phi1")*M_PI/180e0,
                phi2  = conf().get<double>("phi2")*M_PI/180e0,
+               dphi1 = conf().get<double>("dphi1", 0e0)*M_PI/180e0,
+               dphi2 = conf().get<double>("dphi2", 0e0)*M_PI/180e0,
                K     = conf().get<double>("K", 0e0)/sqr(MtoMM);
 
+        unsigned EFcorrection = get_flag(conf(), "EFcorrection", 0);
+
+        if (EFcorrection != 0 && EFcorrection != 1)
+            throw std::runtime_error(SB()<< "Undefined EFcorrection: " << EFcorrection);
+
         for(size_t i=0; i<last_real_in.size(); i++) {
-            double qmrel = (ST.real[i].IonZ-ST.ref.IonZ)/ST.ref.IonZ;
 
             transfer[i] = boost::numeric::ublas::identity_matrix<double>(state_t::maxsize);
 
             if (L != 0.0) {
                 if (!HdipoleFitMode) {
-                    double dip_bg    = conf().get<double>("bg"),
+                    double dip_bg    = conf().get<double>("bg", ST.ref.bg),
+                           dip_IonZ  = conf().get<double>("ref_IonZ", ST.ref.IonZ),
+                           qmrel = (ST.real[i].IonZ-dip_IonZ)/dip_IonZ,
                            // Dipole reference energy.
                            dip_Ek    = (sqrt(sqr(dip_bg)+1e0)-1e0)*ST.ref.IonEs,
                            dip_gamma = (dip_Ek+ST.ref.IonEs)/ST.ref.IonEs,
@@ -1033,10 +1041,31 @@ struct ElementSBend : public MomentElementBase
                            dip_IonK  = 2e0*M_PI/(dip_beta*ST.ref.SampleLambda);
 
                     GetSBendMatrix(L, phi, phi1, phi2, K, ST.ref.IonEs, ST.ref.gamma, qmrel,
-                                   dip_beta, dip_gamma, d, dip_IonK, transfer[i]);
-                } else
+                                   dphi1, dphi2, EFcorrection, dip_beta, dip_gamma, d, dip_IonK, transfer[i]);
+                } else {
+                    double qmrel = (ST.real[i].IonZ-ST.ref.IonZ)/ST.ref.IonZ;
                     GetSBendMatrix(L, phi, phi1, phi2, K, ST.ref.IonEs, ST.ref.gamma, qmrel,
-                                   ST.ref.beta, ST.ref.gamma, - qmrel, ST.ref.SampleIonK, transfer[i]);
+                                   dphi1, dphi2, EFcorrection, ST.ref.beta, ST.ref.gamma, - qmrel,
+                                   ST.ref.SampleIonK, transfer[i]);
+                }
+
+                if (ver) {
+                    // Rotate transport matrix by 90 degrees.
+                    value_t
+                    R = boost::numeric::ublas::identity_matrix<double>(state_t::maxsize);
+                    R(state_t::PS_X,  state_t::PS_X)   =  0e0;
+                    R(state_t::PS_PX, state_t::PS_PX)  =  0e0;
+                    R(state_t::PS_Y,  state_t::PS_Y)   =  0e0;
+                    R(state_t::PS_PY, state_t::PS_PY)  =  0e0;
+                    R(state_t::PS_X,  state_t::PS_Y)   = -1e0;
+                    R(state_t::PS_PX, state_t::PS_PY)  = -1e0;
+                    R(state_t::PS_Y,  state_t::PS_X)   =  1e0;
+                    R(state_t::PS_PY,  state_t::PS_PX) =  1e0;
+
+                    noalias(scratch)     = prod(R, transfer[i]);
+                    noalias(transfer[i]) = prod(scratch, trans(R));
+                    //TODO: no-op code?  results are unconditionally overwritten
+                }
 
                 get_misalign(ST, ST.real[i], misalign[i], misalign_inv[i]);
 
@@ -1142,6 +1171,7 @@ struct ElementSext : public MomentElementBase
 
         state_t&  ST = static_cast<state_t&>(s);
         using namespace boost::numeric::ublas;
+        value_t invmat = boost::numeric::ublas::identity_matrix<double>(state_t::maxsize);
 
         ST.recalc();
 
@@ -1149,8 +1179,8 @@ struct ElementSext : public MomentElementBase
         last_real_in = ST.real;
         resize_cache(ST);
 
-        if(ST.retreat) throw std::runtime_error(SB()<<
-            "Backward propagation error: Backward propagation does not support sextupole.");
+        //if(ST.retreat) throw std::runtime_error(SB()<<
+        //    "Backward propagation error: Backward propagation does not support sextupole.");
 
         const double dL = L/step;
 
@@ -1164,9 +1194,16 @@ struct ElementSext : public MomentElementBase
 
             get_misalign(ST, ST.real[k], misalign[k], misalign_inv[k]);
 
-            ST.moment0[k] = prod(misalign[k], ST.moment0[k]);
-            scratch = prod(misalign[k], ST.moment1[k]);
-            ST.moment1[k] = prod(scratch, trans(misalign[k]));
+            if(!ST.retreat){
+                ST.moment0[k] = prod(misalign[k], ST.moment0[k]);
+                noalias(scratch) = prod(misalign[k], ST.moment1[k]);
+                ST.moment1[k] = prod(scratch, trans(misalign[k]));
+            } else {
+                inverse(invmat, misalign_inv[k]);
+                ST.moment0[k] = prod(invmat, ST.moment0[k]);
+                noalias(scratch) = prod(invmat, ST.moment1[k]);
+                ST.moment1[k] = prod(scratch, trans(invmat));
+            }
 
             for(int i=0; i<step; i++){
                 double Dx = ST.moment0[k][state_t::PS_X],
@@ -1175,37 +1212,58 @@ struct ElementSext : public MomentElementBase
                        D2y = ST.moment1[k](state_t::PS_Y, state_t::PS_Y),
                        D2xy = ST.moment1[k](state_t::PS_X, state_t::PS_Y);
 
-
                 GetSextMatrix(dL, K, Dx, Dy, D2x, D2y, D2xy, thinlens, dstkick, transfer[k]);
 
                 transfer[k](state_t::PS_S, state_t::PS_PS) =
                         -2e0*M_PI/(ST.real[k].SampleLambda*ST.real[k].IonEs/MeVtoeV*cube(ST.real[k].bg))*dL;
 
-                ST.moment0[k] = prod(transfer[k], ST.moment0[k]);
-
-                scratch = prod(transfer[k], ST.moment1[k]);
-                ST.moment1[k] = prod(scratch, trans(transfer[k]));
-
-                ST.transmat[k] = prod(transfer[k], ST.transmat[k]);
+                if(!ST.retreat){
+                    ST.moment0[k] = prod(transfer[k], ST.moment0[k]);
+                    noalias(scratch) = prod(transfer[k], ST.moment1[k]);
+                    ST.moment1[k] = prod(scratch, trans(transfer[k]));
+                    ST.transmat[k] = prod(transfer[k], ST.transmat[k]);
+                } else {
+                    inverse(invmat, transfer[k]);
+                    ST.moment0[k] = prod(invmat, ST.moment0[k]);
+                    noalias(scratch)  = prod(invmat, ST.moment1[k]);
+                    ST.moment1[k] = prod(scratch, trans(invmat));
+                    ST.transmat[k] = prod(invmat, ST.transmat[k]);
+                }
             }
-            ST.moment0[k] = prod(misalign_inv[k], ST.moment0[k]);
-            scratch = prod(misalign_inv[k], ST.moment1[k]);
-            ST.moment1[k] = prod(scratch, trans(misalign_inv[k]));
 
-            scratch = prod(ST.transmat[k], misalign[k]);
-            ST.transmat[k] = prod(misalign_inv[k], scratch);
+            if(!ST.retreat){
+                ST.moment0[k] = prod(misalign_inv[k], ST.moment0[k]);
+                noalias(scratch) = prod(misalign_inv[k], ST.moment1[k]);
+                ST.moment1[k] = prod(scratch, trans(misalign_inv[k]));
+                noalias(scratch) = prod(ST.transmat[k], misalign[k]);
+                ST.transmat[k] = prod(misalign_inv[k], scratch);
+            } else {
+                inverse(invmat, misalign_inv[k]);
+                noalias(scratch) = prod(ST.transmat[k], invmat);
+                inverse(invmat, misalign[k]);
+                ST.transmat[k] = prod(invmat, scratch);
+                ST.moment0[k] = prod(invmat, ST.moment0[k]);
+                noalias(scratch) = prod(invmat, ST.moment1[k]);
+                ST.moment1[k] = prod(scratch, trans(invmat));
+            }
         }
 
         ST.recalc();
 
-        for(size_t k=0; k<last_real_in.size(); k++)
-            ST.real[k].phis  += ST.real[k].SampleIonK*length*MtoMM;
-        ST.ref.phis   += ST.ref.SampleIonK*length*MtoMM;
+        if(!ST.retreat){
+            for(size_t k=0; k<last_real_in.size(); k++)
+                ST.real[k].phis += ST.real[k].SampleIonK*length*MtoMM;
+            ST.ref.phis += ST.ref.SampleIonK*length*MtoMM;
+            ST.pos += length;
+        } else {
+            for(size_t k=0; k<last_real_in.size(); k++)
+                ST.real[k].phis -= ST.real[k].SampleIonK*length*MtoMM;
+            ST.ref.phis -= ST.ref.SampleIonK*length*MtoMM;
+            ST.pos -= length;
+        }
 
         last_ref_out = ST.ref;
         last_real_out = ST.real;
-
-        ST.pos += length;
 
         ST.calc_rms();
     }
@@ -1297,7 +1355,7 @@ struct ElementEDipole : public MomentElementBase
 
         //value_mat R;
 
-        bool   ver         = conf().get<double>("ver") == 1.0;
+        bool   ver         = conf().get<double>("ver", 0e0) == 1.0;
         double L           = conf().get<double>("L")*MtoMM,
                phi         = conf().get<double>("phi")*M_PI/180e0,
                // fit to TLM unit.

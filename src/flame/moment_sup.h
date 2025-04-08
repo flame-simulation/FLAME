@@ -18,12 +18,13 @@ void GetQuadMatrix(const double L, const double K, const unsigned ind, typename 
 void GetSextMatrix(const double L, const double K, double Dx, double Dy,
                    const double D2x, const double D2y, const double D2xy, const bool thinlens, const bool dstkick, typename MomentElementBase::value_t &M);
 
-void GetEdgeMatrix(const double rho, const double phi, typename MomentElementBase::value_t &M);
+void GetEdgeMatrix(const double rho, const double phi, const double dphi, const double qmrel, typename MomentElementBase::value_t &M);
 
 void GetEEdgeMatrix(const double fringe_x, const double fringe_y, const double kappa, typename MomentElementBase::value_t &M);
 
 void GetSBendMatrix(const double L, const double phi, const double phi1, const double phi2, const double K,
                     const double IonEs, const double ref_gamma, const double qmrel,
+                    const double dphi1, const double dphi2, const unsigned EFcorrection,
                     const double dip_beta, const double dip_gamma, const double d, const double dip_IonK, typename MomentElementBase::value_t &M);
 
 void GetSolMatrix(const double L, const double K, typename MomentElementBase::value_t &M);
