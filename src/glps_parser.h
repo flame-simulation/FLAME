@@ -10,7 +10,7 @@
 #include <set>
 
 #include <boost/variant.hpp>
-#define BOOST_FILESYSTEM_DYN_LINK
+//#define BOOST_FILESYSTEM_DYN_LINK
 #include <boost/filesystem.hpp>
 #include <boost/shared_ptr.hpp>
 extern "C" {
