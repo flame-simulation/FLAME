@@ -33,6 +33,9 @@ gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 enabled=0
 EOF
+
+cat /etc/yum.repos.d/CentOS-Base.repo
+
 yum clean all
 yum makecache
 
