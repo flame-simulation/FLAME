@@ -4,7 +4,7 @@ set -ex
 # Fix yum repo: CentOS 7
 # https://www.veeble.com/kb/centos-repo-list-working-urls/
 rm -rf /etc/yum.repos.d/*
-cat << EOF > /etc/yum.repos.d/CentOS-Base.repo
+cat << 'EOF' > /etc/yum.repos.d/CentOS-Base.repo
 [base]
 name=CentOS-$releasever - Base
 baseurl=https://vault.centos.org/7.9.2009/os/$basearch/
