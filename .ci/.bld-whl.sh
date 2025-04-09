@@ -52,7 +52,8 @@ function repair_wheel {
 PYBIN=/opt/python/${PY_NAME}/bin
 PIP=${PYBIN}/pip
 
-yum install -y boost-devel flex bison doxygen cppcheck
+yum install -y boost-devel flex bison doxygen
+# skip cppcheck as it is not available now.
 ${PIP} install -r /io/requirements/${PY_NAME}.txt
 
 ${PIP} wheel /io/ --no-deps -w wheelhouse
