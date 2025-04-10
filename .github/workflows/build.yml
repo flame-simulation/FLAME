@@ -90,3 +90,7 @@ jobs:
     steps:
       - name: Clean up artifacts
         uses: geekyeggo/delete-artifact@v5
+        with:
+          name: wheel*
+          useGlob: true
+
