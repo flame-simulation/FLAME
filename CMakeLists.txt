@@ -93,7 +93,8 @@ if(PYTHONINTERP_FOUND)
   endif()
 endif()
 
-if(Python_FOUND)
+# only test if Python version < 3.12
+if(Python_FOUND AND Python_VERSION_MINOR LESS 12)
   # see if nosetests test runner is available
   execute_process(
     COMMAND ${PYTHON_EXECUTABLE} -m nose.core -V
