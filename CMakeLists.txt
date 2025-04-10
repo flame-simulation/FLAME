@@ -75,8 +75,11 @@ message(STATUS "cppcheck ${CPPCHECK_EXECUTABLE}")
 
 message(STATUS "Boost libs in ${Boost_LIBRARY_DIRS}")
 
-# find_package(PythonInterp 2.7)
-SET(PYTHONINTERP_FOUND ON)
+if("${PYTHON_EXECUTABLE}" MATCHES "3.12")
+  SET(PYTHONINTERP_FOUND ON)
+else()
+  find_package(PythonInterp 2.7)
+endif()
 
 if(PYTHONINTERP_FOUND)
   # Introspect this interpreter
