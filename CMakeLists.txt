@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.10)
 
 project("flame" C CXX)
 
@@ -75,7 +75,8 @@ message(STATUS "cppcheck ${CPPCHECK_EXECUTABLE}")
 
 message(STATUS "Boost libs in ${Boost_LIBRARY_DIRS}")
 
-find_package(PythonInterp 2.7)
+# find_package(PythonInterp 2.7)
+SET(PYTHONINTERP_FOUND ON)
 
 if(PYTHONINTERP_FOUND)
   # Introspect this interpreter
@@ -89,7 +90,6 @@ if(PYTHONINTERP_FOUND)
     message(STATUS "Python version ${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}.${Python_VERSION_PATCH}")
     message(STATUS " headers ${Python_INCLUDE_DIRS}")
     message(STATUS " numpy ${Python_NUMPY_FOUND}")
-    #message(STATUS " library ${Python_LIBRARY_DIRS}") # not used
   endif()
 endif()
 
