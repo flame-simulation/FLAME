@@ -70,9 +70,15 @@ jobs:
         with:
           files: dist/**/*.whl
 
-      - name: Publish package to PyPI
+      - name: Collect all wheels
+        run: |
+          mkdir pypi
+          find dist -name '*.whl' -exec mv {} pypi/ \;
+
+      - name: Publish wheels to PyPI
         if: startsWith(github.ref, 'refs/tags')
         uses: pypa/gh-action-pypi-publish@v1.4.1
         with:
+          packages_dir: pypi
           user: __token__
           password: ${{ secrets.PYPI_PASSWORD }}
