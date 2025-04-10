@@ -82,3 +82,10 @@ jobs:
           packages_dir: pypi
           user: __token__
           password: ${{ secrets.PYPI_PASSWORD }}
+
+  Clean:
+    needs: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clean up artifacts
+        uses: geekyeggo/delete-artifact@v5
