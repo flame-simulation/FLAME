@@ -96,24 +96,23 @@ if(PYTHONINTERP_FOUND)
   endif()
 endif()
 
-# only test if Python version < 3.12
-if(Python_FOUND AND Python_VERSION_MINOR LESS 12)
-  # see if nosetests test runner is available
+if(Python_FOUND)
+  # see if pytest test runner is available
   execute_process(
-    COMMAND ${PYTHON_EXECUTABLE} -m nose.core -V
+    COMMAND ${PYTHON_EXECUTABLE} -m pytest -V
     OUTPUT_QUIET
     ERROR_QUIET
-    RESULT_VARIABLE _HAVE_NOSE
+    RESULT_VARIABLE _HAVE_PYTEST
   )
-  if(_HAVE_NOSE)
+  if(_HAVE_PYTEST)
     if(NEED_PYTHON)
       message(SEND_ERROR "Unable to build Python support")
     else()
       message(STATUS "Can't find nosetests, not running tests")
     endif()
-    set(HAVE_NOSE NO)
+    set(HAVE_PYTEST NO)
   else()
-    set(HAVE_NOSE YES)
+    set(HAVE_PYTEST YES)
   endif()
 endif()
 
