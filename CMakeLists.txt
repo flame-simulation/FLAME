@@ -92,7 +92,8 @@ if(PYTHONINTERP_FOUND)
   endif()
 endif()
 
-if(Python_FOUND)
+# Skip finding pytest for 3.12+, through pytest is installed, _HAVE_PYTEST results 1!?
+if(Python_FOUND AND Python_VERSION_MINOR LESS 12)
   # see if pytest test runner is available
   execute_process(
     COMMAND ${PYTHON_EXECUTABLE} -m pytest --version
@@ -100,7 +101,7 @@ if(Python_FOUND)
     ERROR_QUIET
     RESULT_VARIABLE _HAVE_PYTEST
   )
-  if(_HAVE_PYTEST)
+  if(_HAVE_PYTEST EQUAL 1)
     if(NEED_PYTHON)
       message(SEND_ERROR "Unable to build Python support")
     else()
