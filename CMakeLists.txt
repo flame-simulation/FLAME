@@ -99,7 +99,7 @@ endif()
 if(Python_FOUND)
   # see if pytest test runner is available
   execute_process(
-    COMMAND ${PYTHON_EXECUTABLE} -m pytest -V
+    COMMAND ${PYTHON_EXECUTABLE} -m pytest --version
     OUTPUT_QUIET
     ERROR_QUIET
     RESULT_VARIABLE _HAVE_PYTEST
