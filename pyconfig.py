@@ -14,9 +14,15 @@ if len(sys.argv)<2:
 else:
     out = open(sys.argv[1], 'w')
 
-from distutils.sysconfig import get_config_var, get_python_inc, get_python_lib
-incdirs = [get_python_inc()]
-moddir = get_python_lib()
+try:
+    from distutils.sysconfig import get_config_var, get_python_inc, get_python_lib
+    incdirs = [get_python_inc()]
+    moddir = get_python_lib()
+except Exception as e:
+    from sysconfig import get_config_var, get_path
+    incdirs = [get_path('include')]
+    moddir = get_path('stdlib')
+
 
 if moddir not in sys.path:
     sys.path.append(moddir)

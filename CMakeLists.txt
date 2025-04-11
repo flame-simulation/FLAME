@@ -75,11 +75,7 @@ message(STATUS "cppcheck ${CPPCHECK_EXECUTABLE}")
 
 message(STATUS "Boost libs in ${Boost_LIBRARY_DIRS}")
 
-if("${PYTHON_EXECUTABLE}" MATCHES "3.12")
-  SET(PYTHONINTERP_FOUND ON)
-else()
-  find_package(PythonInterp 2.7)
-endif()
+find_package(PythonInterp 2.7)
 
 if(PYTHONINTERP_FOUND)
   # Introspect this interpreter
@@ -108,7 +104,7 @@ if(Python_FOUND)
     if(NEED_PYTHON)
       message(SEND_ERROR "Unable to build Python support")
     else()
-      message(STATUS "Can't find nosetests, not running tests")
+      message(STATUS "Can't find pytest, not running tests")
     endif()
     set(HAVE_PYTEST NO)
   else()
