@@ -4,9 +4,10 @@
 ![PyPI - Version](https://img.shields.io/pypi/v/flame-code)
 
 
-User Guide
-==========
+Installation
+============
 Install via pip: `pip install flame-code [-U]`, see [PyPI project](https://pypi.org/project/flame-code/).
+
 The dynamic library of Python `libpython3.so` is required,
 - Install `libpython<python-version>` on Debian (and its derivatives, e.g. `libpython3.11`)
 - Or, `python<python-version>-libs` on RPM-based OS, e.g. `python3.11-libs`.
