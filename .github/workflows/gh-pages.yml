@@ -1,0 +1,49 @@
+name: Build and release doxygen docs
+
+on:
+  push:
+    tags:
+      - doc/*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_IMAGE: tonyzhang/manylinux2014_x86_64
+      PLAT: manylinux2014_x86_64
+      PY_MAJOR: 3
+      PY_MINOR: 12
+      PY_NAME: cp312-cp312
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Pull Docker image
+        run: docker pull $DOCKER_IMAGE
+
+      - name: Build Doxyfile
+        run: |
+            docker run --rm \
+              -e PY_NAME=$PY_NAME \
+              -e PLAT=$PLAT \
+              -e PY_MAJOR=$PY_MAJOR \
+              -e PY_MINOR=$PY_MINOR \
+              -v ${{ github.workspace }}:/io \
+              $DOCKER_IMAGE /io/.ci/.bld-doc.sh
+
+      - name: Re-build with new version of doxygen
+        run:
+          apt install doxygen graphviz
+          cd doc-built && rm -rf html && doxgen Doxyfile
+          mv html ${{ github.workspace }}/
+
+      - name: Upload artifacts
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./html
+
+      - name: Deploy Doxygen docs
+        uses: actions/deploy-pages@v4
