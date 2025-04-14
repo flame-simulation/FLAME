@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.10)
 
 project("flame" C CXX)
 
@@ -89,27 +89,27 @@ if(PYTHONINTERP_FOUND)
     message(STATUS "Python version ${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}.${Python_VERSION_PATCH}")
     message(STATUS " headers ${Python_INCLUDE_DIRS}")
     message(STATUS " numpy ${Python_NUMPY_FOUND}")
-    #message(STATUS " library ${Python_LIBRARY_DIRS}") # not used
   endif()
 endif()
 
-if(Python_FOUND)
-  # see if nosetests test runner is available
+# Skip finding pytest for 3.12+, through pytest is installed, _HAVE_PYTEST results 1!?
+if(Python_FOUND AND Python_VERSION_MINOR LESS 12)
+  # see if pytest test runner is available
   execute_process(
-    COMMAND ${PYTHON_EXECUTABLE} -m nose.core -V
+    COMMAND ${PYTHON_EXECUTABLE} -m pytest --version
     OUTPUT_QUIET
     ERROR_QUIET
-    RESULT_VARIABLE _HAVE_NOSE
+    RESULT_VARIABLE _HAVE_PYTEST
   )
-  if(_HAVE_NOSE)
+  if(_HAVE_PYTEST EQUAL 1)
     if(NEED_PYTHON)
       message(SEND_ERROR "Unable to build Python support")
     else()
-      message(STATUS "Can't find nosetests, not running tests")
+      message(STATUS "Can't find pytest, not running tests")
     endif()
-    set(HAVE_NOSE NO)
+    set(HAVE_PYTEST NO)
   else()
-    set(HAVE_NOSE YES)
+    set(HAVE_PYTEST YES)
   endif()
 endif()
 

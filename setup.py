@@ -2,9 +2,11 @@ import os
 import sys
 import shutil
 import pathlib
+import subprocess
 
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext as build_ext_orig
+
 
 class CMakeExtension(Extension):
     def __init__(self, name):
@@ -44,8 +46,11 @@ class build_ext(build_ext_orig):
         ]
         os.chdir(str(build_temp))
         self.spawn([cmake, str(cwd)] + cmake_args)
+        env = os.environ.copy()
+        env['LD_LIBRARY_PATH'] = env.get('LD_LIBRARY_PATH', '') + ":" + str(libpath)
         if not self.dry_run:
             self.spawn([cmake, '--build', '.'] + build_args)
+            subprocess.run([shutil.which('ctest'), '--output-on-failure'], env=env)
         os.chdir(str(cwd))
 
 
@@ -57,5 +62,8 @@ setup(
     ext_modules=[CMakeExtension('flame_core')],
     cmdclass={
         'build_ext': build_ext,
-    }
+    },
+    install_requires = [
+        'numpy>1.21,<2.0',
+    ]
 )

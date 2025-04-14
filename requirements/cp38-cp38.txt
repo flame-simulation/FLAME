@@ -1,4 +1,6 @@
-cmake==3.21.4
-wheel==0.37.0
-nose==1.3.7
-numpy==1.19.5
+# Ubuntu Focal 20.04
+cmake==3.16.3
+wheel==0.34.2
+pytest==4.6.9
+numpy==1.17.4
+scipy==1.3.3
