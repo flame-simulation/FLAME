@@ -1,0 +1,96 @@
+name: Build and Release Wheels
+
+on:
+  release:
+    types:
+      - created
+
+permissions:
+  contents: write
+
+jobs:
+  build_wheels:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python:
+          - { major: 3, minor: 6, name: cp36-cp36m }
+          - { major: 3, minor: 7, name: cp37-cp37m }
+          - { major: 3, minor: 8, name: cp38-cp38 }
+          - { major: 3, minor: 9, name: cp39-cp39 }
+          - { major: 3, minor: 10, name: cp310-cp310 }
+          - { major: 3, minor: 11, name: cp311-cp311 }
+          - { major: 3, minor: 12, name: cp312-cp312 }
+
+    env:
+      DOCKER_IMAGE: tonyzhang/manylinux2014_x86_64
+      PLAT: manylinux2014_x86_64
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+
+    - name: Pull Docker image
+      run: docker pull $DOCKER_IMAGE
+
+    - name: Build wheel for Python ${{ matrix.python.major }}.${{ matrix.python.minor }}
+      run: |
+          docker run --rm \
+            -e PY_NAME=${{ matrix.python.name }} \
+            -e PLAT=$PLAT \
+            -e PY_MAJOR=${{ matrix.python.major }} \
+            -e PY_MINOR=${{ matrix.python.minor }} \
+            -v ${{ github.workspace }}:/io \
+            $DOCKER_IMAGE /io/.ci/.bld-whl.sh
+
+    - name: Upload wheels
+      uses: actions/upload-artifact@v4
+      with:
+        name: wheel-${{ matrix.python.name }}
+        path: wheelhouse/*.whl
+        retention-days: 0
+
+  Release:
+    needs: build_wheels
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download wheels
+        uses: actions/download-artifact@v4
+        with:
+          path: ./dist
+
+      - name: List artifacts
+        run: ls -lhtr ./dist
+
+      - name: Create a new release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: dist/**/*.whl
+
+      - name: Collect all wheels
+        run: |
+          mkdir pypi
+          find dist -name '*.whl' -exec mv {} pypi/ \;
+
+      - name: Publish wheels to PyPI
+        if: startsWith(github.ref, 'refs/tags')
+        uses: pypa/gh-action-pypi-publish@v1.4.1
+        with:
+          packages_dir: pypi
+          user: __token__
+          password: ${{ secrets.PYPI_PASSWORD }}
+          skip_existing: true
+
+  Clean:
+    needs: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clean up artifacts
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: wheel*
+          useGlob: true
+

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 Emit a file suitible to include() in a CMakeLists.txt file
 with information from a python interpreter
@@ -15,10 +14,18 @@ if len(sys.argv)<2:
 else:
     out = open(sys.argv[1], 'w')
 
-from distutils.sysconfig import get_config_var, get_python_inc, get_python_lib
+try:
+    from distutils.sysconfig import get_config_var, get_python_inc, get_python_lib
+    incdirs = [get_python_inc()]
+    moddir = get_python_lib()
+except Exception as e:
+    from sysconfig import get_config_var, get_path
+    incdirs = [get_path('include')]
+    moddir = get_path('stdlib')
 
-incdirs = [get_python_inc()]
-libdirs = [get_config_var('LIBDIR')]
+
+if moddir not in sys.path:
+    sys.path.append(moddir)
 
 have_np='NO'
 try:
@@ -36,9 +43,6 @@ libdirs = [get_config_var('LIBDIR')]
 # as /usr/include/pythonX.Y/numpy :P
 libdirs.reverse()
 incdirs.reverse()
-
-# location of extension modules relative to prefix (eg. "lib/python3/dist-packages")
-moddir = get_python_lib()
 
 print('set(Python_DEFINITIONS, "%s")'%get_config_var('BASECFLAGS'), file=out)
 
