@@ -22,7 +22,7 @@ A discrete accelerator simulation engine
 
 @subpage devnotes
 
-Source doc repository https://github.com/frib-high-level-controls/FLAME
+Source doc repository https://github.com/flame-simulation/FLAME
 
 */
 
@@ -36,7 +36,7 @@ Source doc repository https://github.com/frib-high-level-controls/FLAME
 Checkout and compilation from VCS repository
 
 @code
-git clone https://github.com/frib-high-level-controls/FLAME.git flame
+git clone https://github.com/flame-simulation/FLAME.git flame
 mkdir flame/build
 cd flame/build
 cmake ..

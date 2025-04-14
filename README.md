@@ -13,9 +13,9 @@ See the following sections for developers' guide.
 
 ## Documentation
 
-* [C++ documentation](http://frib-high-level-controls.github.io/FLAME)
-* [Getting started](http://frib-high-level-controls.github.io/FLAME/gettingstarted.html)
-* Report [bugs through ISSUES](https://github.com/frib-high-level-controls/FLAME/issues)
+* [C++ documentation](https://flame-simulation.github.io/FLAME)
+* [Getting started](https://flame-simulation.github.io/FLAME/gettingstarted.html)
+* Report [bugs through ISSUES](https://github.com/flame-simulation/FLAME/issues)
 
 
 ## Development
@@ -39,7 +39,7 @@ Supports Python 3.6+
 ### Building
 
 ```sh
-git clone https://github.com/frib-high-level-controls/FLAME.git flame
+git clone https://github.com/flame-simulation/FLAME.git flame
 mkdir flame/build
 cd flame/build
 cmake ..
