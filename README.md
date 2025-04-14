@@ -1,14 +1,20 @@
+![Doxygen](https://github.com/zhangt58/flame/actions/workflows/gh-pages.yml/badge.svg)
+![Wheels](https://github.com/zhangt58/flame/actions/workflows/build.yml/badge.svg)
+
 User Guide
 ==========
-Install via pip: `pip install flame-code`, libpython3.so is also needed, install `libpython3-dev` on Debian (and its derivatives), or `python3-devel` on RPM-based OS. See the following sections for developers' guide.
+Install via pip: `pip install flame-code [-U]`.
+The dynamic library of Python `libpython3.so` is required,
+- Install `libpython<python-version>` on Debian (and its derivatives, e.g. `libpython3.11`)
+- Or, `python<python-version>-libs` on RPM-based OS, e.g. `python3.11-libs`.
+See the following sections for developers' guide.
 
 Documentation
 =============
 
-Generated [documentation](http://frib-high-level-controls.github.io/FLAME)
-including [getting started](http://frib-high-level-controls.github.io/FLAME/gettingstarted.html) guide.
-
-Report [bugs through github.com](https://github.com/frib-high-level-controls/FLAME/issues)
+* [C++ documentation](http://frib-high-level-controls.github.io/FLAME)
+* [Getting started](http://frib-high-level-controls.github.io/FLAME/gettingstarted.html)
+* Report [bugs through ISSUES](https://github.com/frib-high-level-controls/FLAME/issues)
 
 Pre-requisites
 ==============
@@ -25,8 +31,7 @@ apt-get install libboost-dev libboost-system-dev \
  build-essential cmake bison flex cppcheck git libhdf5-dev \
  python-numpy python-nose python3-numpy python3-nose
 ```
-
-Supports python 2.7 and 3.4
+Supports Python 3.6+
 
 Building
 ========
@@ -42,12 +47,8 @@ make
 To build with a specific python version, change the cmake invokation to:
 
 ```sh
-cmake .. -DPYTHON_EXECUTABLE=/usr/bin/python3.4
+cmake .. -DPYTHON_EXECUTABLE=/usr/bin/python3.11
 ```
-
-<p><a href="https://travis-ci.org/frib-high-level-controls/FLAME">CI status
-<img src="https://travis-ci.org/frib-high-level-controls/FLAME.svg" alt="Build Status Images">
-</a></p>
 
 Running tests
 -------------
