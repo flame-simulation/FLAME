@@ -3,9 +3,7 @@
 ![Static Badge](https://img.shields.io/badge/Python-3.6%7C3.7%7C3.8%7C3.9%7C3.10%7C3.11%7C3.12-blue)
 ![PyPI - Version](https://img.shields.io/pypi/v/flame-code)
 
-
-Installation
-============
+## Installation
 Install via pip: `pip install flame-code [-U]`, see [PyPI project](https://pypi.org/project/flame-code/).
 
 The dynamic library of Python `libpython3.so` is required,
@@ -13,15 +11,16 @@ The dynamic library of Python `libpython3.so` is required,
 - Or, `python<python-version>-libs` on RPM-based OS, e.g. `python3.11-libs`.
 See the following sections for developers' guide.
 
-Documentation
-=============
+## Documentation
 
 * [C++ documentation](http://frib-high-level-controls.github.io/FLAME)
 * [Getting started](http://frib-high-level-controls.github.io/FLAME/gettingstarted.html)
 * Report [bugs through ISSUES](https://github.com/frib-high-level-controls/FLAME/issues)
 
-Pre-requisites
-==============
+
+## Development
+
+### Pre-requisites
 
 Needs boost headers.  Also the boost-system and boost-python libraries.
 Also python and numpy headers.
@@ -37,8 +36,7 @@ apt-get install libboost-dev libboost-system-dev \
 ```
 Supports Python 3.6+
 
-Building
-========
+### Building
 
 ```sh
 git clone https://github.com/frib-high-level-controls/FLAME.git flame
@@ -54,8 +52,7 @@ To build with a specific python version, change the cmake invokation to:
 cmake .. -DPYTHON_EXECUTABLE=/usr/bin/python3.11
 ```
 
-Running tests
--------------
+### Running tests
 
 ```sh
 make test
