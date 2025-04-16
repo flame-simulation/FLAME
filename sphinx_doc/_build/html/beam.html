@@ -1,549 +1,468 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>State Class &mdash; FLAME 1.8.5 documentation</title>
-  
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>State Class &mdash; FLAME 1.9.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
-  
-  
-  
-
-  
-
-  
-  
-    
-
-  
-
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=574b2d58"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Machine class" href="machine.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
-          
+        <div class="wy-side-nav-search" >
 
           
-            <a href="index.html" class="icon icon-home"> FLAME
           
-
-          
+          <a href="index.html" class="icon icon-home">
+            FLAME
           </a>
-
-          
-            
-            
-              <div class="version">
-                1.8.5
-              </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="element.html">Lattice File</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="classlib.html">Class Library</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="machine.html">Machine class</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">State Class</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">State Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#State"><code class="docutils literal notranslate"><span class="pre">State</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#State.clone"><code class="docutils literal notranslate"><span class="pre">State.clone()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pos"><code class="docutils literal notranslate"><span class="pre">pos</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ref_beta"><code class="docutils literal notranslate"><span class="pre">ref_beta</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ref_bg"><code class="docutils literal notranslate"><span class="pre">ref_bg</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ref_gamma"><code class="docutils literal notranslate"><span class="pre">ref_gamma</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ref_IonEk"><code class="docutils literal notranslate"><span class="pre">ref_IonEk</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ref_IonEs"><code class="docutils literal notranslate"><span class="pre">ref_IonEs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ref_IonQ"><code class="docutils literal notranslate"><span class="pre">ref_IonQ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ref_IonW"><code class="docutils literal notranslate"><span class="pre">ref_IonW</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ref_IonZ"><code class="docutils literal notranslate"><span class="pre">ref_IonZ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ref_phis"><code class="docutils literal notranslate"><span class="pre">ref_phis</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ref_SampleFreq"><code class="docutils literal notranslate"><span class="pre">ref_SampleFreq</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ref_SampleIonK"><code class="docutils literal notranslate"><span class="pre">ref_SampleIonK</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#last_caviphi0"><code class="docutils literal notranslate"><span class="pre">last_caviphi0</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#transmat"><code class="docutils literal notranslate"><span class="pre">transmat</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#beta"><code class="docutils literal notranslate"><span class="pre">beta</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bg"><code class="docutils literal notranslate"><span class="pre">bg</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gamma"><code class="docutils literal notranslate"><span class="pre">gamma</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#IonEk"><code class="docutils literal notranslate"><span class="pre">IonEk</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#IonEs"><code class="docutils literal notranslate"><span class="pre">IonEs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#IonQ"><code class="docutils literal notranslate"><span class="pre">IonQ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#IonW"><code class="docutils literal notranslate"><span class="pre">IonW</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#IonZ"><code class="docutils literal notranslate"><span class="pre">IonZ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#phis"><code class="docutils literal notranslate"><span class="pre">phis</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#SampleFreq"><code class="docutils literal notranslate"><span class="pre">SampleFreq</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#SampleIonK"><code class="docutils literal notranslate"><span class="pre">SampleIonK</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moment0"><code class="docutils literal notranslate"><span class="pre">moment0</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moment0_env"><code class="docutils literal notranslate"><span class="pre">moment0_env</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moment0_rms"><code class="docutils literal notranslate"><span class="pre">moment0_rms</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moment1"><code class="docutils literal notranslate"><span class="pre">moment1</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moment1_env"><code class="docutils literal notranslate"><span class="pre">moment1_env</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 
-            
-          
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">FLAME</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="classlib.html">Class Library</a> &raquo;</li>
-        
-      <li>State Class</li>
-    
-    
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="classlib.html">Class Library</a></li>
+      <li class="breadcrumb-item active">State Class</li>
       <li class="wy-breadcrumbs-aside">
-        
-            
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="state-class">
-<h1>State Class<a class="headerlink" href="#state-class" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="State">
-<em class="property">class </em><code class="descname">State</code><span class="sig-paren">(</span><em>object</em><span class="sig-paren">)</span><a class="headerlink" href="#State" title="Permalink to this definition">¶</a></dt>
+             
+  <section id="state-class">
+<h1>State Class<a class="headerlink" href="#state-class" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="State">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">State</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#State" title="Link to this definition"></a></dt>
 <dd><p>FLAME beam state class for Python API.</p>
-<dl class="function">
-<dt id="State.clone">
-<code class="descname">clone</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#State.clone" title="Permalink to this definition">¶</a></dt>
+<dl class="py function">
+<dt class="sig sig-object py" id="State.clone">
+<span class="sig-name descname"><span class="pre">clone</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#State.clone" title="Link to this definition"></a></dt>
 <dd><p>Clone the beam state object.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#State" title="State"><code class="xref py py-class docutils literal notranslate"><span class="pre">State</span></code></a> object</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#State" title="State"><code class="xref py py-class docutils literal notranslate"><span class="pre">State</span></code></a> object</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <blockquote id="beamstate">
 <div><ul>
-<li><p class="first"><strong>Attributes - reference beam</strong></p>
+<li><p><strong>Attributes - reference beam</strong></p>
 <blockquote>
-<div><table border="1" class="colwidths-given docutils">
+<div><table class="docutils align-default">
 <colgroup>
-<col width="29%" />
-<col width="71%" />
+<col style="width: 28.6%" />
+<col style="width: 71.4%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#pos" title="pos"><code class="xref py py-attr docutils literal notranslate"><span class="pre">pos</span></code></a></td>
-<td>z position [m]</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pos" title="pos"><code class="xref py py-attr docutils literal notranslate"><span class="pre">pos</span></code></a></p></td>
+<td><p>z position [m]</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#ref_beta" title="ref_beta"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ref_beta</span></code></a></td>
-<td>Lorentz <img class="math" src="_images/math/410a9d0df9c135dd73b269cba7ef04dcfd932b1f.png" alt="\beta"/> [1]</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ref_beta" title="ref_beta"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ref_beta</span></code></a></p></td>
+<td><p>Lorentz <img class="math" src="_images/math/7138dad9ac96835665b17f5817eacfcaa9b834c9.png" alt="\beta"/> [1]</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#ref_bg" title="ref_bg"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ref_bg</span></code></a></td>
-<td>Lorentz <img class="math" src="_images/math/3182a2039f450e374c557c56b438f32a7174e271.png" alt="\beta \gamma"/> [1]</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ref_bg" title="ref_bg"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ref_bg</span></code></a></p></td>
+<td><p>Lorentz <img class="math" src="_images/math/f0b5a726732efd5b252b1b1691e820ef5df92546.png" alt="\beta \gamma"/> [1]</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#ref_gamma" title="ref_gamma"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ref_gamma</span></code></a></td>
-<td>Lorentz <img class="math" src="_images/math/3666981dc77862de77b6ecfcb64aad59b425cbaf.png" alt="\gamma"/> [1]</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ref_gamma" title="ref_gamma"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ref_gamma</span></code></a></p></td>
+<td><p>Lorentz <img class="math" src="_images/math/34d137cf01c787ecda732761c3f95b0f65a6c3e9.png" alt="\gamma"/> [1]</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#ref_IonEk" title="ref_IonEk"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ref_IonEk</span></code></a></td>
-<td>Kinetic energy [eV/u]</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ref_IonEk" title="ref_IonEk"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ref_IonEk</span></code></a></p></td>
+<td><p>Kinetic energy [eV/u]</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#ref_IonEs" title="ref_IonEs"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ref_IonEs</span></code></a></td>
-<td>Nucleon mass [eV/u]</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ref_IonEs" title="ref_IonEs"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ref_IonEs</span></code></a></p></td>
+<td><p>Nucleon mass [eV/u]</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#ref_IonQ" title="ref_IonQ"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ref_IonQ</span></code></a></td>
-<td>Macro weight [1]</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ref_IonQ" title="ref_IonQ"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ref_IonQ</span></code></a></p></td>
+<td><p>Macro weight [1]</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#ref_IonW" title="ref_IonW"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ref_IonW</span></code></a></td>
-<td>Total energy [eV/u]</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ref_IonW" title="ref_IonW"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ref_IonW</span></code></a></p></td>
+<td><p>Total energy [eV/u]</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#ref_IonZ" title="ref_IonZ"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ref_IonZ</span></code></a></td>
-<td>Charge to mass ratio [1]</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ref_IonZ" title="ref_IonZ"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ref_IonZ</span></code></a></p></td>
+<td><p>Charge to mass ratio [1]</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#ref_phis" title="ref_phis"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ref_phis</span></code></a></td>
-<td>Absolute phase [rad]</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ref_phis" title="ref_phis"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ref_phis</span></code></a></p></td>
+<td><p>Absolute phase [rad]</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#ref_SampleFreq" title="ref_SampleFreq"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ref_SampleFreq</span></code></a></td>
-<td>Sampling frequency [Hz]</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ref_SampleFreq" title="ref_SampleFreq"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ref_SampleFreq</span></code></a></p></td>
+<td><p>Sampling frequency [Hz]</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#ref_SampleIonK" title="ref_SampleIonK"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ref_SampleIonK</span></code></a></td>
-<td>Phase speed [rad]</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ref_SampleIonK" title="ref_SampleIonK"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ref_SampleIonK</span></code></a></p></td>
+<td><p>Phase speed [rad]</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#last_caviphi0" title="last_caviphi0"><code class="xref py py-attr docutils literal notranslate"><span class="pre">last_caviphi0</span></code></a></td>
-<td>Driven phase of the last rf cavity [deg]</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#last_caviphi0" title="last_caviphi0"><code class="xref py py-attr docutils literal notranslate"><span class="pre">last_caviphi0</span></code></a></p></td>
+<td><p>Driven phase of the last rf cavity [deg]</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#transmat" title="transmat"><code class="xref py py-attr docutils literal notranslate"><span class="pre">transmat</span></code></a></td>
-<td>Transfer matrix of the last element</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#transmat" title="transmat"><code class="xref py py-attr docutils literal notranslate"><span class="pre">transmat</span></code></a></p></td>
+<td><p>Transfer matrix of the last element</p></td>
 </tr>
 </tbody>
 </table>
 </div></blockquote>
 </li>
-<li><p class="first"><strong>Attributes - actual beam</strong></p>
+<li><p><strong>Attributes - actual beam</strong></p>
 <blockquote>
-<div><table border="1" class="colwidths-given docutils">
+<div><table class="docutils align-default">
 <colgroup>
-<col width="29%" />
-<col width="71%" />
+<col style="width: 28.6%" />
+<col style="width: 71.4%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#beta" title="beta"><code class="xref py py-attr docutils literal notranslate"><span class="pre">beta</span></code></a></td>
-<td>Lorentz <img class="math" src="_images/math/410a9d0df9c135dd73b269cba7ef04dcfd932b1f.png" alt="\beta"/> [1]</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#beta" title="beta"><code class="xref py py-attr docutils literal notranslate"><span class="pre">beta</span></code></a></p></td>
+<td><p>Lorentz <img class="math" src="_images/math/7138dad9ac96835665b17f5817eacfcaa9b834c9.png" alt="\beta"/> [1]</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#bg" title="bg"><code class="xref py py-attr docutils literal notranslate"><span class="pre">bg</span></code></a></td>
-<td>Lorentz <img class="math" src="_images/math/3182a2039f450e374c557c56b438f32a7174e271.png" alt="\beta \gamma"/> [1]</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#bg" title="bg"><code class="xref py py-attr docutils literal notranslate"><span class="pre">bg</span></code></a></p></td>
+<td><p>Lorentz <img class="math" src="_images/math/f0b5a726732efd5b252b1b1691e820ef5df92546.png" alt="\beta \gamma"/> [1]</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#gamma" title="gamma"><code class="xref py py-attr docutils literal notranslate"><span class="pre">gamma</span></code></a></td>
-<td>Lorentz <img class="math" src="_images/math/3666981dc77862de77b6ecfcb64aad59b425cbaf.png" alt="\gamma"/> [1]</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gamma" title="gamma"><code class="xref py py-attr docutils literal notranslate"><span class="pre">gamma</span></code></a></p></td>
+<td><p>Lorentz <img class="math" src="_images/math/34d137cf01c787ecda732761c3f95b0f65a6c3e9.png" alt="\gamma"/> [1]</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#IonEk" title="IonEk"><code class="xref py py-attr docutils literal notranslate"><span class="pre">IonEk</span></code></a></td>
-<td>Kinetic energy [eV/u]</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#IonEk" title="IonEk"><code class="xref py py-attr docutils literal notranslate"><span class="pre">IonEk</span></code></a></p></td>
+<td><p>Kinetic energy [eV/u]</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#IonEs" title="IonEs"><code class="xref py py-attr docutils literal notranslate"><span class="pre">IonEs</span></code></a></td>
-<td>Nucleon mass [eV/u]</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#IonEs" title="IonEs"><code class="xref py py-attr docutils literal notranslate"><span class="pre">IonEs</span></code></a></p></td>
+<td><p>Nucleon mass [eV/u]</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#IonQ" title="IonQ"><code class="xref py py-attr docutils literal notranslate"><span class="pre">IonQ</span></code></a></td>
-<td>Macro weight [1]</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#IonQ" title="IonQ"><code class="xref py py-attr docutils literal notranslate"><span class="pre">IonQ</span></code></a></p></td>
+<td><p>Macro weight [1]</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#IonW" title="IonW"><code class="xref py py-attr docutils literal notranslate"><span class="pre">IonW</span></code></a></td>
-<td>Total energy [eV/u]</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#IonW" title="IonW"><code class="xref py py-attr docutils literal notranslate"><span class="pre">IonW</span></code></a></p></td>
+<td><p>Total energy [eV/u]</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#IonZ" title="IonZ"><code class="xref py py-attr docutils literal notranslate"><span class="pre">IonZ</span></code></a></td>
-<td>Charge to mass ratio [1]</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#IonZ" title="IonZ"><code class="xref py py-attr docutils literal notranslate"><span class="pre">IonZ</span></code></a></p></td>
+<td><p>Charge to mass ratio [1]</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#phis" title="phis"><code class="xref py py-attr docutils literal notranslate"><span class="pre">phis</span></code></a></td>
-<td>Absolute phase [rad]</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#phis" title="phis"><code class="xref py py-attr docutils literal notranslate"><span class="pre">phis</span></code></a></p></td>
+<td><p>Absolute phase [rad]</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#SampleFreq" title="SampleFreq"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SampleFreq</span></code></a></td>
-<td>Sampling frequency [Hz]</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#SampleFreq" title="SampleFreq"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SampleFreq</span></code></a></p></td>
+<td><p>Sampling frequency [Hz]</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#SampleIonK" title="SampleIonK"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SampleIonK</span></code></a></td>
-<td>Phase speed [rad]</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#SampleIonK" title="SampleIonK"><code class="xref py py-attr docutils literal notranslate"><span class="pre">SampleIonK</span></code></a></p></td>
+<td><p>Phase speed [rad]</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#moment0" title="moment0"><code class="xref py py-attr docutils literal notranslate"><span class="pre">moment0</span></code></a></td>
-<td>Centroids of the all charge states.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#moment0" title="moment0"><code class="xref py py-attr docutils literal notranslate"><span class="pre">moment0</span></code></a></p></td>
+<td><p>Centroids of the all charge states.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#moment0_env" title="moment0_env"><code class="xref py py-attr docutils literal notranslate"><span class="pre">moment0_env</span></code></a></td>
-<td>Weighted average of centroids for the all charge states.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#moment0_env" title="moment0_env"><code class="xref py py-attr docutils literal notranslate"><span class="pre">moment0_env</span></code></a></p></td>
+<td><p>Weighted average of centroids for the all charge states.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#moment0_rms" title="moment0_rms"><code class="xref py py-attr docutils literal notranslate"><span class="pre">moment0_rms</span></code></a></td>
-<td>Weighted average of rms size for the all charge states.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#moment0_rms" title="moment0_rms"><code class="xref py py-attr docutils literal notranslate"><span class="pre">moment0_rms</span></code></a></p></td>
+<td><p>Weighted average of rms size for the all charge states.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#moment1" title="moment1"><code class="xref py py-attr docutils literal notranslate"><span class="pre">moment1</span></code></a></td>
-<td>Envelope matrixes of the all charge states.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#moment1" title="moment1"><code class="xref py py-attr docutils literal notranslate"><span class="pre">moment1</span></code></a></p></td>
+<td><p>Envelope matrixes of the all charge states.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#moment1_env" title="moment1_env"><code class="xref py py-attr docutils literal notranslate"><span class="pre">moment1_env</span></code></a></td>
-<td>Weighted average of envelope matrixes for the all charge states.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#moment1_env" title="moment1_env"><code class="xref py py-attr docutils literal notranslate"><span class="pre">moment1_env</span></code></a></p></td>
+<td><p>Weighted average of envelope matrixes for the all charge states.</p></td>
 </tr>
 </tbody>
 </table>
 </div></blockquote>
 </li>
 </ul>
-<dl class="attribute">
-<dt id="pos">
-<code class="descname">pos</code><a class="headerlink" href="#pos" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pos">
+<span class="sig-name descname"><span class="pre">pos</span></span><a class="headerlink" href="#pos" title="Link to this definition"></a></dt>
 <dd><p><strong>float</strong>: z position of the reference beam. [m]</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="ref_beta">
-<code class="descname">ref_beta</code><a class="headerlink" href="#ref_beta" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>float</strong>: Lorentz <img class="math" src="_images/math/410a9d0df9c135dd73b269cba7ef04dcfd932b1f.png" alt="\beta"/> of the reference beam. [1]</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ref_beta">
+<span class="sig-name descname"><span class="pre">ref_beta</span></span><a class="headerlink" href="#ref_beta" title="Link to this definition"></a></dt>
+<dd><p><strong>float</strong>: Lorentz <img class="math" src="_images/math/7138dad9ac96835665b17f5817eacfcaa9b834c9.png" alt="\beta"/> of the reference beam. [1]</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="ref_bg">
-<code class="descname">ref_bg</code><a class="headerlink" href="#ref_bg" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>float</strong>: Lorentz <img class="math" src="_images/math/3182a2039f450e374c557c56b438f32a7174e271.png" alt="\beta \gamma"/> of the reference beam. [1]</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ref_bg">
+<span class="sig-name descname"><span class="pre">ref_bg</span></span><a class="headerlink" href="#ref_bg" title="Link to this definition"></a></dt>
+<dd><p><strong>float</strong>: Lorentz <img class="math" src="_images/math/f0b5a726732efd5b252b1b1691e820ef5df92546.png" alt="\beta \gamma"/> of the reference beam. [1]</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="ref_gamma">
-<code class="descname">ref_gamma</code><a class="headerlink" href="#ref_gamma" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>float</strong>: Lorentz <img class="math" src="_images/math/3666981dc77862de77b6ecfcb64aad59b425cbaf.png" alt="\gamma"/> of the reference beam. [1]</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ref_gamma">
+<span class="sig-name descname"><span class="pre">ref_gamma</span></span><a class="headerlink" href="#ref_gamma" title="Link to this definition"></a></dt>
+<dd><p><strong>float</strong>: Lorentz <img class="math" src="_images/math/34d137cf01c787ecda732761c3f95b0f65a6c3e9.png" alt="\gamma"/> of the reference beam. [1]</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="ref_IonEk">
-<code class="descname">ref_IonEk</code><a class="headerlink" href="#ref_IonEk" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ref_IonEk">
+<span class="sig-name descname"><span class="pre">ref_IonEk</span></span><a class="headerlink" href="#ref_IonEk" title="Link to this definition"></a></dt>
 <dd><p><strong>float</strong>: Kinetic energy of the reference beam. [eV/u]</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="ref_IonEs">
-<code class="descname">ref_IonEs</code><a class="headerlink" href="#ref_IonEs" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ref_IonEs">
+<span class="sig-name descname"><span class="pre">ref_IonEs</span></span><a class="headerlink" href="#ref_IonEs" title="Link to this definition"></a></dt>
 <dd><p><strong>float</strong>: Nucleon mass of the reference beam. [eV/u]</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="ref_IonQ">
-<code class="descname">ref_IonQ</code><a class="headerlink" href="#ref_IonQ" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ref_IonQ">
+<span class="sig-name descname"><span class="pre">ref_IonQ</span></span><a class="headerlink" href="#ref_IonQ" title="Link to this definition"></a></dt>
 <dd><p><strong>float</strong>: Macro weight of the reference beam. [1]</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="ref_IonW">
-<code class="descname">ref_IonW</code><a class="headerlink" href="#ref_IonW" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ref_IonW">
+<span class="sig-name descname"><span class="pre">ref_IonW</span></span><a class="headerlink" href="#ref_IonW" title="Link to this definition"></a></dt>
 <dd><p><strong>float</strong>: Total energy of the reference beam. [eV/u]</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="ref_IonZ">
-<code class="descname">ref_IonZ</code><a class="headerlink" href="#ref_IonZ" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ref_IonZ">
+<span class="sig-name descname"><span class="pre">ref_IonZ</span></span><a class="headerlink" href="#ref_IonZ" title="Link to this definition"></a></dt>
 <dd><p><strong>float</strong>: Charge to mass ratio of the reference beam. [1]</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="ref_phis">
-<code class="descname">ref_phis</code><a class="headerlink" href="#ref_phis" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ref_phis">
+<span class="sig-name descname"><span class="pre">ref_phis</span></span><a class="headerlink" href="#ref_phis" title="Link to this definition"></a></dt>
 <dd><p><strong>float</strong>: Absolute synchrotron phase of the reference beam. [rad]</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="ref_SampleFreq">
-<code class="descname">ref_SampleFreq</code><a class="headerlink" href="#ref_SampleFreq" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ref_SampleFreq">
+<span class="sig-name descname"><span class="pre">ref_SampleFreq</span></span><a class="headerlink" href="#ref_SampleFreq" title="Link to this definition"></a></dt>
 <dd><p><strong>float</strong>: Sampling frequency of the reference beam. [Hz]</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="ref_SampleIonK">
-<code class="descname">ref_SampleIonK</code><a class="headerlink" href="#ref_SampleIonK" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ref_SampleIonK">
+<span class="sig-name descname"><span class="pre">ref_SampleIonK</span></span><a class="headerlink" href="#ref_SampleIonK" title="Link to this definition"></a></dt>
 <dd><p><strong>float</strong>: Phase speed of the reference beam. [rad]</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="last_caviphi0">
-<code class="descname">last_caviphi0</code><a class="headerlink" href="#last_caviphi0" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="last_caviphi0">
+<span class="sig-name descname"><span class="pre">last_caviphi0</span></span><a class="headerlink" href="#last_caviphi0" title="Link to this definition"></a></dt>
 <dd><p><strong>float</strong>: Driven phase of the last rf cavity. [deg]</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="transmat">
-<code class="descname">transmat</code><a class="headerlink" href="#transmat" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="transmat">
+<span class="sig-name descname"><span class="pre">transmat</span></span><a class="headerlink" href="#transmat" title="Link to this definition"></a></dt>
 <dd><p><strong>list of matrix[7,7]</strong>: Transfer matrix of the last element. This matrix is applied to moment0 and moment1 directly.</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="beta">
-<code class="descname">beta</code><a class="headerlink" href="#beta" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>list of float</strong>: Lorentz <img class="math" src="_images/math/410a9d0df9c135dd73b269cba7ef04dcfd932b1f.png" alt="\beta"/> of the all charge states. [1]</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="beta">
+<span class="sig-name descname"><span class="pre">beta</span></span><a class="headerlink" href="#beta" title="Link to this definition"></a></dt>
+<dd><p><strong>list of float</strong>: Lorentz <img class="math" src="_images/math/7138dad9ac96835665b17f5817eacfcaa9b834c9.png" alt="\beta"/> of the all charge states. [1]</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="bg">
-<code class="descname">bg</code><a class="headerlink" href="#bg" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>list of float</strong>: Lorentz <img class="math" src="_images/math/3182a2039f450e374c557c56b438f32a7174e271.png" alt="\beta \gamma"/> of the all charge states. [1]</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bg">
+<span class="sig-name descname"><span class="pre">bg</span></span><a class="headerlink" href="#bg" title="Link to this definition"></a></dt>
+<dd><p><strong>list of float</strong>: Lorentz <img class="math" src="_images/math/f0b5a726732efd5b252b1b1691e820ef5df92546.png" alt="\beta \gamma"/> of the all charge states. [1]</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="gamma">
-<code class="descname">gamma</code><a class="headerlink" href="#gamma" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>list of float</strong>: Lorentz <img class="math" src="_images/math/3666981dc77862de77b6ecfcb64aad59b425cbaf.png" alt="\gamma"/> of the all charge states. [1]</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gamma">
+<span class="sig-name descname"><span class="pre">gamma</span></span><a class="headerlink" href="#gamma" title="Link to this definition"></a></dt>
+<dd><p><strong>list of float</strong>: Lorentz <img class="math" src="_images/math/34d137cf01c787ecda732761c3f95b0f65a6c3e9.png" alt="\gamma"/> of the all charge states. [1]</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="IonEk">
-<code class="descname">IonEk</code><a class="headerlink" href="#IonEk" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="IonEk">
+<span class="sig-name descname"><span class="pre">IonEk</span></span><a class="headerlink" href="#IonEk" title="Link to this definition"></a></dt>
 <dd><p><strong>list of float</strong>: Kinetic energy of the all charge states. [eV/u]</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="IonEs">
-<code class="descname">IonEs</code><a class="headerlink" href="#IonEs" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="IonEs">
+<span class="sig-name descname"><span class="pre">IonEs</span></span><a class="headerlink" href="#IonEs" title="Link to this definition"></a></dt>
 <dd><p><strong>list of float</strong>: Nucleon mass of the all charge states. [eV/u]</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="IonQ">
-<code class="descname">IonQ</code><a class="headerlink" href="#IonQ" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="IonQ">
+<span class="sig-name descname"><span class="pre">IonQ</span></span><a class="headerlink" href="#IonQ" title="Link to this definition"></a></dt>
 <dd><p><strong>list of float</strong>: Macro weight of the all charge states. [1]</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="IonW">
-<code class="descname">IonW</code><a class="headerlink" href="#IonW" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="IonW">
+<span class="sig-name descname"><span class="pre">IonW</span></span><a class="headerlink" href="#IonW" title="Link to this definition"></a></dt>
 <dd><p><strong>list of float</strong>: Total energy of the all charge states. [eV/u]</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="IonZ">
-<code class="descname">IonZ</code><a class="headerlink" href="#IonZ" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="IonZ">
+<span class="sig-name descname"><span class="pre">IonZ</span></span><a class="headerlink" href="#IonZ" title="Link to this definition"></a></dt>
 <dd><p><strong>list of float</strong>: Charge to mass ratio of the all charge states. [1]</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="phis">
-<code class="descname">phis</code><a class="headerlink" href="#phis" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="phis">
+<span class="sig-name descname"><span class="pre">phis</span></span><a class="headerlink" href="#phis" title="Link to this definition"></a></dt>
 <dd><p><strong>list of float</strong>: Absolute synchrotron phase of the all charge states. [rad]</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="SampleFreq">
-<code class="descname">SampleFreq</code><a class="headerlink" href="#SampleFreq" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="SampleFreq">
+<span class="sig-name descname"><span class="pre">SampleFreq</span></span><a class="headerlink" href="#SampleFreq" title="Link to this definition"></a></dt>
 <dd><p><strong>list of float</strong>: Sampling frequency of the all charge states. [Hz]</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="SampleIonK">
-<code class="descname">SampleIonK</code><a class="headerlink" href="#SampleIonK" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="SampleIonK">
+<span class="sig-name descname"><span class="pre">SampleIonK</span></span><a class="headerlink" href="#SampleIonK" title="Link to this definition"></a></dt>
 <dd><p><strong>list of float</strong>: Phase speed of the all charge states. [rad]</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="moment0">
-<code class="descname">moment0</code><a class="headerlink" href="#moment0" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="moment0">
+<span class="sig-name descname"><span class="pre">moment0</span></span><a class="headerlink" href="#moment0" title="Link to this definition"></a></dt>
 <dd><p>Centroids of the all charge states.</p>
-<p><strong>list of vector[7]</strong>: <img class="math" src="_images/math/09d424e4af2028b34dfce5dc2c14763b0e41785d.png" alt="[x, x', y, y', \phi, E_k, 1]"/> with [mm, rad, mm, rad, rad, MeV/u, 1].</p>
+<p><strong>list of vector[7]</strong>: <img class="math" src="_images/math/894c13b30f78d2239a26e81daa684f46c377ea50.png" alt="[x, x', y, y', \phi, E_k, 1]"/> with [mm, rad, mm, rad, rad, MeV/u, 1].</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="moment0_env">
-<code class="descname">moment0_env</code><a class="headerlink" href="#moment0_env" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="moment0_env">
+<span class="sig-name descname"><span class="pre">moment0_env</span></span><a class="headerlink" href="#moment0_env" title="Link to this definition"></a></dt>
 <dd><p>Weighted average of centroids for all charge states.</p>
-<p><strong>vector[7]</strong>: <img class="math" src="_images/math/09d424e4af2028b34dfce5dc2c14763b0e41785d.png" alt="[x, x', y, y', \phi, E_k, 1]"/> with [mm, rad, mm, rad, rad, MeV/u, 1].</p>
+<p><strong>vector[7]</strong>: <img class="math" src="_images/math/894c13b30f78d2239a26e81daa684f46c377ea50.png" alt="[x, x', y, y', \phi, E_k, 1]"/> with [mm, rad, mm, rad, rad, MeV/u, 1].</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="moment0_rms">
-<code class="descname">moment0_rms</code><a class="headerlink" href="#moment0_rms" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="moment0_rms">
+<span class="sig-name descname"><span class="pre">moment0_rms</span></span><a class="headerlink" href="#moment0_rms" title="Link to this definition"></a></dt>
 <dd><p>Weighted average of rms beam envelopes (2nd order moments) for the all charge states.</p>
-<p><strong>vector[7]</strong>: rms of <img class="math" src="_images/math/09d424e4af2028b34dfce5dc2c14763b0e41785d.png" alt="[x, x', y, y', \phi, E_k, 1]"/> with [mm, rad, mm, rad, rad, MeV/u, 1].</p>
+<p><strong>vector[7]</strong>: rms of <img class="math" src="_images/math/894c13b30f78d2239a26e81daa684f46c377ea50.png" alt="[x, x', y, y', \phi, E_k, 1]"/> with [mm, rad, mm, rad, rad, MeV/u, 1].</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="moment1">
-<code class="descname">moment1</code><a class="headerlink" href="#moment1" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="moment1">
+<span class="sig-name descname"><span class="pre">moment1</span></span><a class="headerlink" href="#moment1" title="Link to this definition"></a></dt>
 <dd><p>Envelope matrixes of the all charge states.</p>
 <p><strong>list of matrix[7,7]</strong>:</p>
-<p>Cartisan product of <img class="math" src="_images/math/79ec2fb77a7424ab0f05a766b9a10deeed91841a.png" alt="[x, x', y, y', \phi, E_k, 1]^2"/> with [mm, rad, mm, rad, rad, MeV/u, 1] <img class="math" src="_images/math/81d4e21093a294aaab4f441ff172923d688c9b7e.png" alt="^2"/>.</p>
+<p>Cartisan product of <img class="math" src="_images/math/a6b2e46c7883ee61396874ad9117a0cddb8cab01.png" alt="[x, x', y, y', \phi, E_k, 1]^2"/> with [mm, rad, mm, rad, rad, MeV/u, 1] <img class="math" src="_images/math/d30d71b3148d5e1e543690c4af182b4640bcce2e.png" alt="^2"/>.</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="moment1_env">
-<code class="descname">moment1_env</code><a class="headerlink" href="#moment1_env" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="moment1_env">
+<span class="sig-name descname"><span class="pre">moment1_env</span></span><a class="headerlink" href="#moment1_env" title="Link to this definition"></a></dt>
 <dd><p>Weighted average of envelope matrixes for the all charge states.</p>
 <p><strong>matrix[7,7]</strong>:</p>
-<p>Cartisan product of <img class="math" src="_images/math/79ec2fb77a7424ab0f05a766b9a10deeed91841a.png" alt="[x, x', y, y', \phi, E_k, 1]^2"/> with [mm, rad, mm, rad, rad, MeV/u, 1] <img class="math" src="_images/math/81d4e21093a294aaab4f441ff172923d688c9b7e.png" alt="^2"/>.</p>
+<p>Cartisan product of <img class="math" src="_images/math/a6b2e46c7883ee61396874ad9117a0cddb8cab01.png" alt="[x, x', y, y', \phi, E_k, 1]^2"/> with [mm, rad, mm, rad, rad, MeV/u, 1] <img class="math" src="_images/math/d30d71b3148d5e1e543690c4af182b4640bcce2e.png" alt="^2"/>.</p>
 </dd></dl>
 
 </div></blockquote>
-</div>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-      
-        <a href="machine.html" class="btn btn-neutral" title="Machine class" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="machine.html" class="btn btn-neutral float-left" title="Machine class" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &copy; Copyright 2017, Kei Fukushima
-
-    </p>
+    <p>&#169; Copyright 2025, Kei Fukushima.</p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-
-  
-
-    
-    
-      <script type="text/javascript">
-          var DOCUMENTATION_OPTIONS = {
-              URL_ROOT:'./',
-              VERSION:'1.8.5',
-              LANGUAGE:'None',
-              COLLAPSE_INDEX:false,
-              FILE_SUFFIX:'.html',
-              HAS_SOURCE:  true,
-              SOURCELINK_SUFFIX: '.txt'
-          };
-      </script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
