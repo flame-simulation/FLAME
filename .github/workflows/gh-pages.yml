@@ -1,0 +1,58 @@
+name: Doxygen docs as gh-pages
+
+on:
+  push:
+    tags:
+      - doc/*
+
+jobs:
+  build:
+    name: Build Doxygen Docs
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_IMAGE: tonyzhang/manylinux2014_x86_64
+      PLAT: manylinux2014_x86_64
+      PY_MAJOR: 3
+      PY_MINOR: 12
+      PY_NAME: cp312-cp312
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Pull Docker image
+        run: docker pull $DOCKER_IMAGE
+
+      - name: Build Doxyfile
+        run: |
+            docker run --rm \
+              -e PY_NAME=$PY_NAME \
+              -e PLAT=$PLAT \
+              -e PY_MAJOR=$PY_MAJOR \
+              -e PY_MINOR=$PY_MINOR \
+              -v ${{ github.workspace }}:/io \
+              $DOCKER_IMAGE /io/.ci/.bld-doc.sh
+
+      - name: Upload page artifacts
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./doc-built/html
+
+  deploy:
+    needs: build
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Doxygen docs
+        id: deployment
+        uses: actions/deploy-pages@v4
