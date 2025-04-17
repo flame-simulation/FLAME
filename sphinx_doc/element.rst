@@ -30,17 +30,22 @@ Basic format of the general parameters are,
       - | Multipole term controller for the rf cavities.
         | "0" - only include focusing and defocusing effect
         | "1" - include dipole terms
-        | "2" - include dipole and quadrupole terms
+        | "2" - include dipole and quadrupole terms (default)
     * - | **EmitGrowth**
       - | "0" or "1"
       - | Flag for cross-cavity emittance growth effect.
         | "0" - False (no emittance growth)
-        | "1" - True (calculate emittance growth)
+        | "1" - True (default, calculate emittance growth)
     * - | **HdipoleFitMode**
       - | "0" or "1"
       - | Flag for auto-adjustment of bending element
         | "0" - use "bg" or "beta" for the bending strength
-        | "1" - auto-adjust the bending strength
+        | "1" - auto-adjust the bending strength (default)
+    * - | **EFcorrection**
+      - | "0" or "1"
+      - | Flag for edge focusing correction of bending magnet for different charge to mass ratio.
+        | "0" - no correction (default)
+        | "1" - scale edge focusing effect by charge to mass ratio
 
 Beam parameter
 --------------
@@ -425,15 +430,28 @@ Optical element
 
                  **phi1**: float
 
-                    | Front pole face angle. [deg]
+                    | Front pole face angle for edge focusing effect. [deg]
 
                  **phi2**: float
 
-                    | Back pole face angle. [deg]
+                    | Back pole face angle for edge focusing effect. [deg]
+
+                 **dphi1**: float
+
+                    | X-Y difference of front pole face angle. [deg]
+
+                 **dphi2**: float
+
+                    | X-Y difference of back pole face angle. [deg]
 
                  **bg**: float (optional: Used in the case of :ref:`"HdipoleFitMode" <genpara>` is **0**.)
 
-                    | Lorentz :math:`\beta \gamma` for the reference beam. [1]
+                    | Lorentz :math:`\beta \gamma` for the reference beam of the bending magnet. [1]
+                    | This parameter is correspond to the bend field strength.
+
+                 **ref_IonZ**: float (optional: Used in the case of :ref:`"HdipoleFitMode" <genpara>` is **0**.)
+
+                    | Charge to mass ratio for the reference beam of the bending magnet. [1]
                     | This parameter is correspond to the bend field strength.
 
                  **dx**, **dy**, **pitch**, **yaw**, **roll**: float

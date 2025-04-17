@@ -1,88 +1,48 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>Lattice File &mdash; FLAME 1.8.5 documentation</title>
-  
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lattice File &mdash; FLAME 1.9.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
-  
-  
-  
-
-  
-
-  
-  
-    
-
-  
-
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=574b2d58"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Class Library" href="classlib.html" />
     <link rel="prev" title="Tutorial" href="tutorial.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
-          
+        <div class="wy-side-nav-search" >
 
           
-            <a href="index.html" class="icon icon-home"> FLAME
           
-
-          
+          <a href="index.html" class="icon icon-home">
+            FLAME
           </a>
-
-          
-            
-            
-              <div class="version">
-                1.8.5
-              </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
@@ -90,8 +50,25 @@
 <li class="toctree-l2"><a class="reference internal" href="#general-parameter">General parameter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#beam-parameter">Beam parameter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#lattice-elements">Lattice elements</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#special-element">Special element</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#optical-element">Optical element</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#special-element">Special element</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv46source"><code class="docutils literal notranslate"><span class="pre">source</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv46marker"><code class="docutils literal notranslate"><span class="pre">marker</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv48stripper"><code class="docutils literal notranslate"><span class="pre">stripper</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv47tmatrix"><code class="docutils literal notranslate"><span class="pre">tmatrix</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#optical-element">Optical element</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv47orbtrim"><code class="docutils literal notranslate"><span class="pre">orbtrim</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv45drift"><code class="docutils literal notranslate"><span class="pre">drift</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv48solenoid"><code class="docutils literal notranslate"><span class="pre">solenoid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv410quadrupole"><code class="docutils literal notranslate"><span class="pre">quadrupole</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv49sextupole"><code class="docutils literal notranslate"><span class="pre">sextupole</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv45equad"><code class="docutils literal notranslate"><span class="pre">equad</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv45sbend"><code class="docutils literal notranslate"><span class="pre">sbend</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv47edipole"><code class="docutils literal notranslate"><span class="pre">edipole</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv48rfcavity"><code class="docutils literal notranslate"><span class="pre">rfcavity</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#rf-cavity-data-format">Rf cavity data format</a><ul>
@@ -107,298 +84,276 @@
 <li class="toctree-l1"><a class="reference internal" href="classlib.html">Class Library</a></li>
 </ul>
 
-            
-          
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">FLAME</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="index.html">Docs</a> &raquo;</li>
-        
-      <li>Lattice File</li>
-    
-    
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Lattice File</li>
       <li class="wy-breadcrumbs-aside">
-        
-            
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="lattice-file">
-<h1>Lattice File<a class="headerlink" href="#lattice-file" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="general-parameter">
-<h2>General parameter<a class="headerlink" href="#general-parameter" title="Permalink to this headline">¶</a></h2>
+             
+  <section id="lattice-file">
+<h1>Lattice File<a class="headerlink" href="#lattice-file" title="Link to this heading"></a></h1>
+<section id="general-parameter">
+<h2>General parameter<a class="headerlink" href="#general-parameter" title="Link to this heading"></a></h2>
 <p>Basic format of the general parameters are,</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>keyword1 = &quot;value1&quot;;
 keyword2 = &quot;value2&quot;;
 ...
 </pre></div>
 </div>
-<table border="1" class="colwidths-given docutils" id="genpara">
+<table class="docutils align-default" id="genpara">
 <colgroup>
-<col width="20%" />
-<col width="20%" />
-<col width="60%" />
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 60.0%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head"><div class="first last line-block">
+<thead>
+<tr class="row-odd"><th class="head"><div class="line-block">
 <div class="line">keyword</div>
 </div>
 </th>
-<th class="head"><div class="first last line-block">
+<th class="head"><div class="line-block">
 <div class="line">value</div>
 </div>
 </th>
-<th class="head"><div class="first last line-block">
+<th class="head"><div class="line-block">
 <div class="line">description</div>
 </div>
 </th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td><div class="first last line-block">
+<tbody>
+<tr class="row-even"><td><div class="line-block">
 <div class="line"><strong>sim_type</strong></div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">“MomentMatrix”</div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">Simulation mode. FRIB simulation uses</div>
 <div class="line">the particular mode “MomentMatrix”.</div>
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td><div class="first last line-block">
+<tr class="row-odd"><td><div class="line-block">
 <div class="line"><strong>MpoleLevel</strong></div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">“0”, “1”, or “2”</div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">Multipole term controller for the rf cavities.</div>
 <div class="line">“0” - only include focusing and defocusing effect</div>
 <div class="line">“1” - include dipole terms</div>
-<div class="line">“2” - include dipole and quadrupole terms</div>
+<div class="line">“2” - include dipole and quadrupole terms (default)</div>
 </div>
 </td>
 </tr>
-<tr class="row-even"><td><div class="first last line-block">
+<tr class="row-even"><td><div class="line-block">
 <div class="line"><strong>EmitGrowth</strong></div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">“0” or “1”</div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">Flag for cross-cavity emittance growth effect.</div>
 <div class="line">“0” - False (no emittance growth)</div>
-<div class="line">“1” - True (calculate emittance growth)</div>
+<div class="line">“1” - True (default, calculate emittance growth)</div>
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td><div class="first last line-block">
+<tr class="row-odd"><td><div class="line-block">
 <div class="line"><strong>HdipoleFitMode</strong></div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">“0” or “1”</div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">Flag for auto-adjustment of bending element</div>
 <div class="line">“0” - use “bg” or “beta” for the bending strength</div>
-<div class="line">“1” - auto-adjust the bending strength</div>
+<div class="line">“1” - auto-adjust the bending strength (default)</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line"><strong>EFcorrection</strong></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">“0” or “1”</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Flag for edge focusing correction of bending magnet for different charge to mass ratio.</div>
+<div class="line">“0” - no correction (default)</div>
+<div class="line">“1” - scale edge focusing effect by charge to mass ratio</div>
 </div>
 </td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="beam-parameter">
-<h2>Beam parameter<a class="headerlink" href="#beam-parameter" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="beam-parameter">
+<h2>Beam parameter<a class="headerlink" href="#beam-parameter" title="Link to this heading"></a></h2>
 <p>Basic format of the beam parameters are,</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>keyword1 = value1;
 keyword2 = [value2, value3]; # list input
 ...
 </pre></div>
 </div>
-<table border="1" class="colwidths-given docutils" id="beampara">
+<table class="docutils align-default" id="beampara">
 <colgroup>
-<col width="27%" />
-<col width="18%" />
-<col width="55%" />
+<col style="width: 27.3%" />
+<col style="width: 18.2%" />
+<col style="width: 54.5%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head"><div class="first last line-block">
+<thead>
+<tr class="row-odd"><th class="head"><div class="line-block">
 <div class="line">keyword</div>
 </div>
 </th>
-<th class="head"><div class="first last line-block">
+<th class="head"><div class="line-block">
 <div class="line">value</div>
 </div>
 </th>
-<th class="head"><div class="first last line-block">
+<th class="head"><div class="line-block">
 <div class="line">description</div>
 </div>
 </th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td><div class="first last line-block">
+<tbody>
+<tr class="row-even"><td><div class="line-block">
 <div class="line"><strong>IonEs</strong></div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">float</div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">Nucleaon mass of the reference beam. [eV/u]</div>
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td><div class="first last line-block">
+<tr class="row-odd"><td><div class="line-block">
 <div class="line"><strong>IonEk</strong></div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">float</div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">Initial kinetic energy of the reference beam. [eV/u]</div>
 </div>
 </td>
 </tr>
-<tr class="row-even"><td><div class="first last line-block">
+<tr class="row-even"><td><div class="line-block">
 <div class="line"><strong>SampleFreq</strong></div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">float</div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">Sampling frequency. [Hz] (default is 80.5e6 [Hz])</div>
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td><div class="first last line-block">
+<tr class="row-odd"><td><div class="line-block">
 <div class="line"><strong>IonChargeStates</strong></div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">list of float</div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">List of charge to mass ratios of the all charge states. [1]</div>
 <div class="line">The first element is used as the reference beam.</div>
 </div>
 </td>
 </tr>
-<tr class="row-even"><td><div class="first last line-block">
+<tr class="row-even"><td><div class="line-block">
 <div class="line"><strong>NCharge</strong></div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">list of float</div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">List of macro weights of the all charge states. [1]</div>
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td><div class="first last line-block">
+<tr class="row-odd"><td><div class="line-block">
 <div class="line"><strong>${vector_variable}${n}</strong></div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">vector[7]</div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">Initial centroid vector of the <strong>n</strong>-th charge state.</div>
-<div class="line"><em>${vector_variable}</em> is defined in <a class="reference internal" href="#_CPPv36source" title="source"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">source</span></code></a>.</div>
-<div class="line"><img class="math" src="_images/math/09d424e4af2028b34dfce5dc2c14763b0e41785d.png" alt="[x, x', y, y', \phi, E_k, 1]"/> with</div>
+<div class="line"><em>${vector_variable}</em> is defined in <a class="reference internal" href="#_CPPv46source" title="source"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">source</span></code></a>.</div>
+<div class="line"><img class="math" src="_images/math/894c13b30f78d2239a26e81daa684f46c377ea50.png" alt="[x, x', y, y', \phi, E_k, 1]"/> with</div>
 <div class="line">[mm, rad, mm, rad, rad, MeV/u, 1]</div>
 </div>
 </td>
 </tr>
-<tr class="row-even"><td><div class="first last line-block">
+<tr class="row-even"><td><div class="line-block">
 <div class="line"><strong>${matrix_variable}${n}</strong></div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">vector[49]</div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">Flattened initial envelope matrix of the <strong>n</strong>-th charge state.</div>
-<div class="line"><em>${matrix_variable}</em> is defined in <a class="reference internal" href="#_CPPv36source" title="source"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">source</span></code></a>.</div>
-<div class="line">Cartisan product of <img class="math" src="_images/math/79ec2fb77a7424ab0f05a766b9a10deeed91841a.png" alt="[x, x', y, y', \phi, E_k, 1]^2"/> with</div>
-<div class="line">[mm, rad, mm, rad, rad, MeV/u, 1] <img class="math" src="_images/math/81d4e21093a294aaab4f441ff172923d688c9b7e.png" alt="^2"/></div>
+<div class="line"><em>${matrix_variable}</em> is defined in <a class="reference internal" href="#_CPPv46source" title="source"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">source</span></code></a>.</div>
+<div class="line">Cartisan product of <img class="math" src="_images/math/a6b2e46c7883ee61396874ad9117a0cddb8cab01.png" alt="[x, x', y, y', \phi, E_k, 1]^2"/> with</div>
+<div class="line">[mm, rad, mm, rad, rad, MeV/u, 1] <img class="math" src="_images/math/d30d71b3148d5e1e543690c4af182b4640bcce2e.png" alt="^2"/></div>
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td><div class="first last line-block">
+<tr class="row-odd"><td><div class="line-block">
 <div class="line"><strong>Eng_Data_Dir</strong></div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">string</div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">Directory path of the rf cavity data.</div>
 <div class="line"><code class="docutils literal notranslate"><span class="pre">dir(path)</span></code> supports relative path.</div>
 </div>
@@ -406,9 +361,9 @@ keyword2 = [value2, value3]; # list input
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="lattice-elements">
-<h2>Lattice elements<a class="headerlink" href="#lattice-elements" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="lattice-elements">
+<h2>Lattice elements<a class="headerlink" href="#lattice-elements" title="Link to this heading"></a></h2>
 <p>Basic format of the one lattice element is,</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>name_of_element1: element_type, parameter1 = value1, parameter2 = value2, ... ;
 </pre></div>
@@ -421,101 +376,95 @@ name_of_cell: LINE = ( name_of_element1, name_of_element2, name_of_element3, ...
 USE: name_of_cell;
 </pre></div>
 </div>
-<table border="1" class="colwidths-given docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="33%" />
-<col width="67%" />
+<col style="width: 33.3%" />
+<col style="width: 66.7%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head"><strong>element_type</strong></th>
-<th class="head">description</th>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>element_type</strong></p></th>
+<th class="head"><p>description</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td><a class="reference internal" href="#_CPPv36source" title="source"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">source</span></code></a></td>
-<td>Starting point of the simulation.</td>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#_CPPv46source" title="source"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">source</span></code></a></p></td>
+<td><p>Starting point of the simulation.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#_CPPv36marker" title="marker"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">marker</span></code></a></td>
-<td>Marker element.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#_CPPv46marker" title="marker"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">marker</span></code></a></p></td>
+<td><p>Marker element.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#_CPPv38stripper" title="stripper"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">stripper</span></code></a></td>
-<td>Chage stripper element.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#_CPPv48stripper" title="stripper"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">stripper</span></code></a></p></td>
+<td><p>Chage stripper element.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#_CPPv37tmatrix" title="tmatrix"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">tmatrix</span></code></a></td>
-<td>User input transfer matrix.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#_CPPv47tmatrix" title="tmatrix"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">tmatrix</span></code></a></p></td>
+<td><p>User input transfer matrix.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#_CPPv37orbtrim" title="orbtrim"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">orbtrim</span></code></a></td>
-<td>Orbit trim element.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#_CPPv47orbtrim" title="orbtrim"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">orbtrim</span></code></a></p></td>
+<td><p>Orbit trim element.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#_CPPv35drift" title="drift"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">drift</span></code></a></td>
-<td>Drift space element.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#_CPPv45drift" title="drift"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">drift</span></code></a></p></td>
+<td><p>Drift space element.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#_CPPv38solenoid" title="solenoid"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">solenoid</span></code></a></td>
-<td>Solenoid magnet element.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#_CPPv48solenoid" title="solenoid"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">solenoid</span></code></a></p></td>
+<td><p>Solenoid magnet element.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#_CPPv310quadrupole" title="quadrupole"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">quadrupole</span></code></a></td>
-<td>Magnetic quadrupole element.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#_CPPv410quadrupole" title="quadrupole"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">quadrupole</span></code></a></p></td>
+<td><p>Magnetic quadrupole element.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#_CPPv39sextupole" title="sextupole"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">sextupole</span></code></a></td>
-<td>Magnetic sextupole element.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#_CPPv49sextupole" title="sextupole"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">sextupole</span></code></a></p></td>
+<td><p>Magnetic sextupole element.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#_CPPv35equad" title="equad"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">equad</span></code></a></td>
-<td>Electrostatic quadrupole element.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#_CPPv45equad" title="equad"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">equad</span></code></a></p></td>
+<td><p>Electrostatic quadrupole element.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#_CPPv35sbend" title="sbend"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">sbend</span></code></a></td>
-<td>Magnetic bend element.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#_CPPv45sbend" title="sbend"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">sbend</span></code></a></p></td>
+<td><p>Magnetic bend element.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#_CPPv37edipole" title="edipole"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">edipole</span></code></a></td>
-<td>Electrostatic dipole element.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#_CPPv47edipole" title="edipole"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">edipole</span></code></a></p></td>
+<td><p>Electrostatic dipole element.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#_CPPv38rfcavity" title="rfcavity"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">rfcavity</span></code></a></td>
-<td>RF cavity element.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#_CPPv48rfcavity" title="rfcavity"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">rfcavity</span></code></a></p></td>
+<td><p>RF cavity element.</p></td>
 </tr>
 </tbody>
 </table>
-<div class="section" id="special-element">
-<h3>Special element<a class="headerlink" href="#special-element" title="Permalink to this headline">¶</a></h3>
-<dl class="type">
-<dt id="_CPPv36source">
-<span id="_CPPv26source"></span><span id="source"></span><em class="property">type </em><code class="descname">source</code><a class="headerlink" href="#_CPPv36source" title="Permalink to this definition">¶</a><br /></dt>
+<section id="special-element">
+<h3>Special element<a class="headerlink" href="#special-element" title="Link to this heading"></a></h3>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv46source">
+<span id="_CPPv36source"></span><span id="_CPPv26source"></span><span id="source"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">source</span></span></span><a class="headerlink" href="#_CPPv46source" title="Link to this definition"></a><br /></dt>
 <dd><p>Starting point of the simulation. Initial beam state parameters are set at this element.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>vector_variable</strong>: string</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>vector_variable</strong>: string</p>
 <blockquote>
 <div><div class="line-block">
 <div class="line">Name key of the initial centroid vector.</div>
 </div>
 </div></blockquote>
 <p><strong>matrix_variable</strong>: string</p>
-<blockquote class="last">
+<blockquote>
 <div><div class="line-block">
 <div class="line">Name key of the initial envelope matrix.</div>
 </div>
 </div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="type">
-<dt id="_CPPv36marker">
-<span id="_CPPv26marker"></span><span id="marker"></span><em class="property">type </em><code class="descname">marker</code><a class="headerlink" href="#_CPPv36marker" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv46marker">
+<span id="_CPPv36marker"></span><span id="_CPPv26marker"></span><span id="marker"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">marker</span></span></span><a class="headerlink" href="#_CPPv46marker" title="Link to this definition"></a><br /></dt>
 <dd><p>Marker element. Nothing to do.</p>
 </dd></dl>
 
-<dl class="type">
-<dt id="_CPPv38stripper">
-<span id="_CPPv28stripper"></span><span id="stripper"></span><em class="property">type </em><code class="descname">stripper</code><a class="headerlink" href="#_CPPv38stripper" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv48stripper">
+<span id="_CPPv38stripper"></span><span id="_CPPv28stripper"></span><span id="stripper"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stripper</span></span></span><a class="headerlink" href="#_CPPv48stripper" title="Link to this definition"></a><br /></dt>
 <dd><p>Stripper element.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>IonChargeStates</strong>: list of float</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>IonChargeStates</strong>: list of float</p>
 <blockquote>
 <div><div class="line-block">
 <div class="line">List of charge to mass ratios after the charge stripper. [1]</div>
@@ -564,14 +513,14 @@ USE: name_of_cell;
 <p><strong>Stripper_lambda</strong>: float (optional, default is <strong>5.5740</strong>)</p>
 <blockquote>
 <div><div class="line-block">
-<div class="line">Momentum spread factor <img class="math" src="_images/math/76f1d8ace30435987c01a00ca53a71cba1f40e6c.png" alt="\lambda"/> of the charge stripper. [1]</div>
+<div class="line">Momentum spread factor <img class="math" src="_images/math/cefc603e5658facb747581f9567192993f21c7ab.png" alt="\lambda"/> of the charge stripper. [1]</div>
 </div>
 </div></blockquote>
 <p><strong>Stripper_upara</strong>: float (optional, default is <strong>2.6903</strong>)</p>
 <blockquote>
 <div><div class="line-block">
-<div class="line">Momentum spread factor <img class="math" src="_images/math/169c982b5e649cd1bd6445df5583affe427ea269.png" alt="U"/> of the charge stripper. [1]</div>
-<div class="line">The momentum spread is defined as <img class="math" src="_images/math/aeb420e4f4d8c2882563a5bdaa4640cc564c0c35.png" alt="\sqrt(U/\lambda^2)"/> [mrad].</div>
+<div class="line">Momentum spread factor <img class="math" src="_images/math/9098c1c4618d7a0f321cee441aabee7f1b57a19b.png" alt="U"/> of the charge stripper. [1]</div>
+<div class="line">The momentum spread is defined as <img class="math" src="_images/math/0af3def281f01ef82d90ef9394bf0382a356becf.png" alt="\sqrt(U/\lambda^2)"/> [mrad].</div>
 </div>
 </div></blockquote>
 <p><strong>Stripper_E0Para</strong>: vector[3] (optional, default is <strong>[16.348e6, 1.00547, -0.10681]</strong>)</p>
@@ -582,48 +531,40 @@ USE: name_of_cell;
 </div>
 </div></blockquote>
 <p><strong>Stripper_Para</strong>: vector[3] (optional, default is <strong>[3.0, 20.0, 16.623e6]</strong>)</p>
-<blockquote class="last">
+<blockquote>
 <div><div class="line-block">
 <div class="line">Stripper foil parameters.</div>
 <div class="line">[Thickness, Thickness_variation, reference_energy] with [um, %, eV/u]</div>
 </div>
 </div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="type">
-<dt id="_CPPv37tmatrix">
-<span id="_CPPv27tmatrix"></span><span id="tmatrix"></span><em class="property">type </em><code class="descname">tmatrix</code><a class="headerlink" href="#_CPPv37tmatrix" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv47tmatrix">
+<span id="_CPPv37tmatrix"></span><span id="_CPPv27tmatrix"></span><span id="tmatrix"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tmatrix</span></span></span><a class="headerlink" href="#_CPPv47tmatrix" title="Link to this definition"></a><br /></dt>
 <dd><p>User input transfer matrix element.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameter:</th><td class="field-body"><p class="first"><strong>matrix</strong>: vector[49]</p>
-<div class="last line-block">
-<div class="line">Flattened <img class="math" src="_images/math/62d221d64c862f10f88294d421ffcc733665e6b9.png" alt="7 \times 7"/> transfer matrix.</div>
+<dl class="field-list">
+<dt class="field-odd">Parameter<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>matrix</strong>: vector[49]</p>
+<div class="line-block">
+<div class="line">Flattened <img class="math" src="_images/math/0f61cebc66308f6f1f52a956a1ab33262124651b.png" alt="7 \times 7"/> transfer matrix.</div>
 </div>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-</div>
-<div class="section" id="optical-element">
-<h3>Optical element<a class="headerlink" href="#optical-element" title="Permalink to this headline">¶</a></h3>
-<dl class="type">
-<dt id="_CPPv37orbtrim">
-<span id="_CPPv27orbtrim"></span><span id="orbtrim"></span><em class="property">type </em><code class="descname">orbtrim</code><a class="headerlink" href="#_CPPv37orbtrim" title="Permalink to this definition">¶</a><br /></dt>
+</section>
+<section id="optical-element">
+<h3>Optical element<a class="headerlink" href="#optical-element" title="Link to this heading"></a></h3>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv47orbtrim">
+<span id="_CPPv37orbtrim"></span><span id="_CPPv27orbtrim"></span><span id="orbtrim"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">orbtrim</span></span></span><a class="headerlink" href="#_CPPv47orbtrim" title="Link to this definition"></a><br /></dt>
 <dd><p>Orbit trim element. This can be use as steering magnet.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>realpara</strong>: int</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>realpara</strong>: int</p>
 <blockquote>
 <div><div class="line-block">
 <div class="line">Realistic input parameter flag for the beam kick angle.</div>
@@ -656,49 +597,41 @@ USE: name_of_cell;
 </div>
 </div></blockquote>
 <p><strong>xyrotate</strong>: float</p>
-<blockquote class="last">
+<blockquote>
 <div><div class="line-block">
 <div class="line">Transverse rotation angle of the beam. [deg]</div>
 </div>
 </div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">In the case of user puts both “beam kick information” and “transverse rotation angle” to the ONE orbtrim element,
+<p class="admonition-title">Note</p>
+<p>In the case of user puts both “beam kick information” and “transverse rotation angle” to the ONE orbtrim element,
 the process order is, transverse rotation -&gt; beam kick. In other words, the beam kick is effected AFTER the transverse rotation.</p>
 </div>
 </dd></dl>
 
-<dl class="type">
-<dt id="_CPPv35drift">
-<span id="_CPPv25drift"></span><span id="drift"></span><em class="property">type </em><code class="descname">drift</code><a class="headerlink" href="#_CPPv35drift" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv45drift">
+<span id="_CPPv35drift"></span><span id="_CPPv25drift"></span><span id="drift"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drift</span></span></span><a class="headerlink" href="#_CPPv45drift" title="Link to this definition"></a><br /></dt>
 <dd><p>Drift space element.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>L</strong>: float</p>
-<div class="last line-block">
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>L</strong>: float</p>
+<div class="line-block">
 <div class="line">Length of the lattice element. [m]</div>
 </div>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="type">
-<dt id="_CPPv38solenoid">
-<span id="_CPPv28solenoid"></span><span id="solenoid"></span><em class="property">type </em><code class="descname">solenoid</code><a class="headerlink" href="#_CPPv38solenoid" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv48solenoid">
+<span id="_CPPv38solenoid"></span><span id="_CPPv28solenoid"></span><span id="solenoid"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">solenoid</span></span></span><a class="headerlink" href="#_CPPv48solenoid" title="Link to this definition"></a><br /></dt>
 <dd><p>Solenoid magnet element.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>L</strong>: float</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>L</strong>: float</p>
 <blockquote>
 <div><div class="line-block">
 <div class="line">Length of the lattice element. [m]</div>
@@ -707,7 +640,7 @@ the process order is, transverse rotation -&gt; beam kick. In other words, the b
 <p><strong>B</strong>: float</p>
 <blockquote>
 <div><div class="line-block">
-<div class="line">Solenoid strength (<img class="math" src="_images/math/5e65087a6fe77c147e41b1d12c9ef4f4ce818e4c.png" alt="B_z"/>). [T]</div>
+<div class="line">Solenoid strength (<img class="math" src="_images/math/9f9e8c84ef093bd0c4de4e7f8dfcd0a820eb0618.png" alt="B_z"/>). [T]</div>
 </div>
 </div></blockquote>
 <p><strong>dx</strong>: float (default: 0.0)</p>
@@ -772,26 +705,22 @@ Also, the step size is defined by “<strong>L</strong> divided by the size of <
 </div>
 </div></blockquote>
 <p><strong>use_range</strong>: vector[2]</p>
-<blockquote class="last">
+<blockquote>
 <div><div class="line-block">
 <div class="line">Use range of <strong>curve${n}</strong>. Format is [start_id, end_id].</div>
 </div>
 </div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="type">
-<dt id="_CPPv310quadrupole">
-<span id="_CPPv210quadrupole"></span><span id="quadrupole"></span><em class="property">type </em><code class="descname">quadrupole</code><a class="headerlink" href="#_CPPv310quadrupole" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv410quadrupole">
+<span id="_CPPv310quadrupole"></span><span id="_CPPv210quadrupole"></span><span id="quadrupole"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">quadrupole</span></span></span><a class="headerlink" href="#_CPPv410quadrupole" title="Link to this definition"></a><br /></dt>
 <dd><p>Magnetic quadrupole element.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>L</strong>: float</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>L</strong>: float</p>
 <blockquote>
 <div><div class="line-block">
 <div class="line">Length of the lattice element. [m]</div>
@@ -807,31 +736,27 @@ Also, the step size is defined by “<strong>L</strong> divided by the size of <
 <p><strong>dx</strong>, <strong>dy</strong>, <strong>pitch</strong>, <strong>yaw</strong>, <strong>roll</strong>: float</p>
 <blockquote>
 <div><div class="line-block">
-<div class="line">Misalignment parameters. See <a class="reference internal" href="#_CPPv38solenoid" title="solenoid"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">solenoid</span></code></a> case.</div>
+<div class="line">Misalignment parameters. See <a class="reference internal" href="#_CPPv48solenoid" title="solenoid"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">solenoid</span></code></a> case.</div>
 </div>
 </div></blockquote>
 <p><strong>ncurve</strong>, <strong>scl_fac${n}</strong>, <strong>curve${n}</strong>, <strong>CurveFile</strong>, <strong>use_range</strong></p>
-<blockquote class="last">
+<blockquote>
 <div><div class="line-block">
-<div class="line">Curve inputs for slanted and overlapped field. See <a class="reference internal" href="#_CPPv38solenoid" title="solenoid"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">solenoid</span></code></a> case.</div>
+<div class="line">Curve inputs for slanted and overlapped field. See <a class="reference internal" href="#_CPPv48solenoid" title="solenoid"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">solenoid</span></code></a> case.</div>
 <div class="line">Unit of scl_fac${n}*curve${n} is [T/m].</div>
 </div>
 </div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="type">
-<dt id="_CPPv39sextupole">
-<span id="_CPPv29sextupole"></span><span id="sextupole"></span><em class="property">type </em><code class="descname">sextupole</code><a class="headerlink" href="#_CPPv39sextupole" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv49sextupole">
+<span id="_CPPv39sextupole"></span><span id="_CPPv29sextupole"></span><span id="sextupole"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sextupole</span></span></span><a class="headerlink" href="#_CPPv49sextupole" title="Link to this definition"></a><br /></dt>
 <dd><p>Magnetic sextupole element.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>L</strong>: float</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>L</strong>: float</p>
 <blockquote>
 <div><div class="line-block">
 <div class="line">Length of the lattice element. [m]</div>
@@ -858,26 +783,22 @@ Also, the step size is defined by “<strong>L</strong> divided by the size of <
 </div>
 </div></blockquote>
 <p><strong>dx</strong>, <strong>dy</strong>, <strong>pitch</strong>, <strong>yaw</strong>, <strong>roll</strong>: float</p>
-<blockquote class="last">
+<blockquote>
 <div><div class="line-block">
-<div class="line">Misalignment parameters. See <a class="reference internal" href="#_CPPv38solenoid" title="solenoid"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">solenoid</span></code></a> case.</div>
+<div class="line">Misalignment parameters. See <a class="reference internal" href="#_CPPv48solenoid" title="solenoid"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">solenoid</span></code></a> case.</div>
 </div>
 </div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="type">
-<dt id="_CPPv35equad">
-<span id="_CPPv25equad"></span><span id="equad"></span><em class="property">type </em><code class="descname">equad</code><a class="headerlink" href="#_CPPv35equad" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv45equad">
+<span id="_CPPv35equad"></span><span id="_CPPv25equad"></span><span id="equad"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">equad</span></span></span><a class="headerlink" href="#_CPPv45equad" title="Link to this definition"></a><br /></dt>
 <dd><p>Electrostatic quadrupole element.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>L</strong>: float</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>L</strong>: float</p>
 <blockquote>
 <div><div class="line-block">
 <div class="line">Length of the lattice element. [m]</div>
@@ -899,31 +820,27 @@ Also, the step size is defined by “<strong>L</strong> divided by the size of <
 <p><strong>dx</strong>, <strong>dy</strong>, <strong>pitch</strong>, <strong>yaw</strong>, <strong>roll</strong>: float</p>
 <blockquote>
 <div><div class="line-block">
-<div class="line">Misalignment parameters. See <a class="reference internal" href="#_CPPv38solenoid" title="solenoid"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">solenoid</span></code></a> case.</div>
+<div class="line">Misalignment parameters. See <a class="reference internal" href="#_CPPv48solenoid" title="solenoid"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">solenoid</span></code></a> case.</div>
 </div>
 </div></blockquote>
 <p><strong>ncurve</strong>, <strong>scl_fac${n}</strong>, <strong>curve${n}</strong>, <strong>CurveFile</strong>, <strong>use_range</strong></p>
-<blockquote class="last">
+<blockquote>
 <div><div class="line-block">
-<div class="line">Curve inputs for slanted and overlapped field. See <a class="reference internal" href="#_CPPv38solenoid" title="solenoid"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">solenoid</span></code></a> case.</div>
+<div class="line">Curve inputs for slanted and overlapped field. See <a class="reference internal" href="#_CPPv48solenoid" title="solenoid"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">solenoid</span></code></a> case.</div>
 <div class="line">Unit of scl_fac${n}*curve${n} is [V/m^2].</div>
 </div>
 </div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="type">
-<dt id="_CPPv35sbend">
-<span id="_CPPv25sbend"></span><span id="sbend"></span><em class="property">type </em><code class="descname">sbend</code><a class="headerlink" href="#_CPPv35sbend" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv45sbend">
+<span id="_CPPv35sbend"></span><span id="_CPPv25sbend"></span><span id="sbend"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sbend</span></span></span><a class="headerlink" href="#_CPPv45sbend" title="Link to this definition"></a><br /></dt>
 <dd><p>Magnetic bend element.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>L</strong>: float</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>L</strong>: float</p>
 <blockquote>
 <div><div class="line-block">
 <div class="line">Length of the lattice element. [m]</div>
@@ -938,43 +855,58 @@ Also, the step size is defined by “<strong>L</strong> divided by the size of <
 <p><strong>phi1</strong>: float</p>
 <blockquote>
 <div><div class="line-block">
-<div class="line">Front pole face angle. [deg]</div>
+<div class="line">Front pole face angle for edge focusing effect. [deg]</div>
 </div>
 </div></blockquote>
 <p><strong>phi2</strong>: float</p>
 <blockquote>
 <div><div class="line-block">
-<div class="line">Back pole face angle. [deg]</div>
+<div class="line">Back pole face angle for edge focusing effect. [deg]</div>
+</div>
+</div></blockquote>
+<p><strong>dphi1</strong>: float</p>
+<blockquote>
+<div><div class="line-block">
+<div class="line">X-Y difference of front pole face angle. [deg]</div>
+</div>
+</div></blockquote>
+<p><strong>dphi2</strong>: float</p>
+<blockquote>
+<div><div class="line-block">
+<div class="line">X-Y difference of back pole face angle. [deg]</div>
 </div>
 </div></blockquote>
 <p><strong>bg</strong>: float (optional: Used in the case of <a class="reference internal" href="#genpara"><span class="std std-ref">“HdipoleFitMode”</span></a> is <strong>0</strong>.)</p>
 <blockquote>
 <div><div class="line-block">
-<div class="line">Lorentz <img class="math" src="_images/math/3182a2039f450e374c557c56b438f32a7174e271.png" alt="\beta \gamma"/> for the reference beam. [1]</div>
+<div class="line">Lorentz <img class="math" src="_images/math/f0b5a726732efd5b252b1b1691e820ef5df92546.png" alt="\beta \gamma"/> for the reference beam of the bending magnet. [1]</div>
+<div class="line">This parameter is correspond to the bend field strength.</div>
+</div>
+</div></blockquote>
+<p><strong>ref_IonZ</strong>: float (optional: Used in the case of <a class="reference internal" href="#genpara"><span class="std std-ref">“HdipoleFitMode”</span></a> is <strong>0</strong>.)</p>
+<blockquote>
+<div><div class="line-block">
+<div class="line">Charge to mass ratio for the reference beam of the bending magnet. [1]</div>
 <div class="line">This parameter is correspond to the bend field strength.</div>
 </div>
 </div></blockquote>
 <p><strong>dx</strong>, <strong>dy</strong>, <strong>pitch</strong>, <strong>yaw</strong>, <strong>roll</strong>: float</p>
-<blockquote class="last">
+<blockquote>
 <div><div class="line-block">
-<div class="line">Misalignment parameters. See <a class="reference internal" href="#_CPPv38solenoid" title="solenoid"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">solenoid</span></code></a> case.</div>
+<div class="line">Misalignment parameters. See <a class="reference internal" href="#_CPPv48solenoid" title="solenoid"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">solenoid</span></code></a> case.</div>
 </div>
 </div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="type">
-<dt id="_CPPv37edipole">
-<span id="_CPPv27edipole"></span><span id="edipole"></span><em class="property">type </em><code class="descname">edipole</code><a class="headerlink" href="#_CPPv37edipole" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv47edipole">
+<span id="_CPPv37edipole"></span><span id="_CPPv27edipole"></span><span id="edipole"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">edipole</span></span></span><a class="headerlink" href="#_CPPv47edipole" title="Link to this definition"></a><br /></dt>
 <dd><p>Electrostatic dipole (bend) element.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>L</strong>: float</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>L</strong>: float</p>
 <blockquote>
 <div><div class="line-block">
 <div class="line">Length of the lattice element. [m]</div>
@@ -989,7 +921,7 @@ Also, the step size is defined by “<strong>L</strong> divided by the size of <
 <p><strong>beta</strong>: float (optional: Used in the case of <a class="reference internal" href="#genpara"><span class="std std-ref">“HdipoleFitMode”</span></a> is <strong>0</strong>.)</p>
 <blockquote>
 <div><div class="line-block">
-<div class="line">Lorentz <img class="math" src="_images/math/410a9d0df9c135dd73b269cba7ef04dcfd932b1f.png" alt="\beta"/> for the reference beam. [1]</div>
+<div class="line">Lorentz <img class="math" src="_images/math/7138dad9ac96835665b17f5817eacfcaa9b834c9.png" alt="\beta"/> for the reference beam. [1]</div>
 <div class="line">This parameter is correspond to the bend field strength.</div>
 </div>
 </div></blockquote>
@@ -1029,26 +961,22 @@ due to the middle point potential deviation from ground. [1]</div>
 </div>
 </div></blockquote>
 <p><strong>dx</strong>, <strong>dy</strong>, <strong>pitch</strong>, <strong>yaw</strong>, <strong>roll</strong>: float</p>
-<blockquote class="last">
+<blockquote>
 <div><div class="line-block">
-<div class="line">Misalignment parameters. See <a class="reference internal" href="#_CPPv38solenoid" title="solenoid"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">solenoid</span></code></a> case.</div>
+<div class="line">Misalignment parameters. See <a class="reference internal" href="#_CPPv48solenoid" title="solenoid"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">solenoid</span></code></a> case.</div>
 </div>
 </div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="type">
-<dt id="_CPPv38rfcavity">
-<span id="_CPPv28rfcavity"></span><span id="rfcavity"></span><em class="property">type </em><code class="descname">rfcavity</code><a class="headerlink" href="#_CPPv38rfcavity" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv48rfcavity">
+<span id="_CPPv38rfcavity"></span><span id="_CPPv28rfcavity"></span><span id="rfcavity"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rfcavity</span></span></span><a class="headerlink" href="#_CPPv48rfcavity" title="Link to this definition"></a><br /></dt>
 <dd><p>RF cavity element.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>L</strong>: float</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>L</strong>: float</p>
 <blockquote>
 <div><div class="line-block">
 <div class="line">Length of the lattice element. [m]</div>
@@ -1103,67 +1031,59 @@ due to the middle point potential deviation from ground. [1]</div>
 </div>
 </div></blockquote>
 <p><strong>dx</strong>, <strong>dy</strong>, <strong>pitch</strong>, <strong>yaw</strong>, <strong>roll</strong>: float</p>
-<blockquote class="last">
+<blockquote>
 <div><div class="line-block">
-<div class="line">Misalignment parameters. See <a class="reference internal" href="#_CPPv38solenoid" title="solenoid"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">solenoid</span></code></a> case.</div>
+<div class="line">Misalignment parameters. See <a class="reference internal" href="#_CPPv48solenoid" title="solenoid"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">solenoid</span></code></a> case.</div>
 </div>
 </div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-</div>
-</div>
-<div class="section" id="rf-cavity-data-format">
-<span id="cavformat"></span><h2>Rf cavity data format<a class="headerlink" href="#rf-cavity-data-format" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="rf-cavity-data-format">
+<span id="cavformat"></span><h2>Rf cavity data format<a class="headerlink" href="#rf-cavity-data-format" title="Link to this heading"></a></h2>
 <p>FLAME using Thin-Lens-Model for rf cavity calculation.
 Rf cavity data is composed of “Longitudinal axis data”, “Multipole lattice data”, “Multipole field data”, and “TTF fitting data”.</p>
-<div class="section" id="hard-coded-frib-cavity-models">
-<h3>Hard-coded FRIB cavity models<a class="headerlink" href="#hard-coded-frib-cavity-models" title="Permalink to this headline">¶</a></h3>
+<section id="hard-coded-frib-cavity-models">
+<h3>Hard-coded FRIB cavity models<a class="headerlink" href="#hard-coded-frib-cavity-models" title="Link to this heading"></a></h3>
 <p>For typical rf cavity in FRIB, the “TTF fitting data” is hard-coded in FLAME.
 Following files are required for each rf cavity type.</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="25%" />
-<col width="25%" />
-<col width="25%" />
-<col width="25%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head"><strong>cavtype</strong></th>
-<th class="head"><strong>Longitudinal axis data</strong></th>
-<th class="head"><strong>Multipole lattice data</strong></th>
-<th class="head"><strong>Multipole field data</strong></th>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>cavtype</strong></p></th>
+<th class="head"><p><strong>Longitudinal axis data</strong></p></th>
+<th class="head"><p><strong>Multipole lattice data</strong></p></th>
+<th class="head"><p><strong>Multipole field data</strong></p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>“0.041QWR”</td>
-<td>“axisData_41.txt”</td>
-<td>“Multipole41/thinlenlon_41.txt”</td>
-<td>“Multipole41/CaviMlp_41.txt”</td>
+<tbody>
+<tr class="row-even"><td><p>“0.041QWR”</p></td>
+<td><p>“axisData_41.txt”</p></td>
+<td><p>“Multipole41/thinlenlon_41.txt”</p></td>
+<td><p>“Multipole41/CaviMlp_41.txt”</p></td>
 </tr>
-<tr class="row-odd"><td>“0.085QWR”</td>
-<td>“axisData_85.txt”</td>
-<td>“Multipole85/thinlenlon_85.txt”</td>
-<td>“Multipole85/CaviMlp_85.txt”</td>
+<tr class="row-odd"><td><p>“0.085QWR”</p></td>
+<td><p>“axisData_85.txt”</p></td>
+<td><p>“Multipole85/thinlenlon_85.txt”</p></td>
+<td><p>“Multipole85/CaviMlp_85.txt”</p></td>
 </tr>
-<tr class="row-even"><td>“0.29HWR”</td>
-<td>“axisData_29.txt”</td>
-<td>“Multipole29/thinlenlon_29.txt”</td>
-<td>“Multipole29/CaviMlp_29.txt”</td>
+<tr class="row-even"><td><p>“0.29HWR”</p></td>
+<td><p>“axisData_29.txt”</p></td>
+<td><p>“Multipole29/thinlenlon_29.txt”</p></td>
+<td><p>“Multipole29/CaviMlp_29.txt”</p></td>
 </tr>
-<tr class="row-odd"><td>“0.53HWR”</td>
-<td>“axisData_53.txt”</td>
-<td>“Multipole53/thinlenlon_53.txt”</td>
-<td>“Multipole53/CaviMlp_53.txt”</td>
+<tr class="row-odd"><td><p>“0.53HWR”</p></td>
+<td><p>“axisData_53.txt”</p></td>
+<td><p>“Multipole53/thinlenlon_53.txt”</p></td>
+<td><p>“Multipole53/CaviMlp_53.txt”</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="generic-rf-cavity-model">
-<h3>Generic rf cavity model<a class="headerlink" href="#generic-rf-cavity-model" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="generic-rf-cavity-model">
+<h3>Generic rf cavity model<a class="headerlink" href="#generic-rf-cavity-model" title="Link to this heading"></a></h3>
 <p>FLAME supports <em>lattice format</em> input for the generic rf cavity model.</p>
 <p>The basic format of the rf cavity data is similar to the main lattice file,</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Rm = value1;
@@ -1182,108 +1102,108 @@ cell: LINE =(name_of_element1, ...);
 USE: cell;
 </pre></div>
 </div>
-<table border="1" class="colwidths-given docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="20%" />
-<col width="20%" />
-<col width="60%" />
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 60.0%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head"><div class="first last line-block">
+<thead>
+<tr class="row-odd"><th class="head"><div class="line-block">
 <div class="line">keyword</div>
 </div>
 </th>
-<th class="head"><div class="first last line-block">
+<th class="head"><div class="line-block">
 <div class="line">value</div>
 </div>
 </th>
-<th class="head"><div class="first last line-block">
+<th class="head"><div class="line-block">
 <div class="line">description</div>
 </div>
 </th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td><div class="first last line-block">
+<tbody>
+<tr class="row-even"><td><div class="line-block">
 <div class="line"><strong>Rm</strong></div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">float</div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">Characteristic radial length of the multipole expansion. [mm]</div>
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td><div class="first last line-block">
+<tr class="row-odd"><td><div class="line-block">
 <div class="line"><strong>Ez</strong></div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">vector[2*n]</div>
 </div>
 </td>
-<td><div class="first last line-block">
-<div class="line">On axis <img class="math" src="_images/math/f04edc8d5ad19598d160666a6f837725177992ef.png" alt="E_z"/> data.</div>
+<td><div class="line-block">
+<div class="line">On axis <img class="math" src="_images/math/3f09788b2e3f795eb96684f1be784fe4323df776.png" alt="E_z"/> data.</div>
 <div class="line">The odd index (1,3,5,…) is z position. [mm]</div>
 <div class="line">The even index (2,4,6,…) is Electric field strength. [V/m]</div>
 </div>
 </td>
 </tr>
-<tr class="row-even"><td><div class="first last line-block">
+<tr class="row-even"><td><div class="line-block">
 <div class="line"><strong>RefNorm</strong></div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">float</div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">Reference normalization factor for complex synchronous phase definition.</div>
-<div class="line">This value is defined by <img class="math" src="_images/math/1cbacb32c133b1b20e79addf8d0a16eacb0c36f6.png" alt="q A/m"/> where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is the scaling factor of the 3D EM field.</div>
+<div class="line">This value is defined by <img class="math" src="_images/math/ee315687981f1a34eaa6695242bc835947f6d6fa.png" alt="q A/m"/> where <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/> is the scaling factor of the 3D EM field.</div>
 <div class="line">If <strong>RefNorm</strong> or <strong>SyncFit</strong> are not defined, sinusoidal model is used for the synchronous phase definition.</div>
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td><div class="first last line-block">
+<tr class="row-odd"><td><div class="line-block">
 <div class="line"><strong>SyncFit</strong></div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">vector[5*n]</div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">Fitting parameters for complex synchronous phase definition.</div>
 <div class="line">The fitting model is shown <a class="reference internal" href="#ttfnote"><span class="std std-ref">here</span></a>.</div>
 </div>
 </td>
 </tr>
-<tr class="row-even"><td><div class="first last line-block">
+<tr class="row-even"><td><div class="line-block">
 <div class="line"><strong>EnergyLimit</strong></div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">vector[2]</div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">Lower and higher limit for incident energy. [MeV]</div>
 <div class="line">This value is used for warning signs only.</div>
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td><div class="first last line-block">
+<tr class="row-odd"><td><div class="line-block">
 <div class="line"><strong>NormLimit</strong></div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">vector[2]</div>
 </div>
 </td>
-<td><div class="first last line-block">
+<td><div class="line-block">
 <div class="line">Lower and higher limit for normalization factor.</div>
 <div class="line">This value is used for warning signs only.</div>
 </div>
@@ -1291,18 +1211,16 @@ USE: cell;
 </tr>
 </tbody>
 </table>
-<div class="section" id="lattice-element-for-the-rf-cavity-data">
-<h4>Lattice element for the rf cavity data<a class="headerlink" href="#lattice-element-for-the-rf-cavity-data" title="Permalink to this headline">¶</a></h4>
-<p>Drift space is the same format as the main lattice but unit of <code class="docutils literal notranslate"><span class="pre">L</span></code> is [mm] - <a class="reference internal" href="#_CPPv35drift" title="drift"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">drift</span></code></a></p>
-<dl class="type">
-<dt id="_CPPv37EDipole">
-<span id="_CPPv27EDipole"></span><span id="EDipole"></span><em class="property">type </em><code class="descname">EDipole</code><a class="headerlink" href="#_CPPv37EDipole" title="Permalink to this definition">¶</a><br /></dt>
+<section id="lattice-element-for-the-rf-cavity-data">
+<h4>Lattice element for the rf cavity data<a class="headerlink" href="#lattice-element-for-the-rf-cavity-data" title="Link to this heading"></a></h4>
+<p>Drift space is the same format as the main lattice but unit of <code class="docutils literal notranslate"><span class="pre">L</span></code> is [mm] - <a class="reference internal" href="#_CPPv45drift" title="drift"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">drift</span></code></a></p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv47EDipole">
+<span id="_CPPv37EDipole"></span><span id="_CPPv27EDipole"></span><span id="EDipole"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EDipole</span></span></span><a class="headerlink" href="#_CPPv47EDipole" title="Link to this definition"></a><br /></dt>
 <dd><p>Dipole term generated by the electric field.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>L</strong>: float</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>L</strong>: float</p>
 <blockquote>
 <div><div class="line-block">
 <div class="line">Length of the lattice element. [mm]</div>
@@ -1316,42 +1234,38 @@ USE: cell;
 </div>
 </div></blockquote>
 <p><strong>attr</strong>: vector[20]</p>
-<blockquote class="last">
+<blockquote>
 <div><div class="line-block">
 <div class="line">TTF fitting parameter. <a class="reference internal" href="#ttfnote"><span class="std std-ref">(see here)</span></a></div>
-<div class="line">1 to 10 - fitting parameter for <img class="math" src="_images/math/f2d283a2071f9d043c9e0b0f794a8880fa0d3ce9.png" alt="T"/></div>
-<div class="line">11 to 20 - fitting parameter for <img class="math" src="_images/math/1dbc400fcc213305415872f9f625cd2828f97a00.png" alt="S"/></div>
+<div class="line">1 to 10 - fitting parameter for <img class="math" src="_images/math/e8dea8254118f111b5fb20895b03528c17566f06.png" alt="T"/></div>
+<div class="line">11 to 20 - fitting parameter for <img class="math" src="_images/math/b988975be41fd13b4d091c10202ba19374643586.png" alt="S"/></div>
 </div>
 </div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="type">
-<dt id="_CPPv36EFocus">
-<span id="_CPPv26EFocus"></span><span id="EFocus"></span><em class="property">type </em><code class="descname">EFocus</code><a class="headerlink" href="#_CPPv36EFocus" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv46EFocus">
+<span id="_CPPv36EFocus"></span><span id="_CPPv26EFocus"></span><span id="EFocus"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EFocus</span></span></span><a class="headerlink" href="#_CPPv46EFocus" title="Link to this definition"></a><br /></dt>
 <dd><p>Constant focusing term generated by the electric field.</p>
-<p>Parameters are the same as <a class="reference internal" href="#_CPPv37EDipole" title="EDipole"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">EDipole</span></code></a>.</p>
+<p>Parameters are the same as <a class="reference internal" href="#_CPPv47EDipole" title="EDipole"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">EDipole</span></code></a>.</p>
 </dd></dl>
 
-<dl class="type">
-<dt id="_CPPv35EQuad">
-<span id="_CPPv25EQuad"></span><span id="EQuad"></span><em class="property">type </em><code class="descname">EQuad</code><a class="headerlink" href="#_CPPv35EQuad" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv45EQuad">
+<span id="_CPPv35EQuad"></span><span id="_CPPv25EQuad"></span><span id="EQuad"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EQuad</span></span></span><a class="headerlink" href="#_CPPv45EQuad" title="Link to this definition"></a><br /></dt>
 <dd><p>Quadrupole term generated by the electric field.</p>
-<p>Parameters are the same as <a class="reference internal" href="#_CPPv37EDipole" title="EDipole"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">EDipole</span></code></a>.</p>
+<p>Parameters are the same as <a class="reference internal" href="#_CPPv47EDipole" title="EDipole"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">EDipole</span></code></a>.</p>
 </dd></dl>
 
-<dl class="type">
-<dt id="_CPPv35HMono">
-<span id="_CPPv25HMono"></span><span id="HMono"></span><em class="property">type </em><code class="descname">HMono</code><a class="headerlink" href="#_CPPv35HMono" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv45HMono">
+<span id="_CPPv35HMono"></span><span id="_CPPv25HMono"></span><span id="HMono"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HMono</span></span></span><a class="headerlink" href="#_CPPv45HMono" title="Link to this definition"></a><br /></dt>
 <dd><p>Dipole term generated by the magnetic field.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>L</strong>: float</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>L</strong>: float</p>
 <blockquote>
 <div><div class="line-block">
 <div class="line">Length of the lattice element. [mm]</div>
@@ -1365,42 +1279,38 @@ USE: cell;
 </div>
 </div></blockquote>
 <p><strong>attr</strong>: vector[20]</p>
-<blockquote class="last">
+<blockquote>
 <div><div class="line-block">
 <div class="line">TTF fitting parameter. <a class="reference internal" href="#ttfnote"><span class="std std-ref">(see here)</span></a></div>
-<div class="line">1 to 10 - fitting parameter for <img class="math" src="_images/math/f2d283a2071f9d043c9e0b0f794a8880fa0d3ce9.png" alt="T"/></div>
-<div class="line">11 to 20 - fitting parameter for <img class="math" src="_images/math/1dbc400fcc213305415872f9f625cd2828f97a00.png" alt="S"/></div>
+<div class="line">1 to 10 - fitting parameter for <img class="math" src="_images/math/e8dea8254118f111b5fb20895b03528c17566f06.png" alt="T"/></div>
+<div class="line">11 to 20 - fitting parameter for <img class="math" src="_images/math/b988975be41fd13b4d091c10202ba19374643586.png" alt="S"/></div>
 </div>
 </div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="type">
-<dt id="_CPPv36HFocus">
-<span id="_CPPv26HFocus"></span><span id="HFocus"></span><em class="property">type </em><code class="descname">HFocus</code><a class="headerlink" href="#_CPPv36HFocus" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv46HFocus">
+<span id="_CPPv36HFocus"></span><span id="_CPPv26HFocus"></span><span id="HFocus"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HFocus</span></span></span><a class="headerlink" href="#_CPPv46HFocus" title="Link to this definition"></a><br /></dt>
 <dd><p>Constant focusing term generated by the magnetic field.</p>
-<p>Parameters are the same as <a class="reference internal" href="#_CPPv35HMono" title="HMono"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">HMono</span></code></a>.</p>
+<p>Parameters are the same as <a class="reference internal" href="#_CPPv45HMono" title="HMono"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">HMono</span></code></a>.</p>
 </dd></dl>
 
-<dl class="type">
-<dt id="_CPPv35HQuad">
-<span id="_CPPv25HQuad"></span><span id="HQuad"></span><em class="property">type </em><code class="descname">HQuad</code><a class="headerlink" href="#_CPPv35HQuad" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv45HQuad">
+<span id="_CPPv35HQuad"></span><span id="_CPPv25HQuad"></span><span id="HQuad"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HQuad</span></span></span><a class="headerlink" href="#_CPPv45HQuad" title="Link to this definition"></a><br /></dt>
 <dd><p>Quadrupole term generated by the magnetic field.</p>
-<p>Parameters are the same as <a class="reference internal" href="#_CPPv35HMono" title="HMono"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">HMono</span></code></a>.</p>
+<p>Parameters are the same as <a class="reference internal" href="#_CPPv45HMono" title="HMono"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">HMono</span></code></a>.</p>
 </dd></dl>
 
-<dl class="type">
-<dt id="_CPPv36AccGap">
-<span id="_CPPv26AccGap"></span><span id="AccGap"></span><em class="property">type </em><code class="descname">AccGap</code><a class="headerlink" href="#_CPPv36AccGap" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv46AccGap">
+<span id="_CPPv36AccGap"></span><span id="_CPPv26AccGap"></span><span id="AccGap"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AccGap</span></span></span><a class="headerlink" href="#_CPPv46AccGap" title="Link to this definition"></a><br /></dt>
 <dd><p>Acceleration gap term by the longitudinal electric field.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>L</strong>: float</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>L</strong>: float</p>
 <blockquote>
 <div><div class="line-block">
 <div class="line">Length of the lattice element. [mm]</div>
@@ -1414,109 +1324,70 @@ USE: cell;
 </div>
 </div></blockquote>
 <p><strong>attr</strong>: vector[23]</p>
-<blockquote class="last">
+<blockquote>
 <div><div class="line-block">
 <div class="line">TTF fitting parameter. <a class="reference internal" href="#ttfnote"><span class="std std-ref">(see here)</span></a></div>
-<div class="line">1 to 10 - fitting parameter for <img class="math" src="_images/math/f2d283a2071f9d043c9e0b0f794a8880fa0d3ce9.png" alt="T"/></div>
-<div class="line">11 to 20 - fitting parameter for <img class="math" src="_images/math/1dbc400fcc213305415872f9f625cd2828f97a00.png" alt="S"/></div>
+<div class="line">1 to 10 - fitting parameter for <img class="math" src="_images/math/e8dea8254118f111b5fb20895b03528c17566f06.png" alt="T"/></div>
+<div class="line">11 to 20 - fitting parameter for <img class="math" src="_images/math/b988975be41fd13b4d091c10202ba19374643586.png" alt="S"/></div>
 <div class="line">21 to 23 - fitting parameter for the synchronous phase</div>
 </div>
 </div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <div class="admonition note" id="ttfnote">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>FLAME is using TTF-calculation acceleration technique to boost cavity modeling speed.
-TTF factor <img class="math" src="_images/math/f2d283a2071f9d043c9e0b0f794a8880fa0d3ce9.png" alt="T"/> and <img class="math" src="_images/math/1dbc400fcc213305415872f9f625cd2828f97a00.png" alt="S"/> are pre-calculated and fitted using 9th order polynomial function according
-to different particle phase speed <img class="math" src="_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/>. <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>-th fitting parameter <img class="math" src="_images/math/66b30555c6212f4bfbe96c9a9dfceb59d818aef6.png" alt="p_n"/> is listed as,</p>
+TTF factor <img class="math" src="_images/math/e8dea8254118f111b5fb20895b03528c17566f06.png" alt="T"/> and <img class="math" src="_images/math/b988975be41fd13b4d091c10202ba19374643586.png" alt="S"/> are pre-calculated and fitted using 9th order polynomial function according
+to different particle phase speed <img class="math" src="_images/math/9630132210b904754c9ab272b61cb527d12263ca.png" alt="k"/>. <img class="math" src="_images/math/5a939c5280da7202ca4531f175a7780ad5e1f80a.png" alt="n"/>-th fitting parameter <img class="math" src="_images/math/3fd88e5561f4bce2bf17dc50624a4756051bf38a.png" alt="p_n"/> is listed as,</p>
 <div class="math">
-<p><img src="_images/math/69e5b7037fef6e7d10922e4f275ab3eb05bf946c.png" alt="T(k), S(k) = \sum^9_{n=0} p_n k^{(9-n)}."/></p>
+<p><img src="_images/math/02d31eced292d4a171227923cce486957f081dba.png" alt="T(k), S(k) = \sum^9_{n=0} p_n k^{(9-n)}."/></p>
 </div><p>The driven-phase calculation is also boosted by using fitting model for the energy gain curve.</p>
-<p>For the sinusoidal fitting model, the phase transferring factor <img class="math" src="_images/math/c5da64a5ce128ba6f5cbe97f2cbe03ae83756b55.png" alt="\varphi_c"/> is fitted by using</p>
+<p>For the sinusoidal fitting model, the phase transferring factor <img class="math" src="_images/math/a93d2232155a790fec434e2640f78b604791ca48.png" alt="\varphi_c"/> is fitted by using</p>
 <div class="math">
-<p><img src="_images/math/5e0768c30c9fdfc1d3fdebb087f1252ad13aabfa.png" alt="\varphi_c = p_0 E^{p_1} + p_2."/></p>
-</div><p>Here, <img class="math" src="_images/math/4b6222b865b812d2a59368cd1629eed6b54454d5.png" alt="E"/> is the kinetic energy and <img class="math" src="_images/math/4f5615fd744e58021353f4c8bbd98bbb9c766678.png" alt="p_{i = 0, 1, 2}"/> are the fitting parameters.</p>
-<p>For other complex models (e.g. peak-base model), the phase transferring factor depends on the normalization factor <img class="math" src="_images/math/85ce28456b1e68f92420a11046ef2c191a17866b.png" alt="g = q A/m"/> where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is the scaling factor of the 3D EM field. The fitting model for <img class="math" src="_images/math/c5da64a5ce128ba6f5cbe97f2cbe03ae83756b55.png" alt="\varphi_c"/> is,</p>
+<p><img src="_images/math/c4cc76f665562f7615333b2e394e1d3b2955669e.png" alt="\varphi_c = p_0 E^{p_1} + p_2."/></p>
+</div><p>Here, <img class="math" src="_images/math/1815f600df7845409443aed470eac2d449e4ddb0.png" alt="E"/> is the kinetic energy and <img class="math" src="_images/math/efc56f9c0734b0ed26a3327d78e480a83d7f4a14.png" alt="p_{i = 0, 1, 2}"/> are the fitting parameters.</p>
+<p>For other complex models (e.g. peak-base model), the phase transferring factor depends on the normalization factor <img class="math" src="_images/math/f46eca3c46090a1b1ffdf9fa526d38d1df758d32.png" alt="g = q A/m"/> where <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/> is the scaling factor of the 3D EM field. The fitting model for <img class="math" src="_images/math/a93d2232155a790fec434e2640f78b604791ca48.png" alt="\varphi_c"/> is,</p>
 <div class="math">
-<p><img src="_images/math/24085050fe910a4f189e19c7ff28740edda298c2.png" alt="\varphi_c = \sum_{i=0}^n (p_{5i} E^{p_{5i+1}} + p_{5i+2} \ln(E) + p_{5i+3}e^E + p_{5i+4})\times g^i ."/></p>
-</div><p>Here, user can determine <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> value corresponds to the size of <strong>SyncFit</strong>.</p>
-<p>The driven phase <img class="math" src="_images/math/5c83d15adf8048ff5d3ed7c1dfb577ca3cdaec33.png" alt="\varphi_d"/> is calculated by using <img class="math" src="_images/math/c5da64a5ce128ba6f5cbe97f2cbe03ae83756b55.png" alt="\varphi_c"/>,</p>
+<p><img src="_images/math/a1836e679d412cdeea74d66c48e6a5c978551eb8.png" alt="\varphi_c = \sum_{i=0}^n (p_{5i} E^{p_{5i+1}} + p_{5i+2} \ln(E) + p_{5i+3}e^E + p_{5i+4})\times g^i ."/></p>
+</div><p>Here, user can determine <img class="math" src="_images/math/5a939c5280da7202ca4531f175a7780ad5e1f80a.png" alt="n"/> value corresponds to the size of <strong>SyncFit</strong>.</p>
+<p>The driven phase <img class="math" src="_images/math/0460f43592fc1352b62cd36b67de224461c691d8.png" alt="\varphi_d"/> is calculated by using <img class="math" src="_images/math/a93d2232155a790fec434e2640f78b604791ca48.png" alt="\varphi_c"/>,</p>
 <div class="math">
-<p><img src="_images/math/06af7b7ec84c8abe4bb503c472353f4ca13bcdf3.png" alt="\varphi_d = \varphi_s - \varphi_c - m \varphi_\text{abs}"/></p>
-</div><p class="last">where, <img class="math" src="_images/math/21610278bac65dacc7c26e19217d5bde6bcb06bc.png" alt="\varphi_s"/> is the synchronous phase in input, <img class="math" src="_images/math/9061be1cf36f9d2a7ac58506e718ca5f71f53f23.png" alt="\varphi_\text{abs}"/>
-is absolute phase in front of the rf cavity, and <img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> is the harmonic number.</p>
+<p><img src="_images/math/98aa80c3195125a927d7b617d30934db72ca42c9.png" alt="\varphi_d = \varphi_s - \varphi_c - m \varphi_\text{abs}"/></p>
+</div><p>where, <img class="math" src="_images/math/d55c07c57a993429551b5ba4e1e7a00ec16a2f73.png" alt="\varphi_s"/> is the synchronous phase in input, <img class="math" src="_images/math/e81699374ad4234d1784f6f27dd2e61c15ec3cdd.png" alt="\varphi_\text{abs}"/>
+is absolute phase in front of the rf cavity, and <img class="math" src="_images/math/e9bc7da808d33a16a8347f27a519bd067186aa66.png" alt="m"/> is the harmonic number.</p>
 </div>
-</div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="classlib.html" class="btn btn-neutral float-right" title="Class Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="tutorial.html" class="btn btn-neutral" title="Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tutorial.html" class="btn btn-neutral float-left" title="Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="classlib.html" class="btn btn-neutral float-right" title="Class Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &copy; Copyright 2017, Kei Fukushima
-
-    </p>
+    <p>&#169; Copyright 2025, Kei Fukushima.</p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-
-  
-
-    
-    
-      <script type="text/javascript">
-          var DOCUMENTATION_OPTIONS = {
-              URL_ROOT:'./',
-              VERSION:'1.8.5',
-              LANGUAGE:'None',
-              COLLAPSE_INDEX:false,
-              FILE_SUFFIX:'.html',
-              HAS_SOURCE:  true,
-              SOURCELINK_SUFFIX: '.txt'
-          };
-      </script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });

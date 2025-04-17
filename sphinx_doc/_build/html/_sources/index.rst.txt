@@ -5,6 +5,7 @@
 
 FLAME (Python API) doc page
 ===========================
+- version: |version|
 
 **FLAME - Fast Linear Accelerator Model Engine**
 
