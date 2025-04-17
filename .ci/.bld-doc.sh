@@ -11,3 +11,4 @@ cmake /io -DPYTHON_EXECUTABLE=/opt/python/${PY_NAME}/bin/python
 cmake --build . --target doc
 
 mv documentation /io/doc-built
+mv sphinx_doc/_build/html /io/doc-built/pyapi/
