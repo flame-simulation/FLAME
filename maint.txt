@@ -1,0 +1,10 @@
+- Merge all source changes to upstream branch
+- Ready to release?
+  - merge upstream to main
+  - follow the guidelines on docs or packages releasing
+
+Docs:
+- Update docs: Create and push a new tag starts with doc/, e.g. doc/1.9.2.
+
+Packages:
+- Release wheels: Create a new release from GitHub UI.
