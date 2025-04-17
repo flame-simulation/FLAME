@@ -15,8 +15,8 @@ See the following sections for developers' guide.
 
 * [C++ documentation](https://flame-simulation.github.io/FLAME)
 * [Getting started](https://flame-simulation.github.io/FLAME/gettingstarted.html)
+* [Python Sphinx doc](https://flame-simulation.github.io/FLAME/sphinx/)
 * Report [bugs through ISSUES](https://github.com/flame-simulation/FLAME/issues)
-
 
 ## Development
 
