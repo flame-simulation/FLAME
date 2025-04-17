@@ -22,7 +22,9 @@ A discrete accelerator simulation engine
 
 @subpage devnotes
 
-Source doc repository https://github.com/flame-simulation/FLAME
+FLAME source code repository: https://github.com/flame-simulation/FLAME
+
+Sphinx Python documentation: https://flame-simulation.github.io/FLAME/sphinx
 
 */
 
