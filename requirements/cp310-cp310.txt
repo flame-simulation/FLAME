@@ -1,6 +1,0 @@
-# Linux Mint 21.3 Virginia
-cmake==3.22.1
-wheel==0.37.1
-pytest==6.2.5
-numpy==1.21.5
-scipy==1.8.0

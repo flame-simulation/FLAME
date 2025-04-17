@@ -1,6 +1,0 @@
-# Debian 11 Bullseye
-cmake==3.18.4
-wheel==0.34.2
-pytest==6.0.2
-numpy==1.19.5
-scipy==1.6.0

@@ -1,6 +1,0 @@
-# Debian Buster 10
-cmake==3.13.3
-wheel==0.32.3
-pytest==3.10.1
-numpy==1.16.2
-scipy==1.1.0
