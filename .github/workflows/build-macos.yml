@@ -29,6 +29,9 @@ jobs:
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel
 
+      - name: Install dependencies
+        run: python -m pip install "numpy>1.0,<2.0" "scipy>1.0,<2.0"
+
       - name: Build wheels with cibuildwheel (arm64)
         env:
           CIBW_ARCHS: arm64
