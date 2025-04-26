@@ -1,0 +1,38 @@
+name: Build wheels on macOS AppleSilicon
+
+on:
+  push:
+    branches:
+      - macos
+
+jobs:
+  build_wheels:
+    runs-on: macos-14
+
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+  
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install cibuildwheel
+        run: python -m pip install cibuildwheel
+
+      - name: Build wheels with cibuildwheel (arm64)
+        env:
+          CIBW_ARCHS: arm64
+          CIBW_ENVIRONMENT: 'CMAKE_ARGS="-DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_BUILD_TYPE=Release"'
+        run: |
+          python -m cibuildwheel --platform macos --output-dir wheelhouse
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-macos-arm64
+          path: wheelhouse/*.whl
