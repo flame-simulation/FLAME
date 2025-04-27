@@ -35,6 +35,7 @@ jobs:
       - name: Build wheels with cibuildwheel (arm64)
         env:
           CIBW_ARCHS: arm64
+          CIBW_BEFORE_BUILD: "which python && python --version"
           CIBW_ENVIRONMENT: >
             CMAKE_ARGS="-DCMAKE_OSX_ARCHITECTURES=arm64
                         -DCMAKE_BUILD_TYPE=Release
