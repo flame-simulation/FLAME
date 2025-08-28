@@ -37,8 +37,8 @@ void List2Config(Config& ret, PyObject *list, unsigned depth)
 
         if(PyArray_Check(value)) { // array as vector<double>
             PyRef<> arr(PyArray_ContiguousFromAny(value, NPY_DOUBLE, 0, 2));
-            double *buf = (double*)PyArray_DATA(arr.py());
-            std::vector<double> temp(PyArray_SIZE(arr.py()));
+            double *buf = (double*)PyArray_DATA((PyArrayObject*)arr.py());
+            std::vector<double> temp(PyArray_SIZE((PyArrayObject*)arr.py()));
             std::copy(buf, buf+temp.size(), temp.begin());
 
             ret.swap<std::vector<double> >(kname, temp);
@@ -112,7 +112,7 @@ struct confval : public boost::static_visitor<PyRef<> >
     {
         npy_intp dims[]  = {(npy_intp)v.size()};
         PyRef<> obj(PyArray_SimpleNew(1, dims, NPY_DOUBLE));
-        std::copy(v.begin(), v.end(), (double*)PyArray_DATA(obj.py()));
+        std::copy(v.begin(), v.end(), (double*)PyArray_DATA((PyArrayObject*)obj.py()));
         return obj;
     }
 

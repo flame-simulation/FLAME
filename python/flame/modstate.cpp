@@ -108,7 +108,7 @@ PyObject *PyState_getattro(PyObject *raw, PyObject *attr)
 
         // pull parts from PyArray into ArrayInfo so we can use ArrayInfo::raw() to access
         StateBase::ArrayInfo pyinfo;
-        pyinfo.ptr = PyArray_BYTES(obj.py());
+        pyinfo.ptr = PyArray_BYTES((PyArrayObject*)obj.py());
         pyinfo.ndim= PyArray_NDIM(obj.get());
         std::copy(PyArray_DIMS(obj.get()),
                   PyArray_DIMS(obj.get())+pyinfo.ndim,
@@ -198,18 +198,18 @@ int PyState_setattro(PyObject *raw, PyObject *attr, PyObject *val)
         //  means assignment with wrong cardinality
         PyRef<PyArrayObject> arr(PyArray_FromObject(val, pytype, info.ndim, info.ndim));
 
-        if(info.ndim!=(size_t)PyArray_NDIM(arr.py())) {
+        if(info.ndim!=(size_t)PyArray_NDIM((PyArrayObject*)arr.py())) {
             PyErr_Format(PyExc_ValueError, "cardinality don't match");
             return -1;
         } else if(!std::equal(info.dim, info.dim+info.ndim,
-                                    PyArray_DIMS(arr.py()))) {
+                                    PyArray_DIMS((PyArrayObject*)arr.py()))) {
             PyErr_Format(PyExc_ValueError, "shape does not match don't match");
             return -1;
         }
 
         // pull parts from PyArray into ArrayInfo so we can use ArrayInfo::raw() to access
         StateBase::ArrayInfo pyinfo;
-        pyinfo.ptr = PyArray_BYTES(arr.py());
+        pyinfo.ptr = PyArray_BYTES((PyArrayObject*)arr.py());
         pyinfo.ndim= PyArray_NDIM(arr.get());
         std::copy(PyArray_DIMS(arr.get()),
                   PyArray_DIMS(arr.get())+pyinfo.ndim,
@@ -233,7 +233,7 @@ int PyState_setattro(PyObject *raw, PyObject *attr, PyObject *val)
 
         if(info.ndim==1) {
             for(size_t i=0; i<info.dim[0]; i++) {
-                const void *src = PyArray_GETPTR1(arr.py(), i);
+                const void *src = PyArray_GETPTR1((PyArrayObject*)arr.py(), i);
                 void *dest  = info.raw(&i);
                 switch(info.type) {
                 case StateBase::ArrayInfo::Double: *(double*)dest = *(double*)src; break;
@@ -244,7 +244,7 @@ int PyState_setattro(PyObject *raw, PyObject *attr, PyObject *val)
             size_t idx[2];
             for(idx[0]=0; idx[0]<info.dim[0]; idx[0]++) {
                 for(idx[1]=0; idx[1]<info.dim[1]; idx[1]++) {
-                    const void *src = PyArray_GETPTR2(arr.py(), idx[0], idx[1]);
+                    const void *src = PyArray_GETPTR2((PyArrayObject*)arr.py(), idx[0], idx[1]);
                     void *dest  = info.raw(idx);
                     switch(info.type) {
                     case StateBase::ArrayInfo::Double: *(double*)dest = *(double*)src; break;
