@@ -629,6 +629,82 @@ void MomentElementBase::get_misalign(const state_t &ST, const Particle &real, va
     IM = prod(scl_inv, IM);
 }
 
+void MomentElementBase::get_misalign_bend(const state_t &ST, const Particle &real, const double phi, const bool ver, value_t &M, value_t &IM) const
+{
+    state_t::matrix_t R,
+              scl     = boost::numeric::ublas::identity_matrix<double>(state_t::maxsize),
+              scl_inv = scl,
+              T       = scl,
+              T_inv   = scl,
+              R_inv   = scl;
+
+    double rho, cs, sn;
+
+    scl(state_t::PS_S, state_t::PS_S)   /= -real.SampleIonK;
+    scl(state_t::PS_PS, state_t::PS_PS) /= sqr(real.beta)*real.gamma*ST.ref.IonEs/MeVtoeV;
+
+    inverse(scl_inv, scl);
+
+    // Translate to center of element.
+    rho = fabs(length/phi);
+    cs = cos(phi/2e0);
+    sn = sin(phi/2e0);
+    T(state_t::PS_S,  6) = -rho*sn/2e0*MtoMM;
+    T(state_t::PS_PS, 6) = cs-1e0;
+    T(4, 4) = cs, T(5, 5) = cs;
+    if (!ver) {
+        T(0, 0) = cs, T(1, 1) = cs;
+        T(0, 4) = -sn, T(1, 5) = -sn;
+        T(4, 0) = sn, T(5, 1) = sn;
+        T(0, 6) = rho*(1e0-cs)/2e0*MtoMM;
+        T(1, 6) = -sn;
+    } else {
+        T(2, 2) = cs, T(3, 3) = cs;
+        T(2, 4) = -sn, T(3, 5) = -sn;
+        T(4, 2) = sn, T(5, 3) = sn;
+        T(2, 6) = rho*(1e0-cs)/2e0*MtoMM;
+        T(3, 6) = -sn;
+    }
+    inverse(T_inv, T);
+
+    // right hand rotation
+    RotMat(dx, dy, pitch, -yaw, roll, R);
+
+    M = prod(T, scl);
+    M = prod(R, M);
+    M = prod(T_inv, M);
+    M = prod(scl_inv, M);
+
+    inverse(R_inv, R);
+
+    // Translate to center of element.
+    rho = fabs(length/phi);
+    cs = cos(-phi/2e0);
+    sn = sin(-phi/2e0);
+    T(state_t::PS_S,  6) = -rho*sn/2e0*MtoMM;
+    T(state_t::PS_PS, 6) = cs-1e0;
+    T(4, 4) = cs, T(5, 5) = cs;
+    if (!ver) {
+        T(0, 0) = cs, T(1, 1) = cs;
+        T(0, 4) = -sn, T(1, 5) = -sn;
+        T(4, 0) = sn, T(5, 1) = sn;
+        T(0, 6) = rho*(1e0-cs)/2e0*MtoMM;
+        T(1, 6) = -sn;
+    } else {
+        T(2, 2) = cs, T(3, 3) = cs;
+        T(2, 4) = -sn, T(3, 5) = -sn;
+        T(4, 2) = sn, T(5, 3) = sn;
+        T(2, 6) = rho*(1e0-cs)/2e0*MtoMM;
+        T(3, 6) = -sn;
+    }
+    inverse(T_inv, T);
+
+    IM = prod(T, scl);
+    IM = prod(R_inv, IM);
+    IM = prod(T_inv, IM);
+    IM = prod(scl_inv, IM);
+}
+
 unsigned MomentElementBase::get_flag(const Config& c, const std::string& name, const unsigned& def_value)
 {
     unsigned read_value;
@@ -1067,7 +1143,8 @@ struct ElementSBend : public MomentElementBase
                     //TODO: no-op code?  results are unconditionally overwritten
                 }
 
-                get_misalign(ST, ST.real[i], misalign[i], misalign_inv[i]);
+                //get_misalign(ST, ST.real[i], misalign[i], misalign_inv[i]);
+                get_misalign_bend(ST, ST.real[i], phi, ver, misalign[i], misalign_inv[i]);
 
                 noalias(scratch)     = prod(transfer[i], misalign[i]);
                 noalias(transfer[i]) = prod(misalign_inv[i], scratch);
