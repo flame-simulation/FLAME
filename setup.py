@@ -64,6 +64,6 @@ setup(
         'build_ext': build_ext,
     },
     install_requires = [
-        'numpy>1.21,<2.0',
+        'numpy>1.21',
     ]
 )

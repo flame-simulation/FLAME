@@ -1,6 +1,6 @@
 ![Doxygen](https://github.com/zhangt58/flame/actions/workflows/gh-pages.yml/badge.svg)
 ![Wheels](https://github.com/zhangt58/flame/actions/workflows/build.yml/badge.svg)
-![Static Badge](https://img.shields.io/badge/Python-3.6%7C3.7%7C3.8%7C3.9%7C3.10%7C3.11%7C3.12-blue)
+![Static Badge](https://img.shields.io/badge/Python-3.6%7C3.7%7C3.8%7C3.9%7C3.10%7C3.11%7C3.12%7C3.13-blue)
 ![PyPI - Version](https://img.shields.io/pypi/v/flame-code)
 
 ## Installation

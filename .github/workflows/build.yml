@@ -21,6 +21,7 @@ jobs:
           - { major: 3, minor: 10, name: cp310-cp310 }
           - { major: 3, minor: 11, name: cp311-cp311 }
           - { major: 3, minor: 12, name: cp312-cp312 }
+          - { major: 3, minor: 13, name: cp313-cp313 }
 
     env:
       DOCKER_IMAGE: tonyzhang/manylinux2014_x86_64
