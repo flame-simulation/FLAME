@@ -1,6 +1,6 @@
 ![Doxygen](https://github.com/zhangt58/flame/actions/workflows/gh-pages.yml/badge.svg)
 ![Wheels](https://github.com/zhangt58/flame/actions/workflows/build.yml/badge.svg)
-![Static Badge](https://img.shields.io/badge/Python-3.6%7C3.7%7C3.8%7C3.9%7C3.10%7C3.11%7C3.12-blue)
+![Static Badge](https://img.shields.io/badge/Python-3.11%2B-blue)
 ![PyPI - Version](https://img.shields.io/pypi/v/flame-code)
 
 ## Installation
@@ -27,14 +27,12 @@ Also python and numpy headers.
 The nosetests test runner is used for 'make test' if present.
 
 ```sh
-apt-get install libboost-dev libboost-system-dev \
- libboost-thread-dev libboost-filesystem-dev \
- libboost-regex-dev libboost-program-options-dev \
- libboost-test-dev \
+apt-get install libboost-dev libboost-filesystem-dev \
+ libboost-program-options-dev libboost-test-dev \
  build-essential cmake bison flex cppcheck git libhdf5-dev \
  python-numpy python-nose python3-numpy python3-nose
 ```
-Supports Python 3.6+
+Supports CPython 3.11 and newer.
 
 ### Building
 
@@ -49,7 +47,40 @@ make
 To build with a specific python version, change the cmake invokation to:
 
 ```sh
-cmake .. -DPYTHON_EXECUTABLE=/usr/bin/python3.11
+cmake .. -DPython3_EXECUTABLE=/usr/bin/python3.11
+```
+
+### Windows x64
+
+Use a native x64 Developer PowerShell for Visual Studio 2022. Install CMake,
+Git, Python 3.11 or newer, WinFlexBison, and
+[vcpkg](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started), then
+set `VCPKG_ROOT` to the vcpkg directory. The `x64-windows-static-md` triplet
+links FLAME and Boost statically while retaining the dynamic MSVC runtime used
+by CPython.
+
+```powershell
+choco install winflexbison3 --yes
+& "$env:VCPKG_ROOT/vcpkg.exe" install --triplet x64-windows-static-md
+
+cmake -S . -B build-win64 -A x64 `
+  -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" `
+  -DVCPKG_TARGET_TRIPLET=x64-windows-static-md `
+  -DPython3_EXECUTABLE="$(Get-Command python | Select-Object -ExpandProperty Source)" `
+  -DUSE_PYTHON=ON -DUSE_HDF5=OFF -DUSE_EPICS=OFF
+
+cmake --build build-win64 --config Release --parallel
+build-win64/tools/Release/flame.exe --help
+```
+
+To produce a Windows x64 wheel for the active CPython interpreter:
+
+```powershell
+$env:CMAKE_ARGS = "-DCMAKE_TOOLCHAIN_FILE=$env:VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static-md"
+python -m pip install build
+python -m build --wheel
+python -m pip install (Get-ChildItem dist/flame_code-*.whl)
+python -c "import flame; print(flame.__version__)"
 ```
 
 ### Running tests
