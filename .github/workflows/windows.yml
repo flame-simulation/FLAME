@@ -1,0 +1,59 @@
+name: Windows x64
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      VCPKG_DEFAULT_TRIPLET: x64-windows-static-md
+      CMAKE_ARGS: >-
+        -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake
+        -DVCPKG_TARGET_TRIPLET=x64-windows-static-md
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          architecture: x64
+
+      - name: Install build tools and dependencies
+        shell: pwsh
+        run: |
+          choco install winflexbison3 --yes --no-progress
+          vcpkg install --triplet x64-windows-static-md
+          python -m pip install --upgrade pip build
+
+      - name: Build CLI and CPython module
+        shell: pwsh
+        run: |
+          cmake -S . -B build-win64 -A x64 `
+            -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake `
+            -DVCPKG_TARGET_TRIPLET=x64-windows-static-md `
+            -DPython3_EXECUTABLE="$((Get-Command python).Source)" `
+            -DUSE_PYTHON=ON -DUSE_HDF5=OFF -DUSE_EPICS=OFF `
+            -DBUILD_TESTING=OFF
+          cmake --build build-win64 --config Release --parallel 4
+
+      - name: Smoke-test CLI
+        shell: pwsh
+        run: build-win64/tools/Release/flame.exe --help
+
+      - name: Build and test wheel
+        shell: pwsh
+        run: |
+          python -m build --wheel
+          python -m pip install --force-reinstall --no-deps (Get-ChildItem dist/*.whl)
+          python -c 'import flame; print(flame.__version__); print(flame.GLPSParser().parse("d: drift, L=1; line: LINE = (d);"))'
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: flame-windows-x64
+          path: |
+            build-win64/tools/Release/flame.exe
+            dist/*.whl
