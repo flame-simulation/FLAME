@@ -1,3 +1,6 @@
-from __future__ import print_function
-from . import version, cversion
-print("This is FLAME\n Python API version:", version,"\n C++ API version:", cversion)
+from . import __version__, _pyapi_version, _capi_version
+
+print("This is FLAME")
+print("Package version:", __version__)
+print("Python API version:", _pyapi_version)
+print("C++ API version:", _capi_version)

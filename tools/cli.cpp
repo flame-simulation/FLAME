@@ -105,7 +105,7 @@ void getargs(int argc, char *argv[], po::variables_map& args)
                    " The type may be: 'str'' or 'double', which may be abbreviated as 'S' or 'D'.\n"
                    " Definitions are overwritten by those in the lattice file.\n"
                    ;
-        exit(1);
+        exit(args.count("help") ? 0 : 1);
     }
 }
 
