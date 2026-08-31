@@ -1,0 +1,12 @@
+include CMakeLists.txt
+include LICENSE.md
+include README.md
+include pyproject.toml
+include setup.py
+include vcpkg.json
+
+recursive-include src *.cpp *.h *.l *.y CMakeLists.txt *.sh *.lat
+recursive-include tools *.cpp CMakeLists.txt
+recursive-include examples *.cpp CMakeLists.txt
+recursive-include documentation Doxyfile.in *.css *.h
+recursive-include python/flame *.cpp *.h *.py *.lat *.h5 *.txt *.db *.template *.cmd CMakeLists.txt

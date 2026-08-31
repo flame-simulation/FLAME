@@ -8,7 +8,7 @@ add_executable(flamecli
 )
 target_link_libraries(flamecli
   flame_core
-  ${Boost_PROGRAM_OPTIONS_LIBRARY}
+  Boost::program_options
 )
 set_target_properties(flamecli
   PROPERTIES

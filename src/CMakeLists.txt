@@ -83,15 +83,16 @@ if(USE_HDF5)
   )
 endif()
 
-add_library(flame_core SHARED
+add_library(flame_core STATIC
   ${flame_core_files}
   ${inst_HEADERS}
 )
 
+set_target_properties(flame_core PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
 target_link_libraries(flame_core
-  ${Boost_THREAD_LIBRARY}
-  ${Boost_SYSTEM_LIBRARY}
-  ${Boost_FILESYSTEM_LIBRARY}
+  PUBLIC
+    Boost::filesystem
 )
 
 if(USE_HDF5)
@@ -100,68 +101,44 @@ if(USE_HDF5)
   )
 endif()
 
-set_target_properties(flame_core
-  PROPERTIES
-    SOVERSION 0
-)
-
 install(TARGETS flame_core
-  LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
 )
 
-
-add_executable(test_lex
+if(BUILD_TESTING)
+  add_executable(test_lex
   test_lex.cpp
-)
-target_link_libraries(test_lex
-  flame_core
-)
-
-add_executable(test_jb_2
-  test_jb_2.cpp
-)
-target_link_libraries(test_jb_2
-  flame_core
-)
-
-add_executable(test_parse
-  test_parse.cpp
-)
-target_link_libraries(test_parse
-  flame_core
-)
-
-add_executable(test_config
-  test_config.cpp
-)
-add_test(config test_config)
-target_link_libraries(test_config
-  flame_core
-  ${Boost_PRG_EXEC_MONITOR_LIBRARY}
-  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
-)
-
-add_executable(test_util
-  test_util.cpp
-)
-add_test(util test_util)
-target_link_libraries(test_util
-  flame_core
-  ${Boost_PRG_EXEC_MONITOR_LIBRARY}
-  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
-)
-
-if(USE_HDF5)
-  add_executable(h5_loader
-    h5loadertest.cpp
   )
-  target_link_libraries(h5_loader
+  target_link_libraries(test_lex flame_core)
+
+  add_executable(test_jb_2 test_jb_2.cpp)
+  target_link_libraries(test_jb_2 flame_core)
+
+  add_executable(test_parse test_parse.cpp)
+  target_link_libraries(test_parse flame_core)
+
+  add_executable(test_config test_config.cpp)
+  add_test(config test_config)
+  target_link_libraries(test_config
     flame_core
+    Boost::prg_exec_monitor
+    Boost::unit_test_framework
   )
-endif()
 
-if(UNIX)
+  add_executable(test_util test_util.cpp)
+  add_test(util test_util)
+  target_link_libraries(test_util
+    flame_core
+    Boost::prg_exec_monitor
+    Boost::unit_test_framework
+  )
+
+  if(USE_HDF5)
+    add_executable(h5_loader h5loadertest.cpp)
+    target_link_libraries(h5_loader flame_core)
+  endif()
+
+  if(UNIX)
 
   add_test(recurse1
     /bin/sh ${CMAKE_CURRENT_SOURCE_DIR}/recurse-test.sh
@@ -177,4 +154,5 @@ if(UNIX)
       ${CMAKE_CURRENT_SOURCE_DIR}/data/tracy_2_out.lat
   )
 
+  endif()
 endif()

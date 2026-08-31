@@ -1,0 +1,9 @@
+{
+  "name": "flame",
+  "version-string": "1.9.3",
+  "dependencies": [
+    "boost-filesystem",
+    "boost-program-options",
+    "boost-test"
+  ]
+}

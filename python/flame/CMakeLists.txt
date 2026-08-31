@@ -1,11 +1,13 @@
 include_directories(
   ${Boost_INCLUDE_DIRS}
-  ${Python_INCLUDE_DIRS}
+  ${Python3_INCLUDE_DIRS}
+  ${Python3_NumPy_INCLUDE_DIRS}
   ${CMAKE_CURRENT_SOURCE_DIR}/../../src
 )
-find_package(PythonLibs REQUIRED)
 
-add_library(_internal SHARED
+set(Python_MODULE_DIR "${Python3_SITEARCH}")
+
+Python3_add_library(_internal MODULE WITH_SOABI
   modmain.cpp
   modconfig.cpp
   modmachine.cpp
@@ -14,19 +16,24 @@ add_library(_internal SHARED
 )
 install(TARGETS _internal
   LIBRARY DESTINATION ${Python_MODULE_DIR}/flame
+  RUNTIME DESTINATION ${Python_MODULE_DIR}/flame
 )
 
 target_link_libraries(_internal
-  flame_core
-  ${PYTHON_LIBRARIES}
+  PRIVATE
+    flame_core
+    Python3::Module
+    Python3::NumPy
 )
 
 set_target_properties(_internal
   PROPERTIES
-    PREFIX ""
-    SUFFIX ".so"
     NO_SONAME YES
 )
+
+if(DEFINED FLAME_PYTHON_EXTENSION_SUFFIX)
+  set_target_properties(_internal PROPERTIES SUFFIX "${FLAME_PYTHON_EXTENSION_SUFFIX}")
+endif()
 
 set(PY_SRC
   __init__.py
@@ -125,7 +132,7 @@ add_custom_target(pyfiles ALL
 if(HAVE_PYTEST)
   add_test(
     NAME pytest
-    COMMAND ${PYTHON_EXECUTABLE} -m pytest
+    COMMAND ${Python3_EXECUTABLE} -m pytest
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/..
   )
 endif()

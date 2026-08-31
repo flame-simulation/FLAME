@@ -1,20 +1,27 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.18)
 
 project("flame" C CXX)
+
+include(CTest)
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 option(USE_WERROR "Treat warnings as errors" OFF)
 option(USE_PYTHON "Build python support" ON)
 option(USE_HDF5 "HDF5 output support" OFF)
 option(NEED_PYTHON "Require python support" OFF)
+option(USE_EPICS "Build EPICS virtual accelerator support" OFF)
 option(NEED_EPICS  "Require EPICS support" OFF)
-option(NEED_DEMOIOC  "build flamedemo IOC executable" ON)
+option(NEED_DEMOIOC  "build flamedemo IOC executable" OFF)
 
 message(STATUS "Option PYTHON ${USE_PYTHON}")
 message(STATUS "Option HDF5 ${USE_HDF5}")
 
 if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE RELEASE) # default to debug build
-  message(STATUS "Default to DEBUG build")
+  set(CMAKE_BUILD_TYPE Release)
+  message(STATUS "Default to Release build")
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCC)
@@ -34,19 +41,19 @@ if(DEF_PATH)
 endif()
 
 # see if git submodule is actually checked out
-if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/cmake4epics/cmake/FindEPICS.cmake)
+if(USE_EPICS AND EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/cmake4epics/cmake/FindEPICS.cmake)
   list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake4epics/cmake)
   set(TRY_EPICS 1)
 endif()
 
-find_package(Boost 1.52.0 REQUIRED COMPONENTS
-  system
-  thread
+set(_boost_components
   filesystem
-  regex
   program_options
-  prg_exec_monitor unit_test_framework
 )
+if(BUILD_TESTING)
+  list(APPEND _boost_components prg_exec_monitor unit_test_framework)
+endif()
+find_package(Boost 1.52.0 REQUIRED COMPONENTS ${_boost_components})
 
 # respects -DHDF5_USE_STATIC_LIBRARIES=YES
 # and environment variable HDF5_ROOT
@@ -55,10 +62,10 @@ if(USE_HDF5)
   add_definitions(-DUSE_HDF5)
 endif()
 
-find_program(LEX_EXECUTABLE flex
+find_program(LEX_EXECUTABLE NAMES flex win_flex
   DOC "Location of lexer genereator"
 )
-find_program(YACC_EXECUTABLE bison
+find_program(YACC_EXECUTABLE NAMES bison win_bison
   DOC "Location of parser generator"
 )
 message(STATUS "FLEX ${LEX_EXECUTABLE}")
@@ -75,41 +82,25 @@ message(STATUS "cppcheck ${CPPCHECK_EXECUTABLE}")
 
 message(STATUS "Boost libs in ${Boost_LIBRARY_DIRS}")
 
-find_package(PythonInterp 2.7)
-
-if(PYTHONINTERP_FOUND)
-  # Introspect this interpreter
-  execute_process(COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/pyconfig.py ${CMAKE_CURRENT_BINARY_DIR}/pyconfig.cmake
-    RESULT_VARIABLE _PY_CONFIG
-  )
-  if(_PY_CONFIG)
-    message(STATUS "Failed to fetch build information for ${PYTHON_EXECUTABLE}")
-  else()
-    include(${CMAKE_CURRENT_BINARY_DIR}/pyconfig.cmake)
-    message(STATUS "Python version ${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}.${Python_VERSION_PATCH}")
-    message(STATUS " headers ${Python_INCLUDE_DIRS}")
-    message(STATUS " numpy ${Python_NUMPY_FOUND}")
-  endif()
+if(USE_PYTHON)
+  find_package(Python3 3.11 REQUIRED COMPONENTS Interpreter Development.Module NumPy)
+  message(STATUS "Python version ${Python3_VERSION}")
+  message(STATUS "Python headers ${Python3_INCLUDE_DIRS}")
+  message(STATUS "NumPy headers ${Python3_NumPy_INCLUDE_DIRS}")
 endif()
 
-# Skip finding pytest for 3.12+, through pytest is installed, _HAVE_PYTEST results 1!?
-if(Python_FOUND AND Python_VERSION_MINOR LESS 12)
-  # see if pytest test runner is available
+if(USE_PYTHON AND BUILD_TESTING)
   execute_process(
-    COMMAND ${PYTHON_EXECUTABLE} -m pytest --version
+    COMMAND ${Python3_EXECUTABLE} -m pytest --version
     OUTPUT_QUIET
     ERROR_QUIET
     RESULT_VARIABLE _HAVE_PYTEST
   )
-  if(_HAVE_PYTEST EQUAL 1)
-    if(NEED_PYTHON)
-      message(SEND_ERROR "Unable to build Python support")
-    else()
-      message(STATUS "Can't find pytest, not running tests")
-    endif()
-    set(HAVE_PYTEST NO)
-  else()
+  if(_HAVE_PYTEST EQUAL 0)
     set(HAVE_PYTEST YES)
+  else()
+    set(HAVE_PYTEST NO)
+    message(STATUS "Can't find pytest, not running Python tests")
   endif()
 endif()
 
@@ -120,12 +111,10 @@ if(TRY_EPICS)
   find_package(EPICSTools)
 endif()
 
-enable_testing()
-
 add_subdirectory(src)
 add_subdirectory(examples)
 
-if(USE_PYTHON AND Python_NUMPY_FOUND)
+if(USE_PYTHON)
   message(STATUS "Building python support")
   add_subdirectory(python/flame)
 elseif(NEED_PYTHON)
