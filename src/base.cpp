@@ -1,15 +1,14 @@
 
 #include <list>
+#include <mutex>
 #include <sstream>
-
-#include <boost/thread/mutex.hpp>
 
 #include "flame/base.h"
 #include "flame/util.h"
 
 namespace {
 // This mutex guards the global Machine::p_state_infos
-typedef boost::mutex info_mutex_t;
+typedef std::mutex info_mutex_t;
 info_mutex_t info_mutex;
 }
 
@@ -89,7 +88,7 @@ Machine::Machine(const Config& c)
     p_simtype = type;
     FLAME_LOG(INFO)<<"Constructing Machine w/ sim_type='"<<type<<'\'';
 
-    info_mutex_t::scoped_lock G(info_mutex);
+    std::unique_lock<info_mutex_t> G(info_mutex);
 
     p_state_infos_t::iterator it = p_state_infos.find(type);
     if(it==p_state_infos.end()) {
@@ -217,7 +216,7 @@ Machine::p_state_infos_t Machine::p_state_infos;
 
 void Machine::p_registerState(const char *name, state_builder_t b)
 {
-    info_mutex_t::scoped_lock G(info_mutex);
+    std::unique_lock<info_mutex_t> G(info_mutex);
     if(p_state_infos.find(name)!=p_state_infos.end()) {
         std::ostringstream strm;
         strm<<"attempt to register already registered sim_type=\""<<name<<"\"";
@@ -231,7 +230,7 @@ void Machine::p_registerState(const char *name, state_builder_t b)
 
 void Machine::p_registerElement(const std::string& sname, const char *ename, element_builder_t *b)
 {
-    info_mutex_t::scoped_lock G(info_mutex);
+    std::unique_lock<info_mutex_t> G(info_mutex);
     p_state_infos_t::iterator it = p_state_infos.find(sname);
     if(it==p_state_infos.end()) {
         std::ostringstream strm;
@@ -250,7 +249,7 @@ void Machine::p_registerElement(const std::string& sname, const char *ename, ele
 
 void Machine::registeryCleanup()
 {
-    info_mutex_t::scoped_lock G(info_mutex);
+    std::unique_lock<info_mutex_t> G(info_mutex);
 
     for(p_state_infos_t::iterator it=p_state_infos.begin(), end=p_state_infos.end();
         it!=end; ++it)
@@ -301,7 +300,7 @@ void Machine::set_logger(const boost::shared_ptr<Logger> &p)
     if(!temp)
         temp.reset(&Logcerr::singleton, Logcerr::noopdtor);
     {
-        info_mutex_t::scoped_lock G(info_mutex);
+        std::unique_lock<info_mutex_t> G(info_mutex);
         p_logger.swap(temp);
     }
 }
@@ -310,7 +309,7 @@ Machine::LogRecord::~LogRecord()
 {
     boost::shared_ptr<Logger> logger;
     {
-        info_mutex_t::scoped_lock G(info_mutex);
+        std::unique_lock<info_mutex_t> G(info_mutex);
         logger = p_logger;
     }
     logger->log(*this);

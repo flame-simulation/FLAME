@@ -1,10 +1,10 @@
 
 #include <fstream>
+#include <mutex>
 
 #include <ctime>
 
 #include <boost/numeric/ublas/vector.hpp>
-#include <boost/thread/mutex.hpp>
 //#define BOOST_FILESYSTEM_DYN_LINK
 #include <boost/filesystem.hpp>
 
@@ -110,7 +110,7 @@ void numeric_table::read(std::istream &strm)
 }
 
 struct numeric_table_cache::Pvt {
-    boost::mutex lock;
+    std::mutex lock;
 
     struct Value {
         std::time_t lastmod;
@@ -138,7 +138,7 @@ numeric_table_cache::table_pointer numeric_table_cache::fetch(const std::string&
 
     std::time_t mtime = boost::filesystem::last_write_time(P);
 
-    boost::mutex::scoped_lock L(pvt->lock);
+    std::lock_guard<std::mutex> L(pvt->lock);
 
     Pvt::cache_t::const_iterator it = pvt->cache.find(path);
     if(it==pvt->cache.end() || mtime>it->second.lastmod) {
@@ -164,7 +164,7 @@ numeric_table_cache::table_pointer numeric_table_cache::fetch(const std::string&
 
 void numeric_table_cache::clear()
 {
-    boost::mutex::scoped_lock L(pvt->lock);
+    std::lock_guard<std::mutex> L(pvt->lock);
     pvt->cache.clear();
 }
 

@@ -6,6 +6,7 @@
 #include <stdexcept>
 
 #include <boost/call_traits.hpp>
+#include <boost/shared_ptr.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
 
 #ifdef __GNUC__
