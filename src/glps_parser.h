@@ -59,7 +59,13 @@ void glps_strlist_cleanup(strlist_t*);
 void glps_expr_debug(FILE *, const expr_t *);
 void glps_string_debug(FILE *, const string_t *);
 
-void glps_error(void *scan, parse_context *ctxt, const char*, ...) __attribute__((format(printf,3,4)));
+#if defined(__GNUC__) || defined(__clang__)
+#  define GLPS_PRINTF_FORMAT(FMT, ARGS) __attribute__((format(printf, FMT, ARGS)))
+#else
+#  define GLPS_PRINTF_FORMAT(FMT, ARGS)
+#endif
+
+void glps_error(void *scan, parse_context *ctxt, const char*, ...) GLPS_PRINTF_FORMAT(3, 4);
 void glps_verror(void *scan, parse_context *ctxt, const char*, va_list);
 
 void glps_assign(parse_context*, string_t *, expr_t*);

@@ -7,6 +7,14 @@
 #include <stdexcept>
 #include <sstream>
 
+#if defined(_WIN32) || defined(_WIN64)
+#  include <string.h>
+#  define strcasecmp _stricmp
+#  define strncasecmp _strnicmp
+#else
+#  include <strings.h>
+#endif
+
 #include "glps_parser.h"
 
 # define M_PI 3.14159265358979323846
@@ -456,7 +464,7 @@ void glps_add_line(parse_context *ctxt, string_t *label, string_t *etype, strlis
         if(!N)
             names.reset(new strlist_t);
 
-        if(strcasecmp(etype->str.c_str(),"LINE")!=0) {
+        if(strcasecmp(etype->str.c_str(), "LINE") != 0) {
             glps_error(ctxt->scanner, ctxt, "line-like definition %s with '%s' instead of 'LINE'",
                        label->str.c_str(), etype->str.c_str());
 
