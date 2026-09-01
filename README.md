@@ -1,6 +1,6 @@
 ![Doxygen](https://github.com/zhangt58/flame/actions/workflows/gh-pages.yml/badge.svg)
 ![Wheels](https://github.com/zhangt58/flame/actions/workflows/build.yml/badge.svg)
-![Static Badge](https://img.shields.io/badge/Python-3.11%7C3.12%7C3.13-blue)
+![Static Badge](https://img.shields.io/badge/Python-3.6%7C3.7%7C3.8%7C3.9%7C3.10%7C3.11%7C3.12%7C3.13-blue)
 ![PyPI - Version](https://img.shields.io/pypi/v/flame-code)
 
 ## Installation
@@ -32,7 +32,7 @@ apt-get install libboost-dev libboost-filesystem-dev \
  build-essential cmake bison flex cppcheck git libhdf5-dev \
  python-numpy python-nose python3-numpy python3-nose
 ```
-Supports CPython 3.11 and newer.
+Supports Python 3.6+. Windows wheels are built for CPython 3.11 through 3.13.
 
 ### Building
 

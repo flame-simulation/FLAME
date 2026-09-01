@@ -82,14 +82,32 @@ message(STATUS "cppcheck ${CPPCHECK_EXECUTABLE}")
 
 message(STATUS "Boost libs in ${Boost_LIBRARY_DIRS}")
 
-if(USE_PYTHON)
+if(WIN32 AND USE_PYTHON)
   find_package(Python3 3.11 REQUIRED COMPONENTS Interpreter Development.Module NumPy)
   message(STATUS "Python version ${Python3_VERSION}")
   message(STATUS "Python headers ${Python3_INCLUDE_DIRS}")
   message(STATUS "NumPy headers ${Python3_NumPy_INCLUDE_DIRS}")
+elseif(NOT WIN32)
+  find_package(PythonInterp 2.7)
+
+  if(PYTHONINTERP_FOUND)
+    execute_process(
+      COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/pyconfig.py
+              ${CMAKE_CURRENT_BINARY_DIR}/pyconfig.cmake
+      RESULT_VARIABLE _PY_CONFIG
+    )
+    if(_PY_CONFIG)
+      message(STATUS "Failed to fetch build information for ${PYTHON_EXECUTABLE}")
+    else()
+      include(${CMAKE_CURRENT_BINARY_DIR}/pyconfig.cmake)
+      message(STATUS "Python version ${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}.${Python_VERSION_PATCH}")
+      message(STATUS " headers ${Python_INCLUDE_DIRS}")
+      message(STATUS " numpy ${Python_NUMPY_FOUND}")
+    endif()
+  endif()
 endif()
 
-if(USE_PYTHON AND BUILD_TESTING)
+if(WIN32 AND USE_PYTHON AND BUILD_TESTING)
   execute_process(
     COMMAND ${Python3_EXECUTABLE} -m pytest --version
     OUTPUT_QUIET
@@ -104,6 +122,21 @@ if(USE_PYTHON AND BUILD_TESTING)
   endif()
 endif()
 
+if(NOT WIN32 AND Python_FOUND)
+  execute_process(
+    COMMAND ${PYTHON_EXECUTABLE} -m pytest --version
+    OUTPUT_QUIET
+    ERROR_QUIET
+    RESULT_VARIABLE _HAVE_PYTEST
+  )
+  if(_HAVE_PYTEST)
+    message(STATUS "Can't run pytest, not running Python tests")
+    set(HAVE_PYTEST NO)
+  else()
+    set(HAVE_PYTEST YES)
+  endif()
+endif()
+
 find_package(Doxygen)
 
 if(TRY_EPICS)
@@ -114,7 +147,10 @@ endif()
 add_subdirectory(src)
 add_subdirectory(examples)
 
-if(USE_PYTHON)
+if(WIN32 AND USE_PYTHON)
+  message(STATUS "Building python support")
+  add_subdirectory(python/flame)
+elseif(NOT WIN32 AND USE_PYTHON AND Python_NUMPY_FOUND)
   message(STATUS "Building python support")
   add_subdirectory(python/flame)
 elseif(NEED_PYTHON)

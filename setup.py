@@ -2,6 +2,7 @@ import os
 import sys
 import shutil
 import pathlib
+import subprocess
 import sysconfig
 import shlex
 
@@ -17,10 +18,50 @@ class CMakeExtension(Extension):
 class build_ext(build_ext_orig):
 
     def run(self):
-        for ext in self.extensions:
-            self.build_cmake(ext)
+        if os.name != 'nt':
+            for ext in self.extensions:
+                self.build_cmake_unix(ext)
+            super().run()
+            return
 
-    def build_cmake(self, ext):
+        for ext in self.extensions:
+            self.build_cmake_windows(ext)
+
+    def build_cmake_unix(self, ext):
+        cwd = pathlib.Path().absolute()
+        build_temp = pathlib.Path(self.build_temp)
+        build_temp.mkdir(parents=True, exist_ok=True)
+        extdir = pathlib.Path(self.get_ext_fullpath(ext.name))
+        extdir.mkdir(parents=True, exist_ok=True)
+        libpath = extdir.parent.joinpath("flame").absolute()
+        config = 'Debug' if self.debug else 'Release'
+        cmake = shutil.which('cmake')
+        cmake_args = [
+            '-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + str(libpath),
+            '-DCMAKE_BUILD_TYPE=' + config,
+            '-DPYTHON_EXECUTABLE=' + sys.executable,
+            '-DNEED_PYTHON=ON',
+            '-DNEED_DEMOIOC=OFF',
+            '-DNEED_EPICS=OFF',
+            '-DUSE_HDF5=OFF',
+            '-DDEF_PATH=/etc/flame/cavity_data',
+        ]
+        build_args = [
+            '--config', config,
+            '--', '-j4',
+        ]
+        os.chdir(str(build_temp))
+        try:
+            self.spawn([cmake, str(cwd)] + cmake_args)
+            env = os.environ.copy()
+            env['LD_LIBRARY_PATH'] = env.get('LD_LIBRARY_PATH', '') + ':' + str(libpath)
+            if not self.dry_run:
+                self.spawn([cmake, '--build', '.'] + build_args)
+                subprocess.run([shutil.which('ctest'), '--output-on-failure'], env=env)
+        finally:
+            os.chdir(str(cwd))
+
+    def build_cmake_windows(self, ext):
         source_dir = pathlib.Path(__file__).resolve().parent
         build_temp = pathlib.Path(self.build_temp).resolve()
         build_temp.mkdir(parents=True, exist_ok=True)
@@ -63,17 +104,24 @@ class build_ext(build_ext_orig):
             raise RuntimeError('CMake did not produce the expected extension: ' + str(extpath))
 
 
+setup_options = {}
+if os.name == 'nt':
+    setup_options['python_requires'] = '>=3.11'
+
+
 setup(
     name='flame-code',
     version='1.9.3',
     package_dir={'flame': 'python/flame'},
     packages=['flame'],
-    ext_modules=[CMakeExtension('flame._internal')],
+    ext_modules=[CMakeExtension(
+        'flame._internal' if os.name == 'nt' else 'flame_core'
+    )],
     cmdclass={
         'build_ext': build_ext,
     },
     install_requires = [
-        'numpy>=1.23.5',
+        'numpy>1.21',
     ],
-    python_requires='>=3.11',
+    **setup_options
 )
