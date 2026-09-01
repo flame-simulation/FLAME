@@ -4,56 +4,93 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+  workflow_call:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2022
+    strategy:
+      fail-fast: false
+      matrix:
+        python:
+          - { version: "3.11", requirements: cp311-cp311 }
+          - { version: "3.12", requirements: cp312-cp312 }
+          - { version: "3.13", requirements: cp313-cp313 }
     env:
+      VCPKG_ROOT: ${{ github.workspace }}\.vcpkg
       VCPKG_DEFAULT_TRIPLET: x64-windows-static-md
-      CMAKE_ARGS: >-
-        -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake
-        -DVCPKG_TARGET_TRIPLET=x64-windows-static-md
 
     steps:
       - uses: actions/checkout@v4
 
+      - name: Checkout pinned vcpkg
+        uses: actions/checkout@v4
+        with:
+          repository: microsoft/vcpkg
+          ref: 9e593bb18ea69cc5095e012465dcd675a822ed0d
+          path: .vcpkg
+
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: ${{ matrix.python.version }}
           architecture: x64
 
       - name: Install build tools and dependencies
         shell: pwsh
         run: |
           choco install winflexbison3 --yes --no-progress
-          vcpkg install --triplet x64-windows-static-md
-          python -m pip install --upgrade pip build
+          & "$env:VCPKG_ROOT/bootstrap-vcpkg.bat" -disableMetrics
+          & "$env:VCPKG_ROOT/vcpkg.exe" install --triplet x64-windows-static-md
+          python -m pip install --upgrade pip "setuptools>=64" build delvewheel
+          python -m pip install -r "requirements/${{ matrix.python.requirements }}.txt"
 
-      - name: Build CLI and CPython module
+      - name: Build CLI
+        if: matrix.python.version == '3.11'
         shell: pwsh
         run: |
           cmake -S . -B build-win64 -A x64 `
-            -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake `
+            -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" `
             -DVCPKG_TARGET_TRIPLET=x64-windows-static-md `
-            -DPython3_EXECUTABLE="$((Get-Command python).Source)" `
-            -DUSE_PYTHON=ON -DUSE_HDF5=OFF -DUSE_EPICS=OFF `
+            -DUSE_PYTHON=OFF -DUSE_HDF5=OFF -DUSE_EPICS=OFF `
             -DBUILD_TESTING=OFF
-          cmake --build build-win64 --config Release --parallel 4
+          cmake --build build-win64 --config Release --target flamecli --parallel 4
 
       - name: Smoke-test CLI
+        if: matrix.python.version == '3.11'
         shell: pwsh
         run: build-win64/tools/Release/flame.exe --help
 
-      - name: Build and test wheel
+      - name: Build wheel
         shell: pwsh
         run: |
-          python -m build --wheel
-          python -m pip install --force-reinstall --no-deps (Get-ChildItem dist/*.whl)
-          python -c 'import flame; print(flame.__version__); print(flame.GLPSParser().parse("d: drift, L=1; line: LINE = (d);"))'
+          $vcpkgRoot = $env:VCPKG_ROOT.Replace('\', '/')
+          $env:CMAKE_ARGS = "-A x64 -DCMAKE_TOOLCHAIN_FILE=$vcpkgRoot/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static-md"
+          python -m build --wheel --no-isolation
+
+      - name: Inspect and test installed wheel
+        shell: pwsh
+        run: |
+          $wheel = (Resolve-Path dist/*.whl).Path
+          python -m delvewheel show $wheel
+          python -m venv "$env:RUNNER_TEMP/flame-wheel-test"
+          $testPython = "$env:RUNNER_TEMP/flame-wheel-test/Scripts/python.exe"
+          & $testPython -m pip install --upgrade pip
+          & $testPython -m pip install -r "requirements/${{ matrix.python.requirements }}.txt"
+          & $testPython -m pip install $wheel
+          Push-Location $env:RUNNER_TEMP
+          & $testPython -c 'import flame; print(flame.__version__); print(flame.GLPSParser().parse("d: drift, L=1; line: LINE = (d);"))'
+          Pop-Location
 
       - uses: actions/upload-artifact@v4
         with:
-          name: flame-windows-x64
-          path: |
-            build-win64/tools/Release/flame.exe
-            dist/*.whl
+          name: wheel-${{ matrix.python.requirements }}-win-amd64
+          path: dist/*.whl
+          retention-days: 1
+
+      - name: Upload CLI
+        if: matrix.python.version == '3.11'
+        uses: actions/upload-artifact@v4
+        with:
+          name: flame-windows-cli-x64
+          path: build-win64/tools/Release/flame.exe
+          retention-days: 1

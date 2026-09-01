@@ -48,8 +48,13 @@ jobs:
         path: wheelhouse/*.whl
         retention-days: 0
 
+  build_windows_wheels:
+    uses: ./.github/workflows/windows.yml
+
   Release:
-    needs: build_wheels
+    needs:
+      - build_wheels
+      - build_windows_wheels
     runs-on: ubuntu-latest
     steps:
       - name: Download wheels
