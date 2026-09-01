@@ -5,9 +5,13 @@ import sys
 import unittest
 import math
 import numpy
-from numpy import asfarray
 from numpy import testing as NT
 from numpy.testing import assert_array_almost_equal as assert_aequal
+
+try:
+    from numpy import asfarray
+except ImportError:  # numpy >= 2.0 removed asfarray
+    from numpy import asarray as asfarray
 
 from .. import Machine
 
