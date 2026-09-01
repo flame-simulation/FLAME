@@ -6,9 +6,9 @@
 ## Installation
 Install via pip: `pip install flame-code [-U]`, see [PyPI project](https://pypi.org/project/flame-code/).
 
-The dynamic library of Python `libpython3.so` is required,
-- Install `libpython<python-version>` on Debian (and its derivatives, e.g. `libpython3.11`)
-- Or, `python<python-version>-libs` on RPM-based OS, e.g. `python3.11-libs`.
+The Python extension obtains the Python C API from the interpreter and does
+not require a separate dynamic `libpython` library.  This supports Python
+interpreters with libpython built in statically, including manylinux Python.
 See the following sections for developers' guide.
 
 ## Documentation
