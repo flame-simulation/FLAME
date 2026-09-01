@@ -5,6 +5,8 @@
   "dependencies": [
     "boost-filesystem",
     "boost-program-options",
-    "boost-test"
+    "boost-test",
+    "boost-ublas",
+    "boost-variant"
   ]
 }
