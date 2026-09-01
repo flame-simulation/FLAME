@@ -1,14 +1,14 @@
 ![Doxygen](https://github.com/zhangt58/flame/actions/workflows/gh-pages.yml/badge.svg)
 ![Wheels](https://github.com/zhangt58/flame/actions/workflows/build.yml/badge.svg)
-![Static Badge](https://img.shields.io/badge/Python-3.6%7C3.7%7C3.8%7C3.9%7C3.10%7C3.11%7C3.12-blue)
+![Static Badge](https://img.shields.io/badge/Python-3.6%7C3.7%7C3.8%7C3.9%7C3.10%7C3.11%7C3.12%7C3.13-blue)
 ![PyPI - Version](https://img.shields.io/pypi/v/flame-code)
 
 ## Installation
 Install via pip: `pip install flame-code [-U]`, see [PyPI project](https://pypi.org/project/flame-code/).
 
-The dynamic library of Python `libpython3.so` is required,
-- Install `libpython<python-version>` on Debian (and its derivatives, e.g. `libpython3.11`)
-- Or, `python<python-version>-libs` on RPM-based OS, e.g. `python3.11-libs`.
+The Python extension obtains the Python C API from the interpreter and does
+not require a separate dynamic `libpython` library.  This supports Python
+interpreters with libpython built in statically, including manylinux Python.
 See the following sections for developers' guide.
 
 ## Documentation

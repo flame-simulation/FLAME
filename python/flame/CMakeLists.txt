@@ -3,8 +3,6 @@ include_directories(
   ${Python_INCLUDE_DIRS}
   ${CMAKE_CURRENT_SOURCE_DIR}/../../src
 )
-find_package(PythonLibs REQUIRED)
-
 add_library(_internal SHARED
   modmain.cpp
   modconfig.cpp
@@ -18,8 +16,17 @@ install(TARGETS _internal
 
 target_link_libraries(_internal
   flame_core
-  ${PYTHON_LIBRARIES}
 )
+
+# Python extension modules obtain the Python C API from the interpreter which
+# imports them.  In particular, the standard manylinux interpreters contain a
+# static libpython and intentionally do not ship a separate libpython library.
+# Avoiding an explicit link here supports both static and shared interpreters
+# and keeps libpython out of the extension's runtime dependencies.
+if(APPLE)
+  set_property(TARGET _internal APPEND_STRING PROPERTY
+    LINK_FLAGS " -undefined dynamic_lookup")
+endif()
 
 set_target_properties(_internal
   PROPERTIES
