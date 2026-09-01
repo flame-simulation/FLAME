@@ -14,10 +14,16 @@ add_custom_command(
   MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/glps.y
 )
 
+set(_flex_platform_args)
+if(WIN32)
+  list(APPEND _flex_platform_args --nounistd)
+endif()
+
 add_custom_command(
   OUTPUT glps.tab.c glps.tab.h
   COMMAND ${LEX_EXECUTABLE}
   ARGS
+    ${_flex_platform_args}
     -o glps.tab.c
     --header-file=glps.tab.h
     ${CMAKE_CURRENT_SOURCE_DIR}/glps.l

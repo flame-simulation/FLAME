@@ -2,6 +2,12 @@
 #include <stdlib.h>
 #include <math.h>
 
+#if defined(_WIN32) || defined(_WIN64)
+#  include <io.h>
+#  define isatty _isatty
+#  define fileno _fileno
+#endif
+
 #include "glps_parser.h"
 #include "glps.par.h"
 

@@ -146,7 +146,11 @@ int unary_parse(parse_context* ctxt, expr_value_t *R, const expr_t * const *A)
     GLPSParser P;
     P.setPrinter(ctxt->printer);
 
+#if defined(_WIN32) || defined(_WIN64)
+    boost::shared_ptr<Config> ret(P.parse_file(name.string().c_str()));
+#else
     boost::shared_ptr<Config> ret(P.parse_file(name.native().c_str()));
+#endif
     *R = ret;
     return 0;
 }
@@ -164,7 +168,11 @@ int unary_file(parse_context* ctxt, expr_value_t *R, const expr_t * const *A)
         return 1;
     }
 
+#if defined(_WIN32) || defined(_WIN64)
+    *R = ret.string();
+#else
     *R = ret.native();
+#endif
     return 0;
 }
 
