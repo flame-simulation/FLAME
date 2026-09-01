@@ -30,59 +30,59 @@ class testParse(unittest.TestCase):
 
     def test_fail(self):
         P = GLPSParser()
-        self.assertRaisesRegexp(RuntimeError, ".*invalid charactor.*",
+        self.assertRaisesRegex(RuntimeError, ".*invalid charactor.*",
                                 P.parse, b"\xff\xfe")
 
-        self.assertRaisesRegexp(RuntimeError, "No beamlines defined by this file",
+        self.assertRaisesRegex(RuntimeError, "No beamlines defined by this file",
                                 P.parse, "")
 
-        self.assertRaisesRegexp(RuntimeError, "No beamlines defined by this file",
+        self.assertRaisesRegex(RuntimeError, "No beamlines defined by this file",
                                 P.parse, "A = 3;")
 
-        self.assertRaisesRegexp(RuntimeError, "syntax error",
+        self.assertRaisesRegex(RuntimeError, "syntax error",
                                 P.parse, "A = =;")
 
-        self.assertRaisesRegexp(RuntimeError, ".*referenced before definition",
+        self.assertRaisesRegex(RuntimeError, ".*referenced before definition",
                                 P.parse, "A = A;")
 
-        self.assertRaisesRegexp(RuntimeError, ".*referenced before definition",
+        self.assertRaisesRegex(RuntimeError, ".*referenced before definition",
                                 P.parse, "A = B;")
 
-        self.assertRaisesRegexp(RuntimeError, "syntax error",
+        self.assertRaisesRegex(RuntimeError, "syntax error",
                                 P.parse, "A = [;")
 
-        self.assertRaisesRegexp(RuntimeError, "syntax error",
+        self.assertRaisesRegex(RuntimeError, "syntax error",
                                 P.parse, "A = [ 1, 2;")
 
-        self.assertRaisesRegexp(RuntimeError, "syntax error",
+        self.assertRaisesRegex(RuntimeError, "syntax error",
                                 P.parse, "A = [ 1, 2, ;")
 
-        self.assertRaisesRegexp(RuntimeError, ".*Vector element types must be scalar not type.*",
+        self.assertRaisesRegex(RuntimeError, ".*Vector element types must be scalar not type.*",
                                 P.parse, "A = [ 1, \"bar\", ;")
 
-        self.assertRaisesRegexp(RuntimeError, ".*Unterminated quote",
+        self.assertRaisesRegex(RuntimeError, ".*Unterminated quote",
                                 P.parse, "A = \"oops ...")
 
-        self.assertRaisesRegexp(RuntimeError, "syntax error",
+        self.assertRaisesRegex(RuntimeError, "syntax error",
                                 P.parse, "A: line = (")
 
-        self.assertRaisesRegexp(RuntimeError, ".*invalid.*referenced before definition",
+        self.assertRaisesRegex(RuntimeError, ".*invalid.*referenced before definition",
                                 P.parse, "A: line = ( invalid")
 
-        self.assertRaisesRegexp(RuntimeError, ".*invalid.*referenced before definition",
+        self.assertRaisesRegex(RuntimeError, ".*invalid.*referenced before definition",
                                 P.parse, "bar: foo; A: line = ( bar, invalid")
 
-        self.assertRaisesRegexp(RuntimeError, "syntax error",
+        self.assertRaisesRegex(RuntimeError, "syntax error",
                                 P.parse, "bar:: foo;")
 
-        self.assertRaisesRegexp(RuntimeError, "syntax error",
+        self.assertRaisesRegex(RuntimeError, "syntax error",
                                 P.parse, "bar: : foo;")
 
-        self.assertRaisesRegexp(RuntimeError, "syntax error",
+        self.assertRaisesRegex(RuntimeError, "syntax error",
                                 P.parse, ":bar : foo;")
     def test_calc_err(self):
         P = GLPSParser()
-        self.assertRaisesRegexp(RuntimeError, ".*division results in non-finite value",
+        self.assertRaisesRegex(RuntimeError, ".*division results in non-finite value",
                                 P.parse, "foo = 4/0;")
     def test_utf8(self):
         "Can pass any 1-255 in quoted string"
@@ -225,7 +225,7 @@ class testScopeDict(unittest.TestCase):
             ('sim_type', 'Vector'),
         ])
 
-        self.assertRaisesRegexp(KeyError, '.*issing.*phi.*', Machine, L)
+        self.assertRaisesRegex(KeyError, '.*issing.*phi.*', Machine, L)
 
     def test_overwrite1(self):
         L = OrderedDict([
@@ -336,8 +336,8 @@ class testLog(unittest.TestCase):
         M = Machine(lattice)
 
         # by default FLAME_DEBUG is disabled, so only one log record from Machine ctor
-        self.assertRegexpMatches(H._L[0].msg, "Constructing Machine")
-        self.assertRegexpMatches(H._L[0].filename, "base.cpp$")
+        self.assertRegex(H._L[0].msg, "Constructing Machine")
+        self.assertRegex(H._L[0].filename, "base.cpp$")
         self.assertGreater(H._L[0].lineno, 1)
         self.assertEqual(H._L[0].levelno, logging.INFO)
 
@@ -362,13 +362,13 @@ class testLog(unittest.TestCase):
 
         M = Machine(lattice)
 
-        self.assertRegexpMatches(H._L[0].msg, "Constructing Machine")
-        self.assertRegexpMatches(H._L[0].filename, "base.cpp$")
+        self.assertRegex(H._L[0].msg, "Constructing Machine")
+        self.assertRegex(H._L[0].filename, "base.cpp$")
         self.assertGreater(H._L[0].lineno, logging.ERROR) # check that lineno and levelno aren't mixed up.  assume __LINE__>100
         self.assertEqual(H._L[0].levelno, logging.INFO)
 
-        self.assertRegexpMatches(H._L[1].msg, "Complete constructing Machine")
-        self.assertRegexpMatches(H._L[1].filename, "base.cpp$")
+        self.assertRegex(H._L[1].msg, "Complete constructing Machine")
+        self.assertRegex(H._L[1].filename, "base.cpp$")
         self.assertGreater(H._L[1].lineno, H._L[0].lineno)
         self.assertEqual(H._L[1].levelno, logging.DEBUG)
 
