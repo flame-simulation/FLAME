@@ -10,7 +10,7 @@ jobs:
     name: Build Doxygen Docs
     runs-on: ubuntu-latest
     env:
-      DOCKER_IMAGE: tonyzhang/manylinux2014_x86_64
+      DOCKER_IMAGE: quay.io/pypa/manylinux2014_x86_64
       PLAT: manylinux2014_x86_64
       PY_MAJOR: 3
       PY_MINOR: 12

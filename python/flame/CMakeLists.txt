@@ -4,7 +4,6 @@ include_directories(
   ${Python3_NumPy_INCLUDE_DIRS}
   ${CMAKE_CURRENT_SOURCE_DIR}/../../src
 )
-
 set(Python_MODULE_DIR "${Python3_SITEARCH}")
 
 Python3_add_library(_internal MODULE WITH_SOABI
@@ -25,6 +24,13 @@ target_link_libraries(_internal
     Python3::Module
     Python3::NumPy
 )
+
+# Python extension modules obtain the Python C API from the interpreter which
+# imports them.  In particular, the standard manylinux interpreters contain a
+# static libpython and intentionally do not ship a separate libpython library.
+# Python3::Module provides the platform-specific extension-module link flags:
+# it avoids a libpython dependency on Unix while using Python's import library
+# where required on Windows.
 
 set_target_properties(_internal
   PROPERTIES

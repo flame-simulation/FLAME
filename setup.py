@@ -73,7 +73,7 @@ setup(
         'build_ext': build_ext,
     },
     install_requires = [
-        'numpy>=1.23.5,<2.0',
+        'numpy>=1.23.5',
     ],
     python_requires='>=3.11',
 )
