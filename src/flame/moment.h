@@ -189,6 +189,9 @@ struct MomentElementBase : public ElementVoid
     //! If set, check_cache() will always return false
     bool skipcache;
 
+    // zero vector for edge sextupole coefficients, used in ElementSBend
+    std::vector<double> EScoef_default = std::vector<double>(6, 0.0);
+
     virtual void assign(const ElementVoid *other) =0;
 
 protected:

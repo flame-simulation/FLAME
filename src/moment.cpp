@@ -997,12 +997,50 @@ struct ElementSBend : public MomentElementBase
     typedef typename base_t::state_t state_t;
 
     unsigned HdipoleFitMode;
+    std::vector<double> EScoef, EScoef1, EScoef2;
+    bool zero_coef;
 
-    ElementSBend(const Config& c) : base_t(c), HdipoleFitMode(0) {
-
+    ElementSBend(const Config& c) : base_t(c), HdipoleFitMode(0), zero_coef(false) {
         HdipoleFitMode = get_flag(c, "HdipoleFitMode", 1);
         if (HdipoleFitMode != 0 && HdipoleFitMode != 1)
             throw std::runtime_error(SB()<< "Undefined HdipoleFitMode: " << HdipoleFitMode);
+
+        EScoef = c.get<std::vector<double> >("EScoef", EScoef_default);
+        EScoef1 = c.get<std::vector<double> >("EScoef1", EScoef_default);
+        EScoef2 = c.get<std::vector<double> >("EScoef2", EScoef_default);
+        if (EScoef.size() == 0) EScoef = EScoef_default;
+        if (EScoef1.size() == 0) EScoef1 = EScoef_default;
+        if (EScoef2.size() == 0) EScoef2 = EScoef_default;
+
+        if (EScoef.size() != EScoef_default.size())
+            throw std::runtime_error(
+                SB() << "Invalid EScoef size: "
+                    << EScoef.size()
+                    << " (expected " << EScoef_default.size() << ")"
+            );
+
+        if (EScoef1.size() != EScoef_default.size())
+            throw std::runtime_error(
+                SB() << "Invalid EScoef1 size: "
+                    << EScoef1.size()
+                    << " (expected " << EScoef_default.size() << ")"
+            );
+
+        if (EScoef2.size() != EScoef_default.size())
+            throw std::runtime_error(
+                SB() << "Invalid EScoef2 size: "
+                    << EScoef2.size()
+                    << " (expected " << EScoef_default.size() << ")"
+            );
+
+        const auto is_zero = [](double x) {
+            return x == 0.0;
+        };
+
+        zero_coef =
+            std::all_of(EScoef.begin(), EScoef.end(), is_zero) &&
+            std::all_of(EScoef1.begin(), EScoef1.end(), is_zero) &&
+            std::all_of(EScoef2.begin(), EScoef2.end(), is_zero);
     }
     virtual ~ElementSBend() {}
     virtual const char* type_name() const {return "sbend";}
@@ -1011,6 +1049,10 @@ struct ElementSBend : public MomentElementBase
         base_t::assign(other);
         const self_t* O=static_cast<const self_t*>(other);
         HdipoleFitMode = O->HdipoleFitMode;
+        EScoef = O->EScoef;
+        EScoef1 = O->EScoef1;
+        EScoef2 = O->EScoef2;
+        zero_coef = O->zero_coef;
     }
 
     virtual void advance(StateBase& s)
@@ -1021,7 +1063,7 @@ struct ElementSBend : public MomentElementBase
         // IonEk is Es + E_state; the latter is set by user.
         ST.recalc();
 
-        if(!check_cache(ST)) {
+        if(!check_cache(ST) || !zero_coef) {
             // need to re-calculate energy dependent terms
             last_ref_in = ST.ref;
             last_real_in = ST.real;
@@ -1094,11 +1136,30 @@ struct ElementSBend : public MomentElementBase
                dphi1 = conf().get<double>("dphi1", 0e0)*M_PI/180e0,
                dphi2 = conf().get<double>("dphi2", 0e0)*M_PI/180e0,
                K     = conf().get<double>("K", 0e0)/sqr(MtoMM);
-
+        const int    step  = conf().get<double>("step", 1.0);
         unsigned EFcorrection = get_flag(conf(), "EFcorrection", 0);
+
+        double dip_bg, dip_IonZ, dip_Ek, dip_gamma, dip_beta, dip_IonK, d, qmrel;
+        unsigned coord1 = state_t::PS_X,
+                 coord2 = state_t::PS_Y;
+        value_t R = boost::numeric::ublas::identity_matrix<double>(state_t::maxsize);
 
         if (EFcorrection != 0 && EFcorrection != 1)
             throw std::runtime_error(SB()<< "Undefined EFcorrection: " << EFcorrection);
+
+        if (ver) {
+            // Rotate transport matrix by 90 degrees.
+            R(state_t::PS_X,  state_t::PS_X)   =  0e0;
+            R(state_t::PS_PX, state_t::PS_PX)  =  0e0;
+            R(state_t::PS_Y,  state_t::PS_Y)   =  0e0;
+            R(state_t::PS_PY, state_t::PS_PY)  =  0e0;
+            R(state_t::PS_X,  state_t::PS_Y)   = -1e0;
+            R(state_t::PS_PX, state_t::PS_PY)  = -1e0;
+            R(state_t::PS_Y,  state_t::PS_X)   =  1e0;
+            R(state_t::PS_PY,  state_t::PS_PX) =  1e0;
+            coord1 = state_t::PS_Y;
+            coord2 = state_t::PS_X;
+        }
 
         for(size_t i=0; i<last_real_in.size(); i++) {
 
@@ -1106,48 +1167,128 @@ struct ElementSBend : public MomentElementBase
 
             if (L != 0.0) {
                 if (!HdipoleFitMode) {
-                    double dip_bg    = conf().get<double>("bg", ST.ref.bg),
-                           dip_IonZ  = conf().get<double>("ref_IonZ", ST.ref.IonZ),
-                           qmrel = (ST.real[i].IonZ-dip_IonZ)/dip_IonZ,
-                           // Dipole reference energy.
-                           dip_Ek    = (sqrt(sqr(dip_bg)+1e0)-1e0)*ST.ref.IonEs,
-                           dip_gamma = (dip_Ek+ST.ref.IonEs)/ST.ref.IonEs,
-                           dip_beta  = sqrt(1e0-1e0/sqr(dip_gamma)),
-                           d         = (ST.ref.gamma-dip_gamma)/(sqr(dip_beta)*dip_gamma) - qmrel,
-                           dip_IonK  = 2e0*M_PI/(dip_beta*ST.ref.SampleLambda);
+                    dip_bg    = conf().get<double>("bg", ST.ref.bg);
+                    dip_IonZ  = conf().get<double>("ref_IonZ", ST.ref.IonZ);
+                    // Dipole reference energy.
+                    dip_Ek    = (sqrt(sqr(dip_bg)+1e0)-1e0)*ST.ref.IonEs;
+                    dip_gamma = (dip_Ek+ST.ref.IonEs)/ST.ref.IonEs;
+                    dip_beta  = sqrt(1e0-1e0/sqr(dip_gamma));
+                    dip_IonK  = 2e0*M_PI/(dip_beta*ST.ref.SampleLambda);
+                    qmrel = (ST.real[i].IonZ-dip_IonZ)/dip_IonZ;
+                    d     = (ST.ref.gamma-dip_gamma)/(sqr(dip_beta)*dip_gamma) - qmrel;
+                } else {
+                    dip_beta = ST.ref.beta;
+                    dip_gamma = ST.ref.gamma;
+                    dip_IonK = ST.ref.SampleIonK;
+                    qmrel = (ST.real[i].IonZ-ST.ref.IonZ)/ST.ref.IonZ;
+                    d = - qmrel;
+                }
 
+                get_misalign_bend(ST, ST.real[i], phi, ver, misalign[i], misalign_inv[i]);
+
+                if (zero_coef) {
                     GetSBendMatrix(L, phi, phi1, phi2, K, ST.ref.IonEs, ST.ref.gamma, qmrel,
                                    dphi1, dphi2, EFcorrection, dip_beta, dip_gamma, d, dip_IonK, transfer[i]);
                 } else {
-                    double qmrel = (ST.real[i].IonZ-ST.ref.IonZ)/ST.ref.IonZ;
-                    GetSBendMatrix(L, phi, phi1, phi2, K, ST.ref.IonEs, ST.ref.gamma, qmrel,
-                                   dphi1, dphi2, EFcorrection, ST.ref.beta, ST.ref.gamma, - qmrel,
-                                   ST.ref.SampleIonK, transfer[i]);
+                    double dL   = L/step,
+                           dphi = phi/step;;
+                    std::vector<double> dEScoef = EScoef;
+                    state_t::vector_t Dvec, svec;
+                    state_t::matrix_t ESmat, ESmat1, ESmat2;
+                    value_t invmat = boost::numeric::ublas::identity_matrix<double>(state_t::maxsize);
+
+                    if(!ST.retreat){ // forward propagation
+                        Dvec = prod(misalign[i], ST.moment0[i]);
+                        GetSEdgeMatrix(Dvec[coord1], Dvec[coord2], qmrel, EScoef1, ESmat1); // Entrance SEdge
+
+                        if (step == 1) {
+                            GetSBendMatrix(dL, dphi, phi1, phi2, K, ST.ref.IonEs, ST.ref.gamma, qmrel,
+                                           dphi1, dphi2, EFcorrection, dip_beta, dip_gamma, d, dip_IonK, transfer[i]); // Entrance Core
+                            noalias(scratch) = prod(transfer[i], ESmat1);
+                            svec = prod(scratch, Dvec);
+
+                        } else if (step >= 2) {
+                            for (auto& x : dEScoef) x /= (step-1);
+
+                            GetSBendMatrix(dL, dphi, phi1, 0e0, K, ST.ref.IonEs, ST.ref.gamma, qmrel,
+                                           dphi1, 0e0, EFcorrection, dip_beta, dip_gamma, d, dip_IonK, transfer[i]);  // Entrance Core
+                            noalias(scratch) = prod(transfer[i], ESmat1);
+                            svec = prod(scratch, Dvec);
+                            GetSEdgeMatrix(svec[coord1], svec[coord2], qmrel, dEScoef, ESmat); // Middle SEdge
+                            noalias(ESmat1) = prod(ESmat, scratch);
+
+                            for (int j = 2; j < step; ++j) {
+                                GetSBendMatrix(dL, dphi, 0e0, 0e0, K, ST.ref.IonEs, ST.ref.gamma, qmrel,
+                                               0e0, 0e0, EFcorrection, dip_beta, dip_gamma, d, dip_IonK, transfer[i]); // Middle Core
+                                noalias(scratch) = prod(transfer[i], ESmat1);
+                                svec = prod(scratch, Dvec);
+                                GetSEdgeMatrix(svec[coord1], svec[coord2], qmrel, dEScoef, ESmat); // Middle SEdge
+                                noalias(ESmat1) = prod(ESmat, scratch);
+                            }
+
+                            GetSBendMatrix(dL, dphi, 0e0, phi2, K, ST.ref.IonEs, ST.ref.gamma, qmrel,
+                                           0e0, dphi2, EFcorrection, dip_beta, dip_gamma, d, dip_IonK, transfer[i]); // Exit Core
+                            noalias(scratch) = prod(transfer[i], ESmat1);
+                            svec = prod(scratch, Dvec);
+                        }
+
+                        GetSEdgeMatrix(svec[coord1], svec[coord2], qmrel, EScoef2, ESmat2); // Exit SEdge
+                        noalias(transfer[i]) = prod(ESmat2, scratch);
+
+                    } else { // backward propagation
+                        inverse(invmat, misalign_inv[i]);
+                        Dvec = prod(invmat, ST.moment0[i]);
+                        GetSEdgeMatrix(Dvec[coord1], Dvec[coord2], qmrel, EScoef2, ESmat1); // Exit SEdge
+
+                        if (step == 1) {
+                            GetSBendMatrix(dL, dphi, phi1, phi2, K, ST.ref.IonEs, ST.ref.gamma, qmrel,
+                                           dphi1, dphi2, EFcorrection, dip_beta, dip_gamma, d, dip_IonK, transfer[i]); // Entrance Core
+                            noalias(scratch) = prod(ESmat1, transfer[i]);
+                            inverse(invmat, scratch); // (AB)^-1 = B^-1 * A^-1
+                            svec = prod(invmat, Dvec);
+
+                        } else if (step >= 2) {
+                            for (auto& x : dEScoef) x /= (step-1);
+
+                            GetSBendMatrix(dL, dphi, 0e0, phi2, K, ST.ref.IonEs, ST.ref.gamma, qmrel,
+                                           0e0, dphi2, EFcorrection, dip_beta, dip_gamma, d, dip_IonK, transfer[i]);  // Exit Core
+                            noalias(scratch) = prod(ESmat1, transfer[i]);
+                            inverse(invmat, scratch); // (AB)^-1 = B^-1 * A^-1
+                            svec = prod(invmat, Dvec);
+                            GetSEdgeMatrix(svec[coord1], svec[coord2], qmrel, dEScoef, ESmat); // Middle SEdge
+                            noalias(ESmat1) = prod(scratch, ESmat);
+
+                            for (int j = 2; j < step; ++j) {
+                                GetSBendMatrix(dL, dphi, 0e0, 0e0, K, ST.ref.IonEs, ST.ref.gamma, qmrel,
+                                               0e0, 0e0, EFcorrection, dip_beta, dip_gamma, d, dip_IonK, transfer[i]); // Middle Core
+                                noalias(scratch) = prod(ESmat1, transfer[i]);
+                                inverse(invmat, scratch); // (AB)^-1 = B^-1 * A^-1
+                                svec = prod(invmat, Dvec);
+                                GetSEdgeMatrix(svec[coord1], svec[coord2], qmrel, dEScoef, ESmat); // Middle SEdge
+                                noalias(ESmat1) = prod(scratch, ESmat);
+                            }
+
+                            GetSBendMatrix(dL, dphi, phi1, 0e0, K, ST.ref.IonEs, ST.ref.gamma, qmrel,
+                                           dphi1, 0e0, EFcorrection, dip_beta, dip_gamma, d, dip_IonK, transfer[i]);  // Entrance Core
+                            noalias(scratch) = prod(ESmat1, transfer[i]);
+                            inverse(invmat, scratch); // (AB)^-1 = B^-1 * A^-1
+                            svec = prod(invmat, Dvec);
+                        }
+
+                        GetSEdgeMatrix(svec[coord1], svec[coord2], qmrel, EScoef1, ESmat2); // Entrance SEdge
+                        noalias(transfer[i]) = prod(scratch, ESmat2);
+
+                    }
                 }
 
                 if (ver) {
-                    // Rotate transport matrix by 90 degrees.
-                    value_t
-                    R = boost::numeric::ublas::identity_matrix<double>(state_t::maxsize);
-                    R(state_t::PS_X,  state_t::PS_X)   =  0e0;
-                    R(state_t::PS_PX, state_t::PS_PX)  =  0e0;
-                    R(state_t::PS_Y,  state_t::PS_Y)   =  0e0;
-                    R(state_t::PS_PY, state_t::PS_PY)  =  0e0;
-                    R(state_t::PS_X,  state_t::PS_Y)   = -1e0;
-                    R(state_t::PS_PX, state_t::PS_PY)  = -1e0;
-                    R(state_t::PS_Y,  state_t::PS_X)   =  1e0;
-                    R(state_t::PS_PY,  state_t::PS_PX) =  1e0;
-
                     noalias(scratch)     = prod(R, transfer[i]);
                     noalias(transfer[i]) = prod(scratch, trans(R));
-                    //TODO: no-op code?  results are unconditionally overwritten
                 }
-
-                //get_misalign(ST, ST.real[i], misalign[i], misalign_inv[i]);
-                get_misalign_bend(ST, ST.real[i], phi, ver, misalign[i], misalign_inv[i]);
 
                 noalias(scratch)     = prod(transfer[i], misalign[i]);
                 noalias(transfer[i]) = prod(misalign_inv[i], scratch);
+
             }
         }
     }
@@ -1260,6 +1401,7 @@ struct ElementSext : public MomentElementBase
         //    "Backward propagation error: Backward propagation does not support sextupole.");
 
         const double dL = L/step;
+        double Dx, Dy, D2x, D2y, D2xy;
 
         for(size_t k=0; k<last_real_in.size(); k++) {
 
@@ -1283,11 +1425,11 @@ struct ElementSext : public MomentElementBase
             }
 
             for(int i=0; i<step; i++){
-                double Dx = ST.moment0[k][state_t::PS_X],
-                       Dy = ST.moment0[k][state_t::PS_Y],
-                       D2x = ST.moment1[k](state_t::PS_X, state_t::PS_X),
-                       D2y = ST.moment1[k](state_t::PS_Y, state_t::PS_Y),
-                       D2xy = ST.moment1[k](state_t::PS_X, state_t::PS_Y);
+                Dx = ST.moment0[k][state_t::PS_X],
+                Dy = ST.moment0[k][state_t::PS_Y],
+                D2x = ST.moment1[k](state_t::PS_X, state_t::PS_X),
+                D2y = ST.moment1[k](state_t::PS_Y, state_t::PS_Y),
+                D2xy = ST.moment1[k](state_t::PS_X, state_t::PS_Y);
 
                 GetSextMatrix(dL, K, Dx, Dy, D2x, D2y, D2xy, thinlens, dstkick, transfer[k]);
 
