@@ -43,9 +43,9 @@ foo : LINE = (elem0);
         C = self.M.conf()
         self.assertTrue("elements" in C)
         self.assertEqual(C['IonEk'], 500e3)
-        assert_aequal(C['IV'], numpy.asfarray([1,1,0,0,0,0,0]))
+        assert_aequal(C['IV'], numpy.asarray([1,1,0,0,0,0,0]))
 
-    expect = numpy.asfarray([
+    expect = numpy.asarray([
         [1, 0, 1, 0, 1, 0, 0],
         [0, 1, 0, 1, -0.001193, 1, 0],
         [1, 0, 1, 0, 1, 0, 0],
@@ -83,8 +83,8 @@ foo : LINE = (elem0);
         self.assertEqual(S.pos, 42.2)
 
         # assign 1d
-        S.moment0_env = numpy.asfarray([1, 2, 3, 4, 5, 6, 7])
-        assert_aequal(S.moment0_env, numpy.asfarray([1, 2, 3, 4, 5, 6, 7]))
+        S.moment0_env = numpy.asarray([1, 2, 3, 4, 5, 6, 7])
+        assert_aequal(S.moment0_env, numpy.asarray([1, 2, 3, 4, 5, 6, 7]))
 
         # assign 2d
         S.moment1_env = self.expect*2.0
