@@ -6,10 +6,30 @@
 ## Installation
 Install via pip: `pip install flame-code [-U]`, see [PyPI project](https://pypi.org/project/flame-code/).
 
-The dynamic library of Python `libpython3.so` is required,
-- Install `libpython<python-version>` on Debian (and its derivatives, e.g. `libpython3.11`)
-- Or, `python<python-version>-libs` on RPM-based OS, e.g. `python3.11-libs`.
+The Python extension obtains the Python C API from the interpreter and does
+not require a separate dynamic `libpython` library.  This supports Python
+interpreters with libpython built in statically, including manylinux Python.
 See the following sections for developers' guide.
+
+## Cavity and field data
+
+RF cavity and field-map data (`axisData_*.txt`, `Multipole*/`, curve files)
+are located by the `Eng_Data_Dir` parameter.  When a lattice file does not
+set it explicitly, the default is resolved in this order:
+
+1. `Eng_Data_Dir` declared in the lattice file — always takes precedence.
+2. A path baked in at build time with CMake `-DDEF_PATH=<dir>`, if that
+   directory exists (e.g. the FRIB site install `/etc/flame/cavity_data`).
+3. The `FLAME_DATA_DIR` environment variable, if it points to an existing
+   directory.
+4. The current working directory.
+
+When the [flame-data](https://pypi.org/project/flame-data/) package is
+installed (it ships the same cavity data as the other flame releases),
+`import flame` sets `FLAME_DATA_DIR` to its `cavity_data` directory, so
+pip-installed FLAME works out of the box without any `DEF_PATH`.  An
+`FLAME_DATA_DIR` already exported by the user is left unchanged; a
+`DEF_PATH` build always prefers its own site path.
 
 ## Documentation
 

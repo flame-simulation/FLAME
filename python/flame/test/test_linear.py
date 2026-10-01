@@ -3,8 +3,12 @@ from __future__ import print_function
 
 import unittest, os
 import numpy
-from numpy import testing as NT
 from numpy.testing import assert_array_almost_equal as assert_aequal
+
+try:
+    from numpy import asfarray
+except ImportError:  # numpy >= 2.0 removed asfarray
+    from numpy import asarray as asfarray
 
 from .. import Machine
 
@@ -211,7 +215,7 @@ foo: LINE = (elem0, elem1, elem2);
 
 class testGeneric(unittest.TestCase):
     def test_generic(self):
-        T = numpy.asarray([
+        T = asfarray([
           [1, 0, 1, 0, 1, 0],
           [0, 1, 0, 1, 0, 1],
           [1, 0, 1, 0, 1, 0],
@@ -234,7 +238,7 @@ class testGeneric(unittest.TestCase):
 
 class TestSource(unittest.TestCase):
     def test_matrix(self):
-        T = numpy.asarray([1, 0, 1, 0, 1, 0])
+        T = asfarray([1, 0, 1, 0, 1, 0])
         M = Machine({
           'sim_type':'Vector',
           'elements':[
@@ -249,7 +253,7 @@ class TestSource(unittest.TestCase):
         assert_aequal(S.state, T)
 
     def test_matrix(self):
-        T = numpy.asarray([
+        T = asfarray([
           [1, 0, 1, 0, 1, 0],
           [0, 1, 0, 1, 0, 1],
           [1, 0, 1, 0, 1, 0],
@@ -285,7 +289,7 @@ class TestOptimze(unittest.TestCase):
 
 
     _expect_K = 3e-3
-    _expected = numpy.asarray([1.10198417, 9.99684702e-04, 1.10201583, 1.00031530e-03, 1.00000000, 1.0e-03])
+    _expected = asfarray([1.10198417, 9.99684702e-04, 1.10201583, 1.00031530e-03, 1.00000000, 1.0e-03])
 
     def test_expected(self):
         """Test that the expected strength actually results in the expected output state
