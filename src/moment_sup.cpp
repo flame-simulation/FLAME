@@ -117,7 +117,7 @@ void GetSextMatrix(const double L, const double K3, double Dx, double Dy,
     typedef typename MomentElementBase::state_t state_t;
     // 2D sextupole transport matrix.
     double sqrtK, psi, cs, sn, ch, sh,
-           dr = sqrt(sqr(Dx)+sqr(Dx));
+           dr = sqrt(sqr(Dx)+sqr(Dy));
 
     if (thinlens) {
 
@@ -208,6 +208,18 @@ void GetEEdgeMatrix(const double fringe_x, const double fringe_y, const double k
     M(state_t::PS_PS, state_t::PS_PS) = 1e0+kappa;
 }
 
+void GetSEdgeMatrix(const double Dx, const double Dy, const double qmrel, std::vector<double> EScoef, typename MomentElementBase::value_t &M)
+{
+    // Nonlinear component of edge focusing for dipole.
+    typedef typename MomentElementBase::state_t state_t;
+    double ds = 1e-6;
+
+    M = boost::numeric::ublas::identity_matrix<double>(state_t::maxsize);
+    M(state_t::PS_PX, state_t::PS_X)  = (EScoef[0] + EScoef[1]*Dx)*(1+qmrel)*ds;
+    M(state_t::PS_PX, state_t::PS_Y)  = EScoef[2]*Dy*(1+qmrel)*ds;
+    M(state_t::PS_PY, state_t::PS_X)  = EScoef[3]*Dy*(1+qmrel)*ds;
+    M(state_t::PS_PY, state_t::PS_Y)  = (EScoef[4] + EScoef[5]*Dx)*(1+qmrel)*ds;
+}
 
 void GetSBendMatrix(const double L, const double phi, const double phi1, const double phi2, const double K,
                     const double IonEs, const double ref_gamma, const double qmrel,

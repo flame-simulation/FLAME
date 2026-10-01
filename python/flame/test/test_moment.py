@@ -6,7 +6,6 @@ from collections import OrderedDict
 
 import unittest
 import numpy
-from numpy import testing as NT
 from numpy.testing import assert_array_almost_equal_nulp as assert_aequal
 
 try:

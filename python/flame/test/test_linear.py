@@ -3,7 +3,6 @@ from __future__ import print_function
 
 import unittest, os
 import numpy
-from numpy import testing as NT
 from numpy.testing import assert_array_almost_equal as assert_aequal
 
 try:
