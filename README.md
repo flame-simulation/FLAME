@@ -40,6 +40,15 @@ pip-installed FLAME works out of the box without any `DEF_PATH`.  An
 
 ## Development
 
+### Branches
+
+* Create PRs to 'upstream' branch for introducing features, fixes, etc.
+* 'main' branch is used for packaging and releasing.
+  * Merge upstream to main.
+  * Bump version in 'setup.py'.
+  * Create and push a tag 'vX.Y.Z[-n]'.
+  * Create a release through the release page.
+
 ### Pre-requisites
 
 Needs boost headers.  Also the boost-system and boost-python libraries.
