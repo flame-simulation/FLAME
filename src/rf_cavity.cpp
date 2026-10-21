@@ -13,12 +13,6 @@
 #define sqr(x)  ((x)*(x))
 #define cube(x) ((x)*(x)*(x))
 
-#ifdef DEFPATH
-    #define defpath DEFPATH
-#else
-    #define defpath "."
-#endif
-
 std::map<std::string,boost::shared_ptr<Config> > ElementRFCavity::CavConfMap;
 
 // RF Cavity beam dynamics functions.
@@ -713,7 +707,7 @@ void  ElementRFCavity::LoadCavityFile(const Config& c)
         throw std::runtime_error(SB()<< "Undefined EmitGrowth: " << EmitGrowth);
 
     CavType = c.get<std::string>("cavtype");
-    std::string cavfile(c.get<std::string>("Eng_Data_Dir", defpath)),
+    std::string cavfile(c.get<std::string>("Eng_Data_Dir", flame::default_eng_data_dir())),
                 fldmap(cavfile),
                 mlpfile(cavfile);
 

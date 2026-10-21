@@ -5,17 +5,12 @@
 
 #include <boost/numeric/ublas/matrix.hpp>
 
+#include "data_path.h"
 #include "moment.h"
 #include "util.h"
 
 // Phase space dimension; including vector for orbit/1st moment.
 #define PS_Dim MomentState::maxsize // Set to 7; to include orbit.
-
-#ifdef DEFPATH
-    #define defpath DEFPATH
-#else
-    #define defpath "."
-#endif
 
 
 class CavDataType {
@@ -176,7 +171,7 @@ struct ElementRFCavity : public MomentElementBase
                 SynAccTab.clear();
                 LoadCavityFile(conf());
             } else if (CavType == "Generic") {
-                std::string newfile = conf().get<std::string>("Eng_Data_Dir", defpath);
+                std::string newfile = conf().get<std::string>("Eng_Data_Dir", flame::default_eng_data_dir());
                 newfile += "/" + conf().get<std::string>("datafile");
                 if (DataFile != newfile) {
                     lattice.clear();

@@ -4,16 +4,11 @@
 #include <boost/numeric/ublas/lu.hpp>
 
 #include "flame/constants.h"
+#include "flame/data_path.h"
 #include "flame/moment.h"
 
 #define sqr(x)  ((x)*(x))
 #define cube(x) ((x)*(x)*(x))
-
-#ifdef DEFPATH
-    #define defpath DEFPATH
-#else
-    #define defpath "."
-#endif
 
 std::map<std::string,boost::shared_ptr<Config> > CurveMap;
 
@@ -399,7 +394,7 @@ void GetCurveData(const Config &c, const unsigned ncurve, std::vector<double> &S
          rngchecker = c.tryGet<std::vector<double> >("use_range", range);
 
     if (checker){
-        std::string CurveFile =  c.get<std::string>("Eng_Data_Dir", defpath);
+        std::string CurveFile =  c.get<std::string>("Eng_Data_Dir", flame::default_eng_data_dir());
         CurveFile += "/" + filename;
         std::string key(SB()<<CurveFile<<"|"<<boost::filesystem::last_write_time(CurveFile));
         if ( CurveMap.find(key) == CurveMap.end() ) {

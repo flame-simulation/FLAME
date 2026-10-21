@@ -36,6 +36,7 @@ set(inst_HEADERS
   flame/base.h
   flame/config.h
   flame/constants.h
+  flame/data_path.h
 
   flame/state/vector.h
   flame/state/matrix.h

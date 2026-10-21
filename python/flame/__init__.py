@@ -1,4 +1,5 @@
 
+import os
 from collections import OrderedDict
 
 from ._internal import (Machine as MachineBase,
@@ -7,6 +8,16 @@ from ._internal import (Machine as MachineBase,
                         FLAME_ERROR, FLAME_WARN,
                         FLAME_INFO, FLAME_DEBUG,
                         setLogLevel, getLoggerName)
+
+try:
+    # If the flame-data package is installed (pip install flame-data),
+    # expose its cavity_data directory to the C++ core as the default
+    # Eng_Data_Dir; an existing FLAME_DATA_DIR is left untouched.
+    import flame_data
+    os.environ.setdefault("FLAME_DATA_DIR",
+                          str(flame_data.get_data_path()))
+except ImportError:
+    pass
 
 def _list2odict(L):
     'Recursively turn list of tuples into OrderedDict'
