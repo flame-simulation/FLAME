@@ -22,6 +22,8 @@ void GetEdgeMatrix(const double rho, const double phi, const double dphi, const 
 
 void GetEEdgeMatrix(const double fringe_x, const double fringe_y, const double kappa, typename MomentElementBase::value_t &M);
 
+void GetSEdgeMatrix(const double Dx, const double Dy, const double qmrel, std::vector<double> EScoef, typename MomentElementBase::value_t &M);
+
 void GetSBendMatrix(const double L, const double phi, const double phi1, const double phi2, const double K,
                     const double IonEs, const double ref_gamma, const double qmrel,
                     const double dphi1, const double dphi2, const unsigned EFcorrection,

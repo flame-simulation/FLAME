@@ -154,6 +154,8 @@ struct MomentElementBase : public ElementVoid
 
     void get_misalign(const state_t& ST, const Particle& real, value_t& M, value_t& IM) const;
 
+    void get_misalign_bend(const state_t& ST, const Particle& real, const double phi, const bool ver, value_t& M, value_t& IM) const;
+
     unsigned get_flag(const Config& c, const std::string& name, const unsigned& def_value);
 
     virtual void advance(StateBase& s);
@@ -182,10 +184,13 @@ struct MomentElementBase : public ElementVoid
     std::vector<value_t> misalign, misalign_inv;
 
     //! constituents of misalign
-    double dx, dy, pitch, yaw, roll;
+    double dx, dy, dz, pitch, yaw, roll;
 
     //! If set, check_cache() will always return false
     bool skipcache;
+
+    // zero vector for edge sextupole coefficients, used in ElementSBend
+    std::vector<double> EScoef_default = std::vector<double>(6, 0.0);
 
     virtual void assign(const ElementVoid *other) =0;
 

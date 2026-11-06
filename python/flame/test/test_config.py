@@ -93,7 +93,7 @@ hello = "test\x1f";
 x1: drift, L=4; # comments are ignored
 foo: LINE = (x1, x1);
 """)
-        
+
         self.assertListEqual(C, [
             ('elements', [
                 [('L',4.0),('name','x1'), ('type','drift')],
