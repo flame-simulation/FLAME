@@ -550,6 +550,7 @@ MomentElementBase::MomentElementBase(const Config& c)
     :ElementVoid(c)
     ,dx   (c.get<double>("dx",    0e0)*MtoMM)
     ,dy   (c.get<double>("dy",    0e0)*MtoMM)
+    ,dz   (c.get<double>("dz",    0e0)*MtoMM)
     ,pitch(c.get<double>("pitch", 0e0))
     ,yaw  (c.get<double>("yaw",   0e0))
     ,roll (c.get<double>("roll",  0e0))
@@ -572,6 +573,7 @@ void MomentElementBase::assign(const ElementVoid *other)
     misalign_inv = O->misalign_inv;
     dx = O->dx;
     dy = O->dy;
+    dz = O->dz;
     pitch = O->pitch;
     yaw   = O->yaw;
     roll  = O->roll;
@@ -646,29 +648,40 @@ void MomentElementBase::get_misalign_bend(const state_t &ST, const Particle &rea
     inverse(scl_inv, scl);
 
     // Translate to center of element.
-    rho = fabs(length/phi);
+    rho = -length/phi;
     cs = cos(phi/2e0);
-    sn = sin(phi/2e0);
-    T(state_t::PS_S,  6) = -rho*sn/2e0*MtoMM;
+    sn = sin(-phi/2e0);
+    T(state_t::PS_S,  6) = -rho*sn*MtoMM;
     T(state_t::PS_PS, 6) = cs-1e0;
     T(4, 4) = cs, T(5, 5) = cs;
     if (!ver) {
         T(0, 0) = cs, T(1, 1) = cs;
         T(0, 4) = -sn, T(1, 5) = -sn;
         T(4, 0) = sn, T(5, 1) = sn;
-        T(0, 6) = rho*(1e0-cs)/2e0*MtoMM;
+        T(0, 6) = rho*(1e0-cs)*MtoMM;
         T(1, 6) = -sn;
     } else {
         T(2, 2) = cs, T(3, 3) = cs;
         T(2, 4) = -sn, T(3, 5) = -sn;
         T(4, 2) = sn, T(5, 3) = sn;
-        T(2, 6) = rho*(1e0-cs)/2e0*MtoMM;
+        T(2, 6) = rho*(1e0-cs)*MtoMM;
         T(3, 6) = -sn;
     }
     inverse(T_inv, T);
 
     // right hand rotation
     RotMat(dx, dy, pitch, -yaw, roll, R);
+
+    // Optional rigid displacement along the nominal arc-midpoint tangent.
+    R(0, 6) -= R(0, 4)*dz;
+    R(2, 6) -= R(2, 4)*dz;
+    R(4, 6) -= R(4, 4)*dz;
+
+    // Rotate the full direction (x', y', 1+z'),
+    // then return to direction-deviation coordinates: S^-1 R S.
+    R(1, 6) += R(1, 5);
+    R(3, 6) += R(3, 5);
+    R(5, 6) += R(5, 5) - 1e0;
 
     M = prod(T, scl);
     M = prod(R, M);
@@ -678,23 +691,23 @@ void MomentElementBase::get_misalign_bend(const state_t &ST, const Particle &rea
     inverse(R_inv, R);
 
     // Translate to center of element.
-    rho = fabs(length/phi);
+    rho = -length/phi;
     cs = cos(-phi/2e0);
-    sn = sin(-phi/2e0);
-    T(state_t::PS_S,  6) = -rho*sn/2e0*MtoMM;
+    sn = sin(phi/2e0);
+    T(state_t::PS_S,  6) = -rho*sn*MtoMM;
     T(state_t::PS_PS, 6) = cs-1e0;
     T(4, 4) = cs, T(5, 5) = cs;
     if (!ver) {
         T(0, 0) = cs, T(1, 1) = cs;
         T(0, 4) = -sn, T(1, 5) = -sn;
         T(4, 0) = sn, T(5, 1) = sn;
-        T(0, 6) = rho*(1e0-cs)/2e0*MtoMM;
+        T(0, 6) = rho*(1e0-cs)*MtoMM;
         T(1, 6) = -sn;
     } else {
         T(2, 2) = cs, T(3, 3) = cs;
         T(2, 4) = -sn, T(3, 5) = -sn;
         T(4, 2) = sn, T(5, 3) = sn;
-        T(2, 6) = rho*(1e0-cs)/2e0*MtoMM;
+        T(2, 6) = rho*(1e0-cs)*MtoMM;
         T(3, 6) = -sn;
     }
     inverse(T_inv, T);
