@@ -116,8 +116,7 @@ void GetSextMatrix(const double L, const double K3, double Dx, double Dy,
 {
     typedef typename MomentElementBase::state_t state_t;
     // 2D sextupole transport matrix.
-    double sqrtK, psi, cs, sn, ch, sh,
-           dr = sqrt(sqr(Dx)+sqr(Dy));
+    double sqrtK, psi, cs, sn, ch, sh, dr;
 
     if (thinlens) {
 
@@ -130,11 +129,18 @@ void GetSextMatrix(const double L, const double K3, double Dx, double Dy,
         T(state_t::PS_X, state_t::PS_PX) = L/2e0;
         T(state_t::PS_Y, state_t::PS_PY) = L/2e0;
 
-        P(state_t::PS_PX, state_t::PS_X) = -K3*L*Dx;
-        P(state_t::PS_PX, state_t::PS_Y) =  K3*L*Dy;
+        P(state_t::PS_PX, state_t::PS_X) = -2e0*K3*L*Dx;
+        P(state_t::PS_PX, state_t::PS_Y) =  2e0*K3*L*Dy;
+        P(state_t::PS_PX, 6) = K3*L*(Dx*Dx - Dy*Dy);
 
-        P(state_t::PS_PY, state_t::PS_X) = K3*L*Dy;
-        P(state_t::PS_PY, state_t::PS_Y) = K3*L*Dx;
+        P(state_t::PS_PY, state_t::PS_X) = 2e0*K3*L*Dy;
+        P(state_t::PS_PY, state_t::PS_Y) = 2e0*K3*L*Dx;
+        P(state_t::PS_PY, 6) = -2e0*K3*L*Dx*Dy;
+
+        if (dstkick){
+            P(state_t::PS_PX, 6) += -K3*L*(D2x-D2y);
+            P(state_t::PS_PY, 6) +=  2e0*K3*L*D2xy;
+        } // option
 
         scratch = prod(P,T);
         M = prod(T,scratch);
@@ -142,7 +148,13 @@ void GetSextMatrix(const double L, const double K3, double Dx, double Dy,
     } else {
 
         //thick-lens model
+        const double X = Dx,
+                     Y = Dy;
 
+        Dx *= 2.0;
+        Dy *= 2.0;
+
+        dr = sqrt(sqr(Dx)+sqr(Dy));
         sqrtK = sqrt(fabs(K3)*dr);
         psi = sqrtK*L;
 
@@ -172,15 +184,20 @@ void GetSextMatrix(const double L, const double K3, double Dx, double Dy,
 
             M(state_t::PS_PY, state_t::PS_Y) = sqrtK*(-(dr-Dx)*sn+(dr+Dx)*sh)/(2e0*dr);
 
+            M(state_t::PS_X, 6)  = -0.5 * ((M(state_t::PS_X, state_t::PS_X) - 1e0)*X + M(state_t::PS_X, state_t::PS_Y)*Y);
+            M(state_t::PS_PX, 6) = -0.5 * (M(state_t::PS_PX, state_t::PS_X)*X + M(state_t::PS_PX, state_t::PS_Y)*Y);
+            M(state_t::PS_Y, 6)  = -0.5 * (M(state_t::PS_Y, state_t::PS_X)*X + (M(state_t::PS_Y, state_t::PS_Y) - 1e0)*Y);
+            M(state_t::PS_PY, 6) = -0.5 * (M(state_t::PS_PY, state_t::PS_X)*X + M(state_t::PS_PY, state_t::PS_Y)*Y);
+
         } else {
             M(state_t::PS_X, state_t::PS_PX) = L;
             M(state_t::PS_Y, state_t::PS_PY) = L;
         }
 
-    } // option
-    if (dstkick){
-        M(state_t::PS_PX, 6) = -K3*L*(D2x-D2y);
-        M(state_t::PS_PY, 6) =  2e0*K3*L*D2xy;
+        if (dstkick){
+            M(state_t::PS_PX, 6) += -K3*L*(D2x-D2y);
+            M(state_t::PS_PY, 6) +=  2e0*K3*L*D2xy;
+        } // option
     }
 }
 
@@ -215,10 +232,12 @@ void GetSEdgeMatrix(const double Dx, const double Dy, const double qmrel, std::v
     double ds = 1e-6;
 
     M = boost::numeric::ublas::identity_matrix<double>(state_t::maxsize);
-    M(state_t::PS_PX, state_t::PS_X)  = (EScoef[0] + EScoef[1]*Dx)*(1+qmrel)*ds;
+    M(state_t::PS_PX, state_t::PS_X)  = (EScoef[0] + 2e0*EScoef[1]*Dx)*(1+qmrel)*ds;
+    M(state_t::PS_PX, 6) = -EScoef[1]*(Dx*Dx - Dy*Dy)*(1+qmrel)*ds;
     M(state_t::PS_PX, state_t::PS_Y)  = EScoef[2]*Dy*(1+qmrel)*ds;
     M(state_t::PS_PY, state_t::PS_X)  = EScoef[3]*Dy*(1+qmrel)*ds;
-    M(state_t::PS_PY, state_t::PS_Y)  = (EScoef[4] + EScoef[5]*Dx)*(1+qmrel)*ds;
+    M(state_t::PS_PY, state_t::PS_Y)  = (EScoef[4] + 2e0*EScoef[5]*Dx)*(1+qmrel)*ds;
+    M(state_t::PS_PY, 6) = -EScoef[5]*Dx*Dy*(1+qmrel)*ds;
 }
 
 void GetSBendMatrix(const double L, const double phi, const double phi1, const double phi2, const double K,
